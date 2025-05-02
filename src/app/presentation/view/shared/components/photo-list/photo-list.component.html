@@ -1,9 +1,0 @@
-<h3 *ngIf="!photos.length">Sorry, no photos</h3>
-
-<app-photo
-  *ngFor="let photo of photos"
-  [url]="photo.url"
-  [description]="photo.description"
-></app-photo>
-
-<app-load-button [hasMore]="hasMore" (click)="load()"></app-load-button>
