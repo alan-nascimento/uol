@@ -1,0 +1,13 @@
+{
+  "name": "postfix-calculator",
+  "version": "1.0.0",
+  "description": "A Postfix++ calculator for ADS2 coursework. Supports postfix arithmetic with variable assignment.",
+  "main": "src/postfix.js",
+  "scripts": {
+    "start": "node src/postfix.js",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.0.3"
+  }
+}
