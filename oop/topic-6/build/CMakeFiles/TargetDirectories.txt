@@ -1,3 +1,0 @@
-/Users/alannascimento/Workspace/alan-nascimento/uol/oop/topic-6/build/CMakeFiles/weather_toolkit.dir
-/Users/alannascimento/Workspace/alan-nascimento/uol/oop/topic-6/build/CMakeFiles/edit_cache.dir
-/Users/alannascimento/Workspace/alan-nascimento/uol/oop/topic-6/build/CMakeFiles/rebuild_cache.dir
