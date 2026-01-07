@@ -10,7 +10,9 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DJAudioPlayer.h"
-#include "DeckGUI.h"
+#include "CustomDeckControl.h"
+#include "MusicLibrary.h"
+#include "BeatGrid.h"
 
 
 //==============================================================================
@@ -37,18 +39,21 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-     
+
     AudioFormatManager formatManager;
-    AudioThumbnailCache thumbCache{100}; 
+    AudioThumbnailCache thumbCache{100};
 
     DJAudioPlayer player1{formatManager};
-    DeckGUI deckGUI1{&player1, formatManager, thumbCache}; 
+    CustomDeckControl deck1{&player1, formatManager, thumbCache, 1};
 
     DJAudioPlayer player2{formatManager};
-    DeckGUI deckGUI2{&player2, formatManager, thumbCache}; 
+    CustomDeckControl deck2{&player2, formatManager, thumbCache, 2};
 
-    MixerAudioSource mixerSource; 
-    
-    
+    MusicLibrary musicLibrary;
+    BeatGrid beatGrid;
+
+    MixerAudioSource mixerSource;
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

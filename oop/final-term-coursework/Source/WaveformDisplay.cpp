@@ -14,10 +14,10 @@
 //==============================================================================
 WaveformDisplay::WaveformDisplay(AudioFormatManager & 	formatManagerToUse,
                                  AudioThumbnailCache & 	cacheToUse) :
-                                 audioThumb(1000, formatManagerToUse, cacheToUse), 
-                                 fileLoaded(false), 
+                                 audioThumb(1000, formatManagerToUse, cacheToUse),
+                                 fileLoaded(false),
                                  position(0)
-                          
+
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -31,38 +31,46 @@ WaveformDisplay::~WaveformDisplay()
 
 void WaveformDisplay::paint (Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
+    // Modern dark background
+    g.fillAll(Colour(0xFF2C2C2C));
 
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));   // clear the background
-
-    g.setColour (Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (Colours::orange);
     if(fileLoaded)
     {
-      audioThumb.drawChannel(g, 
-        getLocalBounds(), 
-        0, 
-        audioThumb.getTotalLength(), 
-        0, 
-        1.0f
-      );
-      g.setColour(Colours::lightgreen);
-      g.drawRect(position * getWidth(), 0, getWidth() / 20, getHeight());
-    }
-    else 
-    {
-      g.setFont (20.0f);
-      g.drawText ("File not loaded...", getLocalBounds(),
-                  Justification::centred, true);   // draw some placeholder text
+        // Draw waveform
+        g.setColour(Colour(0xFF3498DB));
+        audioThumb.drawChannel(g,
+            getLocalBounds(),
+            0,
+            audioThumb.getTotalLength(),
+            0,
+            1.0f
+        );
 
+                // Draw playhead with bounds checking
+        g.setColour(Colour(0xFFE74C3C));
+        int playheadX = (int)(position * getWidth());
+
+        // Ensure playhead is within bounds
+        if (playheadX >= 0 && playheadX < getWidth())
+        {
+            g.drawVerticalLine(playheadX, 0, getHeight());
+
+            // Draw playhead indicator
+            g.fillEllipse(playheadX - 3, getHeight() / 2 - 3, 6, 6);
+        }
     }
+    else
+    {
+        // Draw placeholder
+        g.setColour(Colours::lightgrey);
+        g.setFont(14.0f);
+        g.drawText("No track loaded", getLocalBounds(),
+                    Justification::centred, true);
+    }
+
+    // Draw border
+    g.setColour(Colours::white);
+    g.drawRect(getLocalBounds(), 1);
 }
 
 void WaveformDisplay::resized()
@@ -97,13 +105,15 @@ void WaveformDisplay::changeListenerCallback (ChangeBroadcaster *source)
 
 void WaveformDisplay::setPositionRelative(double pos)
 {
+  // Ensure position is within valid bounds
+  if (pos < 0.0) pos = 0.0;
+  if (pos > 1.0) pos = 1.0;
+
   if (pos != position)
   {
     position = pos;
     repaint();
   }
-
-  
 }
 
 

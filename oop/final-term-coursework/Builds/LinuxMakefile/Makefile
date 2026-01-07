@@ -74,6 +74,9 @@ endif
 OBJECTS_APP := \
   $(JUCE_OBJDIR)/WaveformDisplay_c81a80a6.o \
   $(JUCE_OBJDIR)/DeckGUI_914d8333.o \
+  $(JUCE_OBJDIR)/CustomDeckControl_2f8aac24.o \
+  $(JUCE_OBJDIR)/MusicLibrary_2eb7605f.o \
+  $(JUCE_OBJDIR)/BeatGrid_e6514a5.o \
   $(JUCE_OBJDIR)/DJAudioPlayer_f05158f2.o \
   $(JUCE_OBJDIR)/MainComponent_a6ffb4a5.o \
   $(JUCE_OBJDIR)/Main_90ebc5c2.o \
@@ -118,6 +121,21 @@ $(JUCE_OBJDIR)/WaveformDisplay_c81a80a6.o: ../../Source/WaveformDisplay.cpp
 $(JUCE_OBJDIR)/DeckGUI_914d8333.o: ../../Source/DeckGUI.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling DeckGUI.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CustomDeckControl_2f8aac24.o: ../../Source/CustomDeckControl.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling CustomDeckControl.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/MusicLibrary_2eb7605f.o: ../../Source/MusicLibrary.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling MusicLibrary.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/BeatGrid_e6514a5.o: ../../Source/BeatGrid.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling BeatGrid.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/DJAudioPlayer_f05158f2.o: ../../Source/DJAudioPlayer.cpp

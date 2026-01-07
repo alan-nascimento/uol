@@ -9,6 +9,12 @@
             file="Source/WaveformDisplay.h"/>
       <FILE id="mY8mBE" name="DeckGUI.cpp" compile="1" resource="0" file="Source/DeckGUI.cpp"/>
       <FILE id="pXoLBs" name="DeckGUI.h" compile="0" resource="0" file="Source/DeckGUI.h"/>
+      <FILE id="customDeck1" name="CustomDeckControl.cpp" compile="1" resource="0" file="Source/CustomDeckControl.cpp"/>
+      <FILE id="customDeck2" name="CustomDeckControl.h" compile="0" resource="0" file="Source/CustomDeckControl.h"/>
+      <FILE id="musicLib1" name="MusicLibrary.cpp" compile="1" resource="0" file="Source/MusicLibrary.cpp"/>
+      <FILE id="musicLib2" name="MusicLibrary.h" compile="0" resource="0" file="Source/MusicLibrary.h"/>
+      <FILE id="beatGrid1" name="BeatGrid.cpp" compile="1" resource="0" file="Source/BeatGrid.cpp"/>
+      <FILE id="beatGrid2" name="BeatGrid.h" compile="0" resource="0" file="Source/BeatGrid.h"/>
       <FILE id="TIQiuh" name="DJAudioPlayer.cpp" compile="1" resource="0"
             file="Source/DJAudioPlayer.cpp"/>
       <FILE id="aVDLxo" name="DJAudioPlayer.h" compile="0" resource="0" file="Source/DJAudioPlayer.h"/>
