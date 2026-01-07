@@ -23,11 +23,12 @@
  * force-based, not a physical constraint.
  *
  * PHYSICS VALUES RATIONALE:
- * Ball restitution (0.7) provides realistic bouncing without excessive energy.
- * Friction (0.01) allows natural deceleration. Cushion restitution (0.8) is
- * slightly higher to simulate the rubber cushions' springiness. Ball density
- * (0.001) ensures proper mass-to-size ratio. These values were tuned through
- * experimentation to feel natural while maintaining playability.
+ * Ball restitution (0.9) provides energetic collisions with good bounce response.
+ * Friction (0.005) and air friction (0.01) allow natural deceleration while
+ * maintaining sufficient speed for gameplay. Cushion restitution (0.8) is
+ * slightly lower than balls to simulate the rubber cushions' springiness.
+ * Ball density (0.001) ensures proper mass-to-size ratio. These values were
+ * tuned through experimentation to feel natural while maintaining playability.
  *
  * CREATIVE EXTENSION - SHOT PREDICTION GHOST PATH:
  * The application includes a shot prediction system that visualizes the
