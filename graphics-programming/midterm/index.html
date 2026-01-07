@@ -1,45 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snooker Application</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #1a1a1a;
-            font-family: Arial, sans-serif;
-        }
-        #canvas-container {
-            text-align: center;
-        }
-        .instructions {
-            color: white;
-            margin-top: 20px;
-            line-height: 1.6;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #1a1a1a;
+        font-family: Arial, sans-serif;
+      }
+      #canvas-container {
+        text-align: center;
+      }
+      .instructions {
+        color: white;
+        margin-top: 20px;
+        line-height: 1.6;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="canvas-container">
-        <div class="instructions">
-            <h2>Snooker Application</h2>
-            <p><strong>Controls:</strong></p>
-            <p>Keys 1, 2, 3: Switch game modes</p>
-            <p>Mouse: Aim cue / Place cue ball (in D zone)</p>
-            <p>Up/Down arrows: Adjust cue power</p>
-            <p>Space: Strike cue ball</p>
-        </div>
+      <div class="instructions">
+        <h2>Snooker Application</h2>
+        <p><strong>Controls:</strong></p>
+        <p>Keys 1, 2, 3: Switch game modes</p>
+        <p>Mouse: Aim cue / Place cue ball (in D zone)</p>
+        <p>Up/Down arrows: Adjust cue power</p>
+        <p>Space: Strike cue ball</p>
+      </div>
     </div>
-    <!-- Commentary -->
-    <script src="js/commentary.js"></script>
     <!-- Constants and global variables -->
     <script src="js/constants.js"></script>
     <!-- Classes -->
@@ -52,7 +50,5 @@
     <script src="js/gameModes.js"></script>
     <!-- Main setup and draw -->
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>
-
-
