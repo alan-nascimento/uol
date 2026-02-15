@@ -5,43 +5,42 @@
  */
 
 // ============ LAYOUT CONSTANTS ============
-var CELL_WIDTH = 160
-var CELL_HEIGHT = 120
-var PADDING = 20
-var LABEL_HEIGHT = 18
-var MARGIN = 20
+const CELL_WIDTH = 160
+const CELL_HEIGHT = 120
+const PADDING = 20
+const LABEL_HEIGHT = 18
+const MARGIN = 20
 
-var GRID_COLS = 3
-var GRID_ROWS = 7
+const GRID_COLS = 3
+const GRID_ROWS = 7
 
-var GRID_W = GRID_COLS * CELL_WIDTH + (GRID_COLS - 1) * PADDING
-var GRID_H =
+const GRID_W = GRID_COLS * CELL_WIDTH + (GRID_COLS - 1) * PADDING
+const GRID_H =
   GRID_ROWS * (CELL_HEIGHT + LABEL_HEIGHT) + (GRID_ROWS - 1) * PADDING
 
-var CANVAS_W = 2 * MARGIN + GRID_W
-var CANVAS_H = 2 * MARGIN + GRID_H
+const CANVAS_W = 2 * MARGIN + GRID_W
+const CANVAS_H = 2 * MARGIN + GRID_H
 
-var START_X = MARGIN
-var START_Y = MARGIN
+const START_X = MARGIN
+const START_Y = MARGIN
 
 // ============ PROCESSING CONSTANTS ============
-var PIXELATE_BLOCK = 5
-var SOBEL_X = [-1, 0, 1, -2, 0, 2, -1, 0, 1]
-var SOBEL_Y = [-1, -2, -1, 0, 0, 0, 1, 2, 1]
+const PIXELATE_BLOCK = 5
+const SOBEL_X = [-1, 0, 1, -2, 0, 2, -1, 0, 1]
+const SOBEL_Y = [-1, -2, -1, 0, 0, 0, 1, 2, 1]
 
-// Face filter mode constants
-var FILTER_NONE = 0
-var FILTER_GRAY = 1
-var FILTER_FLIP = 2
-var FILTER_PIXEL = 3
+const FILTER_NONE = 0
+const FILTER_GRAY = 1
+const FILTER_FLIP = 2
+const FILTER_PIXEL = 3
 
 // ============ STATE ============
-var video
-var snapshot = null
-var faceMeshModel = null
-var detectedFaces = []
-var faceFilter = FILTER_NONE
-var sliderR, sliderG, sliderB, sliderHsvV, sliderYcbcrY
+let video
+let snapshot = null
+let faceMeshModel = null
+let detectedFaces = []
+let faceFilter = FILTER_NONE
+let sliderR, sliderG, sliderB, sliderHsvV, sliderYcbcrY
 
 // ============ PRELOAD ============
 function preload() {
@@ -57,7 +56,7 @@ function setup() {
   video.size(CELL_WIDTH, CELL_HEIGHT)
   video.hide()
 
-  faceMeshModel.detectStart(video, function (results) {
+  faceMeshModel.detectStart(video, (results) => {
     detectedFaces = results
   })
 
@@ -66,11 +65,10 @@ function setup() {
 
 /** Create five labelled sliders to the right of the grid using p5 DOM. */
 function buildSliders() {
-  // Position to the right of the canvas
-  var sx = CANVAS_W + 30
-  var sy = START_Y + 10
+  const sx = CANVAS_W + 30
+  const sy = START_Y + 10
 
-  var container = createDiv('')
+  const container = createDiv('')
   container.position(sx, sy)
   container.style('color', '#ccc')
   container.style('font-family', 'Arial, sans-serif')
@@ -78,7 +76,7 @@ function buildSliders() {
   container.style('line-height', '1.6')
 
   // Group 1: RGB thresholds
-  var title1 = createDiv('RGB Thresholds')
+  const title1 = createDiv('RGB Thresholds')
   title1.parent(container)
   title1.style('color', '#fff')
   title1.style('font-weight', 'bold')
@@ -89,12 +87,12 @@ function buildSliders() {
   sliderB = labelledSlider(container, 'Blue')
 
   // Spacer
-  var spacer = createDiv('')
-  spacer.parent(container)
-  spacer.style('height', '16px')
+  const spacer1 = createDiv('')
+  spacer1.parent(container)
+  spacer1.style('height', '16px')
 
   // Group 2: Colour space thresholds
-  var title2 = createDiv('Colour Space Thresholds')
+  const title2 = createDiv('Colour Space Thresholds')
   title2.parent(container)
   title2.style('color', '#fff')
   title2.style('font-weight', 'bold')
@@ -104,37 +102,38 @@ function buildSliders() {
   sliderYcbcrY = labelledSlider(container, 'YCbCr Y')
 
   // Spacer
-  var spacer2 = createDiv('')
+  const spacer2 = createDiv('')
   spacer2.parent(container)
   spacer2.style('height', '16px')
 
   // Controls legend
-  var legend = createDiv(
-    '<strong style="color:#fff">Controls</strong><br>' +
-      'S — Take snapshot<br>' +
-      '1 — Grayscale face<br>' +
-      '2 — Flip face<br>' +
-      '3 — Pixelate face'
+  const legend = createDiv(
+    `<strong style="color:#fff">Controls</strong><br>
+     S — Take snapshot<br>
+     1 — Grayscale face<br>
+     2 — Flip face<br>
+     3 — Pixelate face`
   )
   legend.parent(container)
   legend.style('margin-top', '4px')
   legend.style('line-height', '1.8')
 }
 
+/** Create a slider with a label inside a flex row. */
 function labelledSlider(parent, label) {
-  var row = createDiv('')
+  const row = createDiv('')
   row.parent(parent)
   row.style('display', 'flex')
   row.style('align-items', 'center')
   row.style('gap', '8px')
   row.style('margin', '4px 0')
 
-  var span = createSpan(label)
+  const span = createSpan(label)
   span.parent(row)
   span.style('min-width', '55px')
   span.style('text-align', 'right')
 
-  var s = createSlider(0, 255, 128)
+  const s = createSlider(0, 255, 128)
   s.parent(row)
   s.style('width', '120px')
 
@@ -156,7 +155,7 @@ function draw() {
     return
   }
 
-  var source = snapshot !== null ? snapshot : video
+  const source = snapshot ?? video
 
   try {
     renderGrid(source)
@@ -167,11 +166,11 @@ function draw() {
 
 /** Render the full seven-row grid of processed images. */
 function renderGrid(source) {
-  var tR = sliderR.value()
-  var tG = sliderG.value()
-  var tB = sliderB.value()
-  var tV = sliderHsvV.value()
-  var tY = sliderYcbcrY.value()
+  const tR = sliderR.value()
+  const tG = sliderG.value()
+  const tB = sliderB.value()
+  const tV = sliderHsvV.value()
+  const tY = sliderYcbcrY.value()
 
   // Row 0: Original | Grayscale -20%
   drawCell(source, 0, 0, 'Original')
@@ -187,19 +186,19 @@ function renderGrid(source) {
     applyThreshold(extractChannel(source, 0), tR),
     2,
     0,
-    'Thresh R=' + tR
+    `Thresh R=${tR}`
   )
   drawCell(
     applyThreshold(extractChannel(source, 1), tG),
     2,
     1,
-    'Thresh G=' + tG
+    `Thresh G=${tG}`
   )
   drawCell(
     applyThreshold(extractChannel(source, 2), tB),
     2,
     2,
-    'Thresh B=' + tB
+    `Thresh B=${tB}`
   )
 
   // Row 3: HSV | YCbCr colour space visualisations
@@ -207,12 +206,12 @@ function renderGrid(source) {
   drawCell(convertToYCbCrImage(source), 3, 1, 'YCbCr')
 
   // Row 4: Threshold from V (HSV) | Y (YCbCr)
-  drawCell(applyThreshold(extractHSV_V(source), tV), 4, 0, 'Thresh HSV V=' + tV)
+  drawCell(applyThreshold(extractHSV_V(source), tV), 4, 0, `Thresh HSV V=${tV}`)
   drawCell(
     applyThreshold(extractYCbCr_Y(source), tY),
     4,
     1,
-    'Thresh YCbCr Y=' + tY
+    `Thresh YCbCr Y=${tY}`
   )
 
   // Row 5: Face detection + face replacement
@@ -232,8 +231,8 @@ function renderGrid(source) {
  * @param {string} label - text label displayed above the cell
  */
 function drawCell(img, row, col, label) {
-  var x = START_X + col * (CELL_WIDTH + PADDING)
-  var y = START_Y + row * (CELL_HEIGHT + PADDING + LABEL_HEIGHT)
+  const x = START_X + col * (CELL_WIDTH + PADDING)
+  const y = START_Y + row * (CELL_HEIGHT + PADDING + LABEL_HEIGHT)
 
   // Label above cell
   fill(210)
@@ -257,11 +256,11 @@ function drawCell(img, row, col, label) {
 
 /** Render the face detection cell at Row 5, Col 0. Resized to CELL_WIDTH x CELL_HEIGHT. */
 function drawFaceCell(source) {
-  var filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated']
-  var label = 'Face — ' + filterNames[faceFilter]
+  const filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated']
+  const label = `Face — ${filterNames[faceFilter]}`
 
-  var x = START_X + 0 * (CELL_WIDTH + PADDING)
-  var y = START_Y + 5 * (CELL_HEIGHT + PADDING + LABEL_HEIGHT)
+  const x = START_X
+  const y = START_Y + 5 * (CELL_HEIGHT + PADDING + LABEL_HEIGHT)
 
   // Label
   fill(210)
@@ -292,19 +291,18 @@ function drawFaceCell(source) {
     return
   }
 
-  var face = detectedFaces[0]
-  var bbox = face.box
+  const { box: bbox } = detectedFaces[0]
   if (!bbox) return
 
   // Clamp bounding box to image bounds
-  var sx = Math.max(0, Math.floor(bbox.xMin))
-  var sy = Math.max(0, Math.floor(bbox.yMin))
-  var sw = Math.min(source.width - sx, Math.ceil(bbox.width))
-  var sh = Math.min(source.height - sy, Math.ceil(bbox.height))
+  const sx = Math.max(0, Math.floor(bbox.xMin))
+  const sy = Math.max(0, Math.floor(bbox.yMin))
+  const sw = Math.min(source.width - sx, Math.ceil(bbox.width))
+  const sh = Math.min(source.height - sy, Math.ceil(bbox.height))
   if (sw <= 0 || sh <= 0) return
 
   // Extract face region manually using pixel arrays
-  var faceImg = extractRegion(source, sx, sy, sw, sh)
+  let faceImg = extractRegion(source, sx, sy, sw, sh)
   if (!faceImg) return
 
   // Apply selected face filter
@@ -324,30 +322,41 @@ function drawFaceCell(source) {
 // ============ PIXEL PROCESSING ============
 
 /**
- * Convert image to grayscale using the luminosity method.
- * Pure conversion with no brightness change.
+ * Helper: iterate every pixel, call `fn(i, pixels)` where `i` is the RGBA offset.
+ * Returns a new p5.Image with the output pixels.
  */
-function toGrayscale(img) {
-  var w = img.width
-  var h = img.height
+function processPixels(img, fn) {
+  const { width: w, height: h } = img
   img.loadPixels()
-  var out = createImage(w, h)
+  const out = createImage(w, h)
   out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var gray =
-        0.299 * img.pixels[i] +
-        0.587 * img.pixels[i + 1] +
-        0.114 * img.pixels[i + 2]
-      out.pixels[i] = gray
-      out.pixels[i + 1] = gray
-      out.pixels[i + 2] = gray
-      out.pixels[i + 3] = 255
+  for (let py = 0; py < h; py++) {
+    for (let px = 0; px < w; px++) {
+      const i = (py * w + px) * 4
+      fn(i, img.pixels, out.pixels)
     }
   }
   out.updatePixels()
   return out
+}
+
+/** Set an RGBA pixel in the output array. */
+function setGray(pixels, i, v) {
+  pixels[i] = v
+  pixels[i + 1] = v
+  pixels[i + 2] = v
+  pixels[i + 3] = 255
+}
+
+/**
+ * Convert image to grayscale using the luminosity method.
+ * Pure conversion with no brightness change.
+ */
+function toGrayscale(img) {
+  return processPixels(img, (i, src, dst) => {
+    const gray = 0.299 * src[i] + 0.587 * src[i + 1] + 0.114 * src[i + 2]
+    setGray(dst, i, gray)
+  })
 }
 
 /**
@@ -356,29 +365,11 @@ function toGrayscale(img) {
  * Brightness: gray *= 0.8, clamped to [0, 255].
  */
 function applyGrayscaleBrightness(img) {
-  var w = img.width
-  var h = img.height
-  img.loadPixels()
-  var out = createImage(w, h)
-  out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var gray =
-        0.299 * img.pixels[i] +
-        0.587 * img.pixels[i + 1] +
-        0.114 * img.pixels[i + 2]
-      gray = gray * 0.8 // reduce brightness by 20%
-      if (gray < 0) gray = 0
-      if (gray > 255) gray = 255
-      out.pixels[i] = gray
-      out.pixels[i + 1] = gray
-      out.pixels[i + 2] = gray
-      out.pixels[i + 3] = 255
-    }
-  }
-  out.updatePixels()
-  return out
+  return processPixels(img, (i, src, dst) => {
+    let gray = 0.299 * src[i] + 0.587 * src[i + 1] + 0.114 * src[i + 2]
+    gray *= 0.8
+    setGray(dst, i, Math.max(0, Math.min(255, gray)))
+  })
 }
 
 /**
@@ -386,46 +377,18 @@ function applyGrayscaleBrightness(img) {
  * @param {number} ch - 0 = red, 1 = green, 2 = blue
  */
 function extractChannel(img, ch) {
-  var w = img.width
-  var h = img.height
-  img.loadPixels()
-  var out = createImage(w, h)
-  out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var v = img.pixels[i + ch]
-      out.pixels[i] = v
-      out.pixels[i + 1] = v
-      out.pixels[i + 2] = v
-      out.pixels[i + 3] = 255
-    }
-  }
-  out.updatePixels()
-  return out
+  return processPixels(img, (i, src, dst) => {
+    setGray(dst, i, src[i + ch])
+  })
 }
 
 /**
  * Binary threshold: pixel >= thresh -> 255, else -> 0.
  */
 function applyThreshold(img, thresh) {
-  var w = img.width
-  var h = img.height
-  img.loadPixels()
-  var out = createImage(w, h)
-  out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var v = img.pixels[i] >= thresh ? 255 : 0
-      out.pixels[i] = v
-      out.pixels[i + 1] = v
-      out.pixels[i + 2] = v
-      out.pixels[i + 3] = 255
-    }
-  }
-  out.updatePixels()
-  return out
+  return processPixels(img, (i, src, dst) => {
+    setGray(dst, i, src[i] >= thresh ? 255 : 0)
+  })
 }
 
 // ============ COLOUR SPACE CONVERSION ============
@@ -435,27 +398,25 @@ function applyThreshold(img, thresh) {
  * Returns {h: 0-360, s: 0-1, v: 0-1}.
  */
 function computeHSV(r, g, b) {
-  var rn = r / 255
-  var gn = g / 255
-  var bn = b / 255
-  var cMax = Math.max(rn, gn, bn)
-  var cMin = Math.min(rn, gn, bn)
-  var delta = cMax - cMin
-  var h = 0
-  var s = cMax === 0 ? 0 : delta / cMax
-  var v = cMax
+  const rn = r / 255
+  const gn = g / 255
+  const bn = b / 255
+  const cMax = Math.max(rn, gn, bn)
+  const cMin = Math.min(rn, gn, bn)
+  const delta = cMax - cMin
+  const s = cMax === 0 ? 0 : delta / cMax
+  const v = cMax
+
+  let h = 0
   if (delta !== 0) {
-    if (cMax === rn) {
-      h = ((gn - bn) / delta) % 6
-    } else if (cMax === gn) {
-      h = (bn - rn) / delta + 2
-    } else {
-      h = (rn - gn) / delta + 4
-    }
+    if (cMax === rn) h = ((gn - bn) / delta) % 6
+    else if (cMax === gn) h = (bn - rn) / delta + 2
+    else h = (rn - gn) / delta + 4
     if (h < 0) h += 6
     h *= 60
   }
-  return { h: h, s: s, v: v }
+
+  return { h, s, v }
 }
 
 /**
@@ -463,118 +424,65 @@ function computeHSV(r, g, b) {
  * Returns {y: 16-235, cb: 16-240, cr: 16-240}.
  */
 function computeYCbCr(r, g, b) {
-  var y = 16 + (65.481 * r + 128.553 * g + 24.966 * b) / 255
-  var cb = 128 + (-37.797 * r - 74.203 * g + 112.0 * b) / 255
-  var cr = 128 + (112.0 * r - 93.786 * g - 18.214 * b) / 255
-  return { y: y, cb: cb, cr: cr }
+  const y = 16 + (65.481 * r + 128.553 * g + 24.966 * b) / 255
+  const cb = 128 + (-37.797 * r - 74.203 * g + 112.0 * b) / 255
+  const cr = 128 + (112.0 * r - 93.786 * g - 18.214 * b) / 255
+  return { y, cb, cr }
 }
+
+/** Clamp a value to [0, 255]. */
+const clamp255 = (v) => Math.max(0, Math.min(255, v))
 
 /** Convert image to HSV and display H->R, S->G, V->B (all mapped to 0-255). */
 function convertToHSVImage(img) {
-  var w = img.width
-  var h = img.height
-  img.loadPixels()
-  var out = createImage(w, h)
-  out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var hsv = computeHSV(img.pixels[i], img.pixels[i + 1], img.pixels[i + 2])
-      out.pixels[i] = (hsv.h / 360) * 255
-      out.pixels[i + 1] = hsv.s * 255
-      out.pixels[i + 2] = hsv.v * 255
-      out.pixels[i + 3] = 255
-    }
-  }
-  out.updatePixels()
-  return out
+  return processPixels(img, (i, src, dst) => {
+    const { h, s, v } = computeHSV(src[i], src[i + 1], src[i + 2])
+    dst[i] = (h / 360) * 255
+    dst[i + 1] = s * 255
+    dst[i + 2] = v * 255
+    dst[i + 3] = 255
+  })
 }
 
 /** Convert image to YCbCr and display Y->R, Cb->G, Cr->B. */
 function convertToYCbCrImage(img) {
-  var w = img.width
-  var h = img.height
-  img.loadPixels()
-  var out = createImage(w, h)
-  out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var ycbcr = computeYCbCr(
-        img.pixels[i],
-        img.pixels[i + 1],
-        img.pixels[i + 2]
-      )
-      out.pixels[i] = Math.max(0, Math.min(255, ycbcr.y))
-      out.pixels[i + 1] = Math.max(0, Math.min(255, ycbcr.cb))
-      out.pixels[i + 2] = Math.max(0, Math.min(255, ycbcr.cr))
-      out.pixels[i + 3] = 255
-    }
-  }
-  out.updatePixels()
-  return out
+  return processPixels(img, (i, src, dst) => {
+    const { y, cb, cr } = computeYCbCr(src[i], src[i + 1], src[i + 2])
+    dst[i] = clamp255(y)
+    dst[i + 1] = clamp255(cb)
+    dst[i + 2] = clamp255(cr)
+    dst[i + 3] = 255
+  })
 }
 
 /** Extract HSV V channel as grayscale (0-255). */
 function extractHSV_V(img) {
-  var w = img.width
-  var h = img.height
-  img.loadPixels()
-  var out = createImage(w, h)
-  out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var hsv = computeHSV(img.pixels[i], img.pixels[i + 1], img.pixels[i + 2])
-      var val = Math.max(0, Math.min(255, hsv.v * 255))
-      out.pixels[i] = val
-      out.pixels[i + 1] = val
-      out.pixels[i + 2] = val
-      out.pixels[i + 3] = 255
-    }
-  }
-  out.updatePixels()
-  return out
+  return processPixels(img, (i, src, dst) => {
+    const { v } = computeHSV(src[i], src[i + 1], src[i + 2])
+    setGray(dst, i, clamp255(v * 255))
+  })
 }
 
 /** Extract YCbCr Y (luma) channel as grayscale (0-255). */
 function extractYCbCr_Y(img) {
-  var w = img.width
-  var h = img.height
-  img.loadPixels()
-  var out = createImage(w, h)
-  out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var i = (py * w + px) * 4
-      var ycbcr = computeYCbCr(
-        img.pixels[i],
-        img.pixels[i + 1],
-        img.pixels[i + 2]
-      )
-      var val = Math.max(0, Math.min(255, ycbcr.y))
-      out.pixels[i] = val
-      out.pixels[i + 1] = val
-      out.pixels[i + 2] = val
-      out.pixels[i + 3] = 255
-    }
-  }
-  out.updatePixels()
-  return out
+  return processPixels(img, (i, src, dst) => {
+    const { y } = computeYCbCr(src[i], src[i + 1], src[i + 2])
+    setGray(dst, i, clamp255(y))
+  })
 }
 
 // ============ FACE REGION HELPERS ============
 
 /** Extract a rectangular region from an image using nested loops. */
 function extractRegion(img, sx, sy, sw, sh) {
-  var srcW = img.width
+  const srcW = img.width
   img.loadPixels()
-  var out = createImage(sw, sh)
+  const out = createImage(sw, sh)
   out.loadPixels()
-  for (var py = 0; py < sh; py++) {
-    for (var px = 0; px < sw; px++) {
-      var srcI = ((sy + py) * srcW + (sx + px)) * 4
-      var dstI = (py * sw + px) * 4
+  for (let py = 0; py < sh; py++) {
+    for (let px = 0; px < sw; px++) {
+      const srcI = ((sy + py) * srcW + (sx + px)) * 4
+      const dstI = (py * sw + px) * 4
       out.pixels[dstI] = img.pixels[srcI]
       out.pixels[dstI + 1] = img.pixels[srcI + 1]
       out.pixels[dstI + 2] = img.pixels[srcI + 2]
@@ -590,15 +498,14 @@ function extractRegion(img, sx, sy, sw, sh) {
  * No scale() or translate() used.
  */
 function applyHorizontalFlip(img) {
-  var w = img.width
-  var h = img.height
+  const { width: w, height: h } = img
   img.loadPixels()
-  var out = createImage(w, h)
+  const out = createImage(w, h)
   out.loadPixels()
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var srcI = (py * w + (w - 1 - px)) * 4
-      var dstI = (py * w + px) * 4
+  for (let py = 0; py < h; py++) {
+    for (let px = 0; px < w; px++) {
+      const srcI = (py * w + (w - 1 - px)) * 4
+      const dstI = (py * w + px) * 4
       out.pixels[dstI] = img.pixels[srcI]
       out.pixels[dstI + 1] = img.pixels[srcI + 1]
       out.pixels[dstI + 2] = img.pixels[srcI + 2]
@@ -617,31 +524,32 @@ function applyHorizontalFlip(img) {
  * 4. Draw a filled circle (noStroke) at the centre of each block.
  */
 function applyPixelation(img) {
-  var w = img.width
-  var h = img.height
-  var gray = toGrayscale(img)
+  const { width: w, height: h } = img
+  const gray = toGrayscale(img)
   gray.loadPixels()
-  var blk = PIXELATE_BLOCK
-  var pg = createGraphics(w, h)
+  const blk = PIXELATE_BLOCK
+  const pg = createGraphics(w, h)
   pg.pixelDensity(1)
   pg.background(0)
   pg.noStroke()
-  for (var by = 0; by < h; by += blk) {
-    for (var bx = 0; bx < w; bx += blk) {
-      var sum = 0
-      var count = 0
-      for (var dy = 0; dy < blk && by + dy < h; dy++) {
-        for (var dx = 0; dx < blk && bx + dx < w; dx++) {
+
+  for (let by = 0; by < h; by += blk) {
+    for (let bx = 0; bx < w; bx += blk) {
+      let sum = 0
+      let count = 0
+      for (let dy = 0; dy < blk && by + dy < h; dy++) {
+        for (let dx = 0; dx < blk && bx + dx < w; dx++) {
           sum += gray.pixels[((by + dy) * w + (bx + dx)) * 4]
           count++
         }
       }
-      var avg = count > 0 ? sum / count : 0
+      const avg = count > 0 ? sum / count : 0
       pg.fill(avg)
       pg.circle(bx + blk / 2, by + blk / 2, blk)
     }
   }
-  var result = pg.get()
+
+  const result = pg.get()
   pg.remove()
   return result
 }
@@ -655,39 +563,35 @@ function applyPixelation(img) {
  * Border pixels use zero-padding.
  */
 function applySobelEdgeDetection(img) {
-  var w = img.width
-  var h = img.height
-  var gray = toGrayscale(img)
+  const { width: w, height: h } = img
+  const gray = toGrayscale(img)
   gray.loadPixels()
-  var out = createImage(w, h)
+  const out = createImage(w, h)
   out.loadPixels()
 
-  for (var py = 0; py < h; py++) {
-    for (var px = 0; px < w; px++) {
-      var gx = 0
-      var gy = 0
-      for (var ky = -1; ky <= 1; ky++) {
-        for (var kx = -1; kx <= 1; kx++) {
-          var nx = px + kx
-          var ny = py + ky
-          var nv =
+  for (let py = 0; py < h; py++) {
+    for (let px = 0; px < w; px++) {
+      let gx = 0
+      let gy = 0
+      for (let ky = -1; ky <= 1; ky++) {
+        for (let kx = -1; kx <= 1; kx++) {
+          const nx = px + kx
+          const ny = py + ky
+          const nv =
             nx >= 0 && nx < w && ny >= 0 && ny < h
               ? gray.pixels[(ny * w + nx) * 4]
               : 0
-          var ki = (ky + 1) * 3 + (kx + 1)
+          const ki = (ky + 1) * 3 + (kx + 1)
           gx += nv * SOBEL_X[ki]
           gy += nv * SOBEL_Y[ki]
         }
       }
-      var mag = Math.sqrt(gx * gx + gy * gy)
-      if (mag > 255) mag = 255
-      var i = (py * w + px) * 4
-      out.pixels[i] = mag
-      out.pixels[i + 1] = mag
-      out.pixels[i + 2] = mag
-      out.pixels[i + 3] = 255
+      const mag = Math.min(255, Math.sqrt(gx * gx + gy * gy))
+      const i = (py * w + px) * 4
+      setGray(out.pixels, i, mag)
     }
   }
+
   out.updatePixels()
   return out
 }
