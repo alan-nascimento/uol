@@ -4,13 +4,28 @@
  * All processing via pixel arrays; no filter(), scale(), or translate() shortcuts.
  */
 
-// ============ CONSTANTS ============
-var IMG_W = 160
-var IMG_H = 120
-var CELL_PAD = 10
-var PIXELATE_BLOCK = 5
+// ============ LAYOUT CONSTANTS ============
+var CELL_WIDTH = 160
+var CELL_HEIGHT = 120
+var PADDING = 20
+var LABEL_HEIGHT = 18
+var MARGIN = 20
 
-// Sobel convolution kernels
+var GRID_COLS = 3
+var GRID_ROWS = 7
+
+var GRID_W = GRID_COLS * CELL_WIDTH + (GRID_COLS - 1) * PADDING
+var GRID_H =
+  GRID_ROWS * (CELL_HEIGHT + LABEL_HEIGHT) + (GRID_ROWS - 1) * PADDING
+
+var CANVAS_W = 2 * MARGIN + GRID_W
+var CANVAS_H = 2 * MARGIN + GRID_H
+
+var START_X = MARGIN
+var START_Y = MARGIN
+
+// ============ PROCESSING CONSTANTS ============
+var PIXELATE_BLOCK = 5
 var SOBEL_X = [-1, 0, 1, -2, 0, 2, -1, 0, 1]
 var SOBEL_Y = [-1, -2, -1, 0, 0, 0, 1, 2, 1]
 
@@ -19,12 +34,6 @@ var FILTER_NONE = 0
 var FILTER_GRAY = 1
 var FILTER_FLIP = 2
 var FILTER_PIXEL = 3
-
-// Grid layout: 3 columns, 7 rows
-var GRID_COLS = 3
-var GRID_ROWS = 7
-var CANVAS_W = GRID_COLS * IMG_W + (GRID_COLS + 1) * CELL_PAD
-var CANVAS_H = GRID_ROWS * IMG_H + (GRID_ROWS + 1) * CELL_PAD
 
 // ============ STATE ============
 var video
@@ -45,7 +54,7 @@ function setup() {
   createCanvas(CANVAS_W, CANVAS_H)
 
   video = createCapture(VIDEO)
-  video.size(IMG_W, IMG_H)
+  video.size(CELL_WIDTH, CELL_HEIGHT)
   video.hide()
 
   faceMeshModel.detectStart(video, function (results) {
@@ -55,42 +64,80 @@ function setup() {
   buildSliders()
 }
 
-/** Create five labelled sliders below the canvas using p5 DOM elements. */
+/** Create five labelled sliders to the right of the grid using p5 DOM. */
 function buildSliders() {
+  // Position to the right of the canvas
+  var sx = CANVAS_W + 30
+  var sy = START_Y + 10
+
   var container = createDiv('')
-  container.position(10, CANVAS_H + 30)
+  container.position(sx, sy)
   container.style('color', '#ccc')
   container.style('font-family', 'Arial, sans-serif')
-  container.style('font-size', '12px')
+  container.style('font-size', '11px')
+  container.style('line-height', '1.6')
 
-  sliderR = labelledSlider(container, 'Red Threshold')
-  sliderG = labelledSlider(container, 'Green Threshold')
-  sliderB = labelledSlider(container, 'Blue Threshold')
+  // Group 1: RGB thresholds
+  var title1 = createDiv('RGB Thresholds')
+  title1.parent(container)
+  title1.style('color', '#fff')
+  title1.style('font-weight', 'bold')
+  title1.style('margin-bottom', '6px')
+
+  sliderR = labelledSlider(container, 'Red')
+  sliderG = labelledSlider(container, 'Green')
+  sliderB = labelledSlider(container, 'Blue')
 
   // Spacer
   var spacer = createDiv('')
   spacer.parent(container)
-  spacer.style('height', '8px')
+  spacer.style('height', '16px')
 
-  sliderHsvV = labelledSlider(container, 'HSV V Threshold')
-  sliderYcbcrY = labelledSlider(container, 'YCbCr Y Threshold')
+  // Group 2: Colour space thresholds
+  var title2 = createDiv('Colour Space Thresholds')
+  title2.parent(container)
+  title2.style('color', '#fff')
+  title2.style('font-weight', 'bold')
+  title2.style('margin-bottom', '6px')
+
+  sliderHsvV = labelledSlider(container, 'HSV V')
+  sliderYcbcrY = labelledSlider(container, 'YCbCr Y')
+
+  // Spacer
+  var spacer2 = createDiv('')
+  spacer2.parent(container)
+  spacer2.style('height', '16px')
+
+  // Controls legend
+  var legend = createDiv(
+    '<strong style="color:#fff">Controls</strong><br>' +
+      'S — Take snapshot<br>' +
+      '1 — Grayscale face<br>' +
+      '2 — Flip face<br>' +
+      '3 — Pixelate face'
+  )
+  legend.parent(container)
+  legend.style('margin-top', '4px')
+  legend.style('line-height', '1.8')
 }
 
 function labelledSlider(parent, label) {
   var row = createDiv('')
   row.parent(parent)
-  row.style('margin', '3px 0')
   row.style('display', 'flex')
   row.style('align-items', 'center')
   row.style('gap', '8px')
+  row.style('margin', '4px 0')
 
   var span = createSpan(label)
   span.parent(row)
-  span.style('min-width', '130px')
+  span.style('min-width', '55px')
+  span.style('text-align', 'right')
 
   var s = createSlider(0, 255, 128)
   s.parent(row)
-  s.style('width', '150px')
+  s.style('width', '120px')
+
   return s
 }
 
@@ -128,24 +175,24 @@ function renderGrid(source) {
 
   // Row 0: Original | Grayscale -20%
   drawCell(source, 0, 0, 'Original')
-  drawCell(applyGrayscaleBrightness(source), 1, 0, 'Grayscale -20%')
+  drawCell(applyGrayscaleBrightness(source), 0, 1, 'Grayscale -20%')
 
   // Row 1: R | G | B channel split
-  drawCell(extractChannel(source, 0), 0, 1, 'Red Channel')
+  drawCell(extractChannel(source, 0), 1, 0, 'Red Channel')
   drawCell(extractChannel(source, 1), 1, 1, 'Green Channel')
-  drawCell(extractChannel(source, 2), 2, 1, 'Blue Channel')
+  drawCell(extractChannel(source, 2), 1, 2, 'Blue Channel')
 
   // Row 2: Thresholded R | G | B
   drawCell(
     applyThreshold(extractChannel(source, 0), tR),
-    0,
     2,
+    0,
     'Thresh R=' + tR
   )
   drawCell(
     applyThreshold(extractChannel(source, 1), tG),
-    1,
     2,
+    1,
     'Thresh G=' + tG
   )
   drawCell(
@@ -156,15 +203,15 @@ function renderGrid(source) {
   )
 
   // Row 3: HSV | YCbCr colour space visualisations
-  drawCell(convertToHSVImage(source), 0, 3, 'HSV')
-  drawCell(convertToYCbCrImage(source), 1, 3, 'YCbCr')
+  drawCell(convertToHSVImage(source), 3, 0, 'HSV')
+  drawCell(convertToYCbCrImage(source), 3, 1, 'YCbCr')
 
   // Row 4: Threshold from V (HSV) | Y (YCbCr)
-  drawCell(applyThreshold(extractHSV_V(source), tV), 0, 4, 'Thresh HSV V=' + tV)
+  drawCell(applyThreshold(extractHSV_V(source), tV), 4, 0, 'Thresh HSV V=' + tV)
   drawCell(
     applyThreshold(extractYCbCr_Y(source), tY),
-    1,
     4,
+    1,
     'Thresh YCbCr Y=' + tY
   )
 
@@ -172,30 +219,106 @@ function renderGrid(source) {
   drawFaceCell(video)
 
   // Row 6: Extension – Sobel edge detection
-  drawCell(applySobelEdgeDetection(source), 0, 6, 'Sobel Edges')
+  drawCell(applySobelEdgeDetection(source), 6, 0, 'Sobel Edges')
 }
 
 // ============ LAYOUT ============
 
-function cellX(col) {
-  return CELL_PAD + col * (IMG_W + CELL_PAD)
-}
+/**
+ * Draw a labelled image cell at a grid position.
+ * @param {p5.Image|p5.MediaElement} img - image to draw
+ * @param {number} row - grid row (0-based)
+ * @param {number} col - grid column (0-based)
+ * @param {string} label - text label displayed above the cell
+ */
+function drawCell(img, row, col, label) {
+  var x = START_X + col * (CELL_WIDTH + PADDING)
+  var y = START_Y + row * (CELL_HEIGHT + PADDING + LABEL_HEIGHT)
 
-function cellY(row) {
-  return CELL_PAD + row * (IMG_H + CELL_PAD)
-}
-
-function drawCell(img, col, row, label) {
-  var x = cellX(col)
-  var y = cellY(row)
-  if (img) {
-    image(img, x, y, IMG_W, IMG_H)
-  }
-  fill(255)
+  // Label above cell
+  fill(210)
   noStroke()
   textSize(10)
-  textAlign(LEFT, BASELINE)
-  text(label, x + 2, y + 10)
+  textAlign(LEFT, BOTTOM)
+  text(label, x, y + LABEL_HEIGHT - 2)
+
+  // Cell border (subtle)
+  stroke(55)
+  strokeWeight(1)
+  noFill()
+  rect(x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT)
+
+  // Image
+  if (img) {
+    noStroke()
+    image(img, x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT)
+  }
+}
+
+/** Render the face detection cell at Row 5, Col 0. Resized to CELL_WIDTH x CELL_HEIGHT. */
+function drawFaceCell(source) {
+  var filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated']
+  var label = 'Face — ' + filterNames[faceFilter]
+
+  var x = START_X + 0 * (CELL_WIDTH + PADDING)
+  var y = START_Y + 5 * (CELL_HEIGHT + PADDING + LABEL_HEIGHT)
+
+  // Label
+  fill(210)
+  noStroke()
+  textSize(10)
+  textAlign(LEFT, BOTTOM)
+  text(label, x, y + LABEL_HEIGHT - 2)
+
+  // Cell border
+  stroke(55)
+  strokeWeight(1)
+  noFill()
+  rect(x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT)
+
+  if (detectedFaces.length === 0) {
+    fill(50)
+    noStroke()
+    rect(x + 1, y + LABEL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2)
+    fill(140)
+    textSize(10)
+    textAlign(CENTER, CENTER)
+    text(
+      'No face detected',
+      x + CELL_WIDTH / 2,
+      y + LABEL_HEIGHT + CELL_HEIGHT / 2
+    )
+    textAlign(LEFT, BASELINE)
+    return
+  }
+
+  var face = detectedFaces[0]
+  var bbox = face.box
+  if (!bbox) return
+
+  // Clamp bounding box to image bounds
+  var sx = Math.max(0, Math.floor(bbox.xMin))
+  var sy = Math.max(0, Math.floor(bbox.yMin))
+  var sw = Math.min(source.width - sx, Math.ceil(bbox.width))
+  var sh = Math.min(source.height - sy, Math.ceil(bbox.height))
+  if (sw <= 0 || sh <= 0) return
+
+  // Extract face region manually using pixel arrays
+  var faceImg = extractRegion(source, sx, sy, sw, sh)
+  if (!faceImg) return
+
+  // Apply selected face filter
+  if (faceFilter === FILTER_GRAY) {
+    faceImg = toGrayscale(faceImg)
+  } else if (faceFilter === FILTER_FLIP) {
+    faceImg = applyHorizontalFlip(faceImg)
+  } else if (faceFilter === FILTER_PIXEL) {
+    faceImg = applyPixelation(faceImg)
+  }
+
+  // Draw resized to match grid cell dimensions
+  noStroke()
+  image(faceImg, x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT)
 }
 
 // ============ PIXEL PROCESSING ============
@@ -283,7 +406,7 @@ function extractChannel(img, ch) {
 }
 
 /**
- * Binary threshold: pixel >= thresh → 255, else → 0.
+ * Binary threshold: pixel >= thresh -> 255, else -> 0.
  */
 function applyThreshold(img, thresh) {
   var w = img.width
@@ -346,7 +469,7 @@ function computeYCbCr(r, g, b) {
   return { y: y, cb: cb, cr: cr }
 }
 
-/** Convert image to HSV and display H→R, S→G, V→B (all mapped to 0-255). */
+/** Convert image to HSV and display H->R, S->G, V->B (all mapped to 0-255). */
 function convertToHSVImage(img) {
   var w = img.width
   var h = img.height
@@ -367,7 +490,7 @@ function convertToHSVImage(img) {
   return out
 }
 
-/** Convert image to YCbCr and display Y→R, Cb→G, Cr→B. */
+/** Convert image to YCbCr and display Y->R, Cb->G, Cr->B. */
 function convertToYCbCrImage(img) {
   var w = img.width
   var h = img.height
@@ -440,61 +563,7 @@ function extractYCbCr_Y(img) {
   return out
 }
 
-// ============ FACE DETECTION & REPLACEMENT ============
-
-/** Render the face detection cell (Row 5). Shows detected face with optional filter. */
-function drawFaceCell(source) {
-  var x = cellX(0)
-  var y = cellY(5)
-  var cw = IMG_W * 2 + CELL_PAD
-  var ch = IMG_H
-  var filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated']
-
-  // Label
-  fill(255)
-  noStroke()
-  textSize(10)
-  textAlign(LEFT, BASELINE)
-  text('Face — ' + filterNames[faceFilter] + '  (keys 1/2/3)', x + 2, y + 10)
-
-  if (detectedFaces.length === 0) {
-    fill(50)
-    noStroke()
-    rect(x, y + 14, cw, ch - 14)
-    fill(150)
-    textSize(11)
-    textAlign(CENTER, CENTER)
-    text('No face detected', x + cw / 2, y + ch / 2)
-    textAlign(LEFT, BASELINE)
-    return
-  }
-
-  var face = detectedFaces[0]
-  var bbox = face.box
-  if (!bbox) return
-
-  // Clamp bounding box to image bounds
-  var sx = Math.max(0, Math.floor(bbox.xMin))
-  var sy = Math.max(0, Math.floor(bbox.yMin))
-  var sw = Math.min(source.width - sx, Math.ceil(bbox.width))
-  var sh = Math.min(source.height - sy, Math.ceil(bbox.height))
-  if (sw <= 0 || sh <= 0) return
-
-  // Extract face region manually using pixel arrays
-  var faceImg = extractRegion(source, sx, sy, sw, sh)
-  if (!faceImg) return
-
-  // Apply selected face filter
-  if (faceFilter === FILTER_GRAY) {
-    faceImg = toGrayscale(faceImg)
-  } else if (faceFilter === FILTER_FLIP) {
-    faceImg = applyHorizontalFlip(faceImg)
-  } else if (faceFilter === FILTER_PIXEL) {
-    faceImg = applyPixelation(faceImg)
-  }
-
-  image(faceImg, x, y + 14, Math.min(sw, cw), Math.min(sh, ch - 14))
-}
+// ============ FACE REGION HELPERS ============
 
 /** Extract a rectangular region from an image using nested loops. */
 function extractRegion(img, sx, sy, sw, sh) {
@@ -627,8 +696,18 @@ function applySobelEdgeDetection(img) {
 
 function keyPressed() {
   if (key === 'S' || key === 's') {
-    snapshot = createImage(IMG_W, IMG_H)
-    snapshot.copy(video, 0, 0, video.width, video.height, 0, 0, IMG_W, IMG_H)
+    snapshot = createImage(CELL_WIDTH, CELL_HEIGHT)
+    snapshot.copy(
+      video,
+      0,
+      0,
+      video.width,
+      video.height,
+      0,
+      0,
+      CELL_WIDTH,
+      CELL_HEIGHT
+    )
   }
   if (key === '1') faceFilter = FILTER_GRAY
   if (key === '2') faceFilter = FILTER_FLIP
