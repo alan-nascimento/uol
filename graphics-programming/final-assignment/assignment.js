@@ -218,7 +218,12 @@ const renderGrid = (source) => {
 
   // Row 4: Face detection | Threshold HSV V | Threshold YCbCr Y
   drawFaceCell(video);
-  drawCell(applyThreshold(extractHSV_V(source), tV), 4, 1, `Thresh HSV V=${tV}`);
+  drawCell(
+    applyThreshold(extractHSV_V(source), tV),
+    4,
+    1,
+    `Thresh HSV V=${tV}`
+  );
   drawCell(
     applyThreshold(extractYCbCr_Y(source), tY),
     4,
