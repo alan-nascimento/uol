@@ -9,62 +9,62 @@
  * COMMENTARY
  * ============================================================================
  *
- * This application implements a real-time image processing pipeline for the
- * CM2030 Graphics Programming module using only p5.js for rendering and ml5.js
- * for machine-learning-based face detection. Every image transformation is
- * performed manually through nested loops over pixel arrays, strictly avoiding
- * prohibited shortcuts such as filter(), scale(), and translate().
+ * This is a real-time image processing app built for the CM2030 Graphics
+ * Programming module. It uses p5.js for rendering and ml5.js for face
+ * detection. All image transformations are done manually through pixel-array
+ * loops — no filter(), scale(), or translate() shortcuts.
  *
  * APPLICATION WALKTHROUGH
  *
- * On launch the application opens the user's webcam via createCapture and
- * displays a six-row grid of 160 by 120 pixel cells. Row one shows the live
- * feed alongside a grayscale copy whose brightness has been reduced by twenty
- * percent. The grayscale conversion applies the standard luminosity formula
- * (0.299R plus 0.587G plus 0.114B) and the brightness reduction is computed
- * multiplicatively inside the same nested loop, ensuring no pixel is visited
- * twice. Row two isolates the red, green, and blue channels as independent
- * greyscale images. Row three applies per-channel binary thresholding
- * controlled by three dedicated sliders that update in real time. Row four
- * repeats the webcam image alongside the image converted to HSV and YCbCr
- * colour spaces using manually coded formulas. Row five displays the face
- * region detected by ml5 FaceMesh alongside thresholded V (HSV) and Y
- * (YCbCr) channels; pressing keys one, two, or three replaces the face
- * with a greyscale version, a horizontally flipped copy, or a pixelated
- * rendition respectively. Pressing S captures a snapshot that becomes the
- * processing source for all rows until a new one is taken.
+ * When the app starts it opens the webcam and shows a six-row grid of 160x120
+ * cells. The first row has the live feed next to a grayscale version with
+ * brightness reduced by 20%. Both the grayscale conversion (using the
+ * luminosity formula 0.299R + 0.587G + 0.114B) and the brightness reduction
+ * happen in the same loop, so each pixel is only visited once.
+ *
+ * Row two splits the image into its red, green, and blue channels. Row three
+ * applies binary thresholding to each channel, controlled by sliders that
+ * update in real time. Row four shows the original alongside HSV and YCbCr
+ * colour-space conversions, both computed with manual formulas.
+ *
+ * Row five handles face detection using ml5 FaceMesh. It shows the detected
+ * face region, and pressing 1, 2, or 3 swaps the face with a grayscale,
+ * flipped, or pixelated version. Pressing S takes a snapshot that replaces
+ * the live feed as the source for all processing rows.
  *
  * PROBLEMS AND SOLUTIONS
  *
- * A significant obstacle was pixel-density scaling on high-DPI displays. By
- * default p5.js doubles pixel-array dimensions on Retina screens, which
- * corrupted every manual loop. Setting pixelDensity to one in setup eliminated
- * the mismatch. Face detection required the ml5 version-one API, which exposes
- * a bounding box object directly rather than the legacy scaledMesh array.
+ * The trickiest issue early on was pixel-density scaling. On Retina screens
+ * p5.js doubles the pixel-array dimensions, which broke all my manual loops.
+ * Calling pixelDensity(1) in setup fixed it straight away.
+ *
+ * For face detection I needed the ml5 v1 API, which gives a bounding box
+ * object rather than the older scaledMesh array. Getting the face overlay to
+ * line up correctly meant clamping the bounding box to the source dimensions
+ * and scaling it to cell space.
+ *
  * Horizontal flipping reads each row from right to left in a nested loop,
- * avoiding the prohibited scale and translate calls. Pixelation converts the
- * face to greyscale, divides it into five-by-five blocks, averages each block
- * with a pixel-array traversal, and renders a filled circle at every block
- * centre via the p5 circle function with noStroke. The HSV conversion follows
- * the hexcone model; YCbCr uses ITU-R BT.601 coefficients.
+ * which avoids the prohibited scale and translate calls. Pixelation first
+ * converts the face to grayscale, splits it into 5x5 blocks, averages the
+ * intensity of each block, and draws a filled circle at the block centre.
+ * The HSV conversion uses the hexcone model and YCbCr follows the ITU-R
+ * BT.601 standard.
  *
  * PROJECT GOALS
  *
- * All functional requirements have been met. The codebase is modular, with
- * dedicated functions for each transformation and a clear separation between
- * processing logic and grid rendering. Shared helper functions for HSV and
- * YCbCr conversion eliminate duplicated computation.
+ * All the required features are working. The code is split into modules with
+ * separate files for math utilities, pixel processing, face handling, and UI
+ * rendering. Shared helpers for HSV and YCbCr avoid duplicated logic.
  *
  * EXTENSION — SOBEL EDGE DETECTION
  *
- * The extension applies real-time Sobel edge detection, displayed in row
- * six. Two three-by-three kernels convolve the greyscale source to produce
- * horizontal and vertical gradient estimates, which are combined as the square
- * root of the sum of their squares. The result highlights intensity
- * discontinuities, effectively outlining objects in the scene. This is
- * technically interesting because it demonstrates kernel convolution, a
- * foundational operation in computer vision used in feature extraction,
- * object recognition, and image segmentation pipelines.
+ * For the extension I added real-time Sobel edge detection in row six. It
+ * works by running two 3x3 kernels over the grayscale image to estimate
+ * horizontal and vertical gradients, then combining them as
+ * sqrt(Gx^2 + Gy^2). The output highlights edges — basically the outlines
+ * of objects in the scene. I chose this because kernel convolution is a core
+ * technique in computer vision, used in things like feature extraction and
+ * object recognition.
  *
  * ============================================================================
  */
