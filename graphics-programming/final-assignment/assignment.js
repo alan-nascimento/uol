@@ -12,7 +12,7 @@ const LABEL_HEIGHT = 18;
 const MARGIN = 20;
 
 const GRID_COLS = 3;
-const GRID_ROWS = 7;
+const GRID_ROWS = 6;
 
 const GRID_W = GRID_COLS * CELL_WIDTH + (GRID_COLS - 1) * PADDING;
 const GRID_H =
@@ -173,7 +173,7 @@ function draw() {
   }
 }
 
-/** Render the full seven-row grid of processed images. */
+/** Render the full six-row grid of processed images. */
 const renderGrid = (source) => {
   const tR = sliderR.value();
   const tG = sliderG.value();
@@ -210,24 +210,23 @@ const renderGrid = (source) => {
     `Thresh B=${tB}`
   );
 
-  // Row 3: HSV | YCbCr colour space visualisations
-  drawCell(convertToHSVImage(source), 3, 0, 'HSV');
-  drawCell(convertToYCbCrImage(source), 3, 1, 'YCbCr');
+  // Row 3: Webcam (repeat) | HSV | YCbCr
+  drawCell(source, 3, 0, 'Original (repeat)');
+  drawCell(convertToHSVImage(source), 3, 1, 'HSV');
+  drawCell(convertToYCbCrImage(source), 3, 2, 'YCbCr');
 
-  // Row 4: Threshold from V (HSV) | Y (YCbCr)
-  drawCell(applyThreshold(extractHSV_V(source), tV), 4, 0, `Thresh HSV V=${tV}`);
+  // Row 4: Face detection | Threshold HSV V | Threshold YCbCr Y
+  drawFaceCell(video);
+  drawCell(applyThreshold(extractHSV_V(source), tV), 4, 1, `Thresh HSV V=${tV}`);
   drawCell(
     applyThreshold(extractYCbCr_Y(source), tY),
     4,
-    1,
+    2,
     `Thresh YCbCr Y=${tY}`
   );
 
-  // Row 5: Face detection + face replacement
-  drawFaceCell(video);
-
-  // Row 6: Extension – Sobel edge detection
-  drawCell(applySobelEdgeDetection(source), 6, 0, 'Sobel Edges');
+  // Row 5: Extension – Sobel edge detection
+  drawCell(applySobelEdgeDetection(source), 5, 0, 'Sobel Edges');
 };
 
 // ============ LAYOUT ============
@@ -263,13 +262,13 @@ const drawCell = (img, row, col, label) => {
   }
 };
 
-/** Render the face detection cell at Row 5, Col 0. Resized to CELL_WIDTH x CELL_HEIGHT. */
+/** Render the face detection cell at Row 4, Col 0. Resized to CELL_WIDTH x CELL_HEIGHT. */
 const drawFaceCell = (source) => {
   const filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated'];
   const label = `Face — ${filterNames[faceFilter]}`;
 
   const x = START_X;
-  const y = START_Y + 5 * (CELL_HEIGHT + PADDING + LABEL_HEIGHT);
+  const y = START_Y + 4 * (CELL_HEIGHT + PADDING + LABEL_HEIGHT);
 
   // Label
   fill(210);
@@ -632,7 +631,7 @@ function keyPressed() {
  * APPLICATION WALKTHROUGH
  *
  * On launch the application opens the user's webcam via createCapture and
- * displays a seven-row grid of 160 by 120 pixel cells. Row one shows the live
+ * displays a six-row grid of 160 by 120 pixel cells. Row one shows the live
  * feed alongside a grayscale copy whose brightness has been reduced by twenty
  * percent. The grayscale conversion applies the standard luminosity formula
  * (0.299R plus 0.587G plus 0.114B) and the brightness reduction is computed
@@ -640,13 +639,13 @@ function keyPressed() {
  * twice. Row two isolates the red, green, and blue channels as independent
  * greyscale images. Row three applies per-channel binary thresholding
  * controlled by three dedicated sliders that update in real time. Row four
- * presents the image converted to HSV and YCbCr colour spaces using manually
- * coded formulas. Row five thresholds the V channel from HSV and the Y channel
- * from YCbCr, each governed by its own slider. Row six displays the face
- * region detected by ml5 FaceMesh; pressing keys one, two, or three replaces
- * that region with a greyscale version, a horizontally flipped copy, or a
- * pixelated rendition respectively. Pressing S captures a snapshot that
- * becomes the processing source for all rows until a new one is taken.
+ * repeats the webcam image alongside the image converted to HSV and YCbCr
+ * colour spaces using manually coded formulas. Row five displays the face
+ * region detected by ml5 FaceMesh alongside thresholded V (HSV) and Y
+ * (YCbCr) channels; pressing keys one, two, or three replaces the face
+ * with a greyscale version, a horizontally flipped copy, or a pixelated
+ * rendition respectively. Pressing S captures a snapshot that becomes the
+ * processing source for all rows until a new one is taken.
  *
  * PROBLEMS AND SOLUTIONS
  *
@@ -672,7 +671,7 @@ function keyPressed() {
  * EXTENSION — SOBEL EDGE DETECTION
  *
  * The extension applies real-time Sobel edge detection, displayed in row
- * seven. Two three-by-three kernels convolve the greyscale source to produce
+ * six. Two three-by-three kernels convolve the greyscale source to produce
  * horizontal and vertical gradient estimates, which are combined as the square
  * root of the sum of their squares. The result highlights intensity
  * discontinuities, effectively outlining objects in the scene. This is
