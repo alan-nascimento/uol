@@ -1,16 +1,11 @@
-/** Clamp a value to the range [lo, hi]. */
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-/** Clamp a value to [0, 255]. */
 const clamp255 = (v) => clamp(v, 0, 255);
 
 const SOBEL_X = [-1, 0, 1, -2, 0, 2, -1, 0, 1];
 const SOBEL_Y = [-1, -2, -1, 0, 0, 0, 1, 2, 1];
 
-/**
- * Compute HSV from RGB (0-255 inputs).
- * Returns {h: 0-360, s: 0-1, v: 0-1}.
- */
+/** RGB (0-255) to HSV. Returns { h: 0-360, s: 0-1, v: 0-1 }. */
 const computeHSV = (r, g, b) => {
   const rn = r / 255;
   const gn = g / 255;
@@ -33,10 +28,7 @@ const computeHSV = (r, g, b) => {
   return { h, s, v };
 };
 
-/**
- * Compute YCbCr from RGB (0-255 inputs) using ITU-R BT.601.
- * Returns {y: 16-235, cb: 16-240, cr: 16-240}.
- */
+/** RGB (0-255) to YCbCr using ITU-R BT.601. Returns { y, cb, cr }. */
 const computeYCbCr = (r, g, b) => {
   const y = 16 + (65.481 * r + 128.553 * g + 24.966 * b) / 255;
   const cb = 128 + (-37.797 * r - 74.203 * g + 112.0 * b) / 255;

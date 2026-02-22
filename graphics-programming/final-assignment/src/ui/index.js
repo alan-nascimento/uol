@@ -62,7 +62,6 @@ const GRID_CONFIG = [
   [{ label: 'Sobel Edges', fn: applySobelEdgeDetection }]
 ];
 
-/** Create a slider with a label inside a flex row. */
 const labelledSlider = (parent, label) => {
   const row = createDiv('');
   row.parent(parent);
@@ -83,7 +82,7 @@ const labelledSlider = (parent, label) => {
   return s;
 };
 
-/** Create five labelled sliders to the right of the grid using p5 DOM. */
+/** Build the threshold sliders and controls legend next to the grid. */
 const buildSliders = () => {
   const sx = CANVAS_W + 30;
   const sy = START_Y + 10;
@@ -137,13 +136,6 @@ const buildSliders = () => {
   return { R, G, B, V, Y };
 };
 
-/**
- * Draw a labelled image cell at a grid position.
- * @param {p5.Image|p5.MediaElement} img - image to draw
- * @param {number} row - grid row (0-based)
- * @param {number} col - grid column (0-based)
- * @param {string} label - text label displayed above the cell
- */
 const drawCell = (img, row, col, label) => {
   const x = START_X + col * (CELL_WIDTH + PADDING);
   const y = START_Y + row * (CELL_HEIGHT + PADDING + LABEL_HEIGHT);
@@ -165,11 +157,7 @@ const drawCell = (img, row, col, label) => {
   }
 };
 
-/**
- * Render the face detection cell.
- * Draws background image, delegates processing to FaceProcessor,
- * and draws the returned result.
- */
+/** Draw the face cell: full frame as background, then overlay the processed face. */
 const drawFaceCell = (source, row, col, ctx) => {
   const filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated'];
   const label = `Face — ${filterNames[ctx.faceFilter]}`;
@@ -194,6 +182,7 @@ const drawFaceCell = (source, row, col, ctx) => {
   const result = getProcessedFace(source, ctx.detectedFaces, ctx.faceFilter);
   if (!result) return;
 
+  // Scale bounding box from source space to cell space
   const scaleX = CELL_WIDTH / source.width;
   const scaleY = CELL_HEIGHT / source.height;
   const dx = x + result.x * scaleX;
@@ -205,7 +194,6 @@ const drawFaceCell = (source, row, col, ctx) => {
   image(result.img, dx, dy, dw, dh);
 };
 
-/** Render the full six-row grid of processed images. */
 const renderGrid = (source, ctx) => {
   GRID_CONFIG.forEach((row, rowIdx) => {
     row.forEach((cell, colIdx) => {

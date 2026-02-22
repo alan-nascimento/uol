@@ -1,7 +1,7 @@
 import { PIXELATE_BLOCK, FILTER_GRAY, FILTER_FLIP, FILTER_PIXEL } from '../config.js';
 import { toGrayscale } from '../processing/index.js';
 
-/** Extract a rectangular region from an image using nested loops. */
+/** Copy a rectangular region out of an image via pixel arrays. */
 const extractRegion = (img, sx, sy, sw, sh) => {
   const srcW = img.width;
   img.loadPixels();
@@ -21,10 +21,7 @@ const extractRegion = (img, sx, sy, sw, sh) => {
   return out;
 };
 
-/**
- * Horizontal flip using manual nested loops.
- * No scale() or translate() used.
- */
+/** Flip horizontally by reading each row right-to-left. No scale()/translate(). */
 const applyHorizontalFlip = (img) => {
   const { width: w, height: h } = img;
   img.loadPixels();
@@ -45,11 +42,8 @@ const applyHorizontalFlip = (img) => {
 };
 
 /**
- * Pixelation effect:
- * 1. Convert face to grayscale.
- * 2. Split into 5x5 blocks.
- * 3. Compute average intensity per block using pixel array.
- * 4. Draw a filled circle (noStroke) at the centre of each block.
+ * Pixelation: grayscale the face, split into 5x5 blocks,
+ * average each block's intensity, draw a circle at the centre.
  */
 const applyPixelation = (img) => {
   const { width: w, height: h } = img;
@@ -83,8 +77,8 @@ const applyPixelation = (img) => {
 };
 
 /**
- * Process a face region from the source image given detected faces and a filter.
- * Returns { img, x, y, w, h } or null if no face is detected.
+ * Get the processed face region, or null if no face found.
+ * Returns { img, x, y, w, h } so the caller knows where to draw it.
  */
 const getProcessedFace = (source, detectedFaces, filter) => {
   if (detectedFaces.length === 0) return null;
@@ -92,6 +86,7 @@ const getProcessedFace = (source, detectedFaces, filter) => {
   const { box: bbox } = detectedFaces[0];
   if (!bbox) return null;
 
+  // Clamp bounding box so it doesn't go outside the source image
   const bx = Math.max(0, Math.floor(bbox.xMin));
   const by = Math.max(0, Math.floor(bbox.yMin));
   const bw = Math.min(source.width - bx, Math.ceil(bbox.width));
