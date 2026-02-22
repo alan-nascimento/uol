@@ -7,8 +7,8 @@ import {
   FILTER_GRAY,
   FILTER_FLIP,
   FILTER_PIXEL
-} from '../config.js';
-import { buildSliders, renderGrid } from '../ui/index.js';
+} from './config.js';
+import { buildSliders, renderGrid } from './ui.js';
 
 const state = {
   video: null,

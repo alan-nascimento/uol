@@ -1,5 +1,5 @@
-import { clamp255, computeHSV, computeYCbCr, SOBEL_X, SOBEL_Y } from '../core/math.js';
-import { BRIGHTNESS_FACTOR } from '../config.js';
+import { clamp255, computeHSV, computeYCbCr, SOBEL_X, SOBEL_Y } from './math.js';
+import { BRIGHTNESS_FACTOR } from './config.js';
 
 /** Loop over every pixel, run fn(i, srcPixels, dstPixels), return a new image. */
 const processPixels = (img, fn) => {

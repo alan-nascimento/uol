@@ -6,7 +6,7 @@ import {
   START_X,
   START_Y,
   CANVAS_W
-} from '../config.js';
+} from './config.js';
 import {
   applyGrayscaleBrightness,
   extractChannel,
@@ -16,8 +16,8 @@ import {
   extractHSV_V,
   extractYCbCr_Y,
   applySobelEdgeDetection
-} from '../processing/index.js';
-import { getProcessedFace } from '../face/FaceProcessor.js';
+} from './processing.js';
+import { getProcessedFace } from './FaceProcessor.js';
 
 const GRID_CONFIG = [
   [

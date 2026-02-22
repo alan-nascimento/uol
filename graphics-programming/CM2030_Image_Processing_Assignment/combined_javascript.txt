@@ -1,0 +1,742 @@
+
+ -------------------- App.js ------------------------ 
+
+import {
+  CANVAS_W,
+  CANVAS_H,
+  CELL_WIDTH,
+  CELL_HEIGHT,
+  FILTER_NONE,
+  FILTER_GRAY,
+  FILTER_FLIP,
+  FILTER_PIXEL
+} from './config.js';
+import { buildSliders, renderGrid } from './ui.js';
+
+const state = {
+  video: null,
+  snapshot: null,
+  faceMeshModel: null,
+  detectedFaces: [],
+  faceFilter: FILTER_NONE,
+  sliders: {}
+};
+
+const init = async () => {
+  pixelDensity(1);
+  createCanvas(CANVAS_W, CANVAS_H);
+
+  state.video = createCapture(VIDEO);
+  state.video.size(CELL_WIDTH, CELL_HEIGHT);
+  state.video.hide();
+
+  state.faceMeshModel = await ml5.faceMesh({ maxFaces: 1, flipped: false });
+  state.faceMeshModel.detectStart(state.video, (results) => {
+    state.detectedFaces = results;
+  });
+
+  state.sliders = buildSliders();
+};
+
+const render = () => {
+  background(30);
+  if (!state.video) return;
+
+  if (!state.video.elt || state.video.elt.readyState < 2) {
+    fill(200);
+    textSize(14);
+    textAlign(CENTER, CENTER);
+    text('Waiting for camera...', CANVAS_W / 2, CANVAS_H / 2);
+    textAlign(LEFT, BASELINE);
+    return;
+  }
+
+  const source = state.snapshot ?? state.video;
+
+  try {
+    const ctx = {
+      video: state.video,
+      detectedFaces: state.detectedFaces,
+      faceFilter: state.faceFilter,
+      tR: state.sliders.R.value(),
+      tG: state.sliders.G.value(),
+      tB: state.sliders.B.value(),
+      tV: state.sliders.V.value(),
+      tY: state.sliders.Y.value()
+    };
+    renderGrid(source, ctx);
+  } catch (err) {
+    console.error('Draw error:', err);
+  }
+};
+
+const handleKeyPress = (k) => {
+  if (k === 'S' || k === 's') {
+    state.snapshot = createImage(CELL_WIDTH, CELL_HEIGHT);
+    state.snapshot.copy(
+      state.video,
+      0,
+      0,
+      state.video.width,
+      state.video.height,
+      0,
+      0,
+      CELL_WIDTH,
+      CELL_HEIGHT
+    );
+  }
+  if (k === '1') state.faceFilter = FILTER_GRAY;
+  if (k === '2') state.faceFilter = FILTER_FLIP;
+  if (k === '3') state.faceFilter = FILTER_PIXEL;
+  if (k === '0') {
+    state.faceFilter = FILTER_NONE;
+    state.snapshot = null;
+  }
+  return false;
+};
+
+export { init, render, handleKeyPress };
+
+ -------------------- config.js ------------------------ 
+
+const CELL_WIDTH = 160;
+const CELL_HEIGHT = 120;
+const PADDING = 20;
+const LABEL_HEIGHT = 18;
+const MARGIN = 20;
+
+const GRID_COLS = 3;
+const GRID_ROWS = 6;
+
+const GRID_W = GRID_COLS * CELL_WIDTH + (GRID_COLS - 1) * PADDING;
+const GRID_H = GRID_ROWS * (CELL_HEIGHT + LABEL_HEIGHT) + (GRID_ROWS - 1) * PADDING;
+
+const CANVAS_W = 2 * MARGIN + GRID_W;
+const CANVAS_H = 2 * MARGIN + GRID_H;
+
+const START_X = MARGIN;
+const START_Y = MARGIN;
+
+const PIXELATE_BLOCK = 5;
+const BRIGHTNESS_FACTOR = 0.8;
+
+const FILTER_NONE = 0;
+const FILTER_GRAY = 1;
+const FILTER_FLIP = 2;
+const FILTER_PIXEL = 3;
+
+export {
+  CELL_WIDTH,
+  CELL_HEIGHT,
+  PADDING,
+  LABEL_HEIGHT,
+  MARGIN,
+  GRID_COLS,
+  GRID_ROWS,
+  GRID_W,
+  GRID_H,
+  CANVAS_W,
+  CANVAS_H,
+  START_X,
+  START_Y,
+  PIXELATE_BLOCK,
+  BRIGHTNESS_FACTOR,
+  FILTER_NONE,
+  FILTER_GRAY,
+  FILTER_FLIP,
+  FILTER_PIXEL
+};
+
+ -------------------- FaceProcessor.js ------------------------ 
+
+import { PIXELATE_BLOCK, FILTER_GRAY, FILTER_FLIP, FILTER_PIXEL } from './config.js';
+import { toGrayscale } from './processing.js';
+
+/** Copy a rectangular region out of an image via pixel arrays. */
+const extractRegion = (img, sx, sy, sw, sh) => {
+  const srcW = img.width;
+  img.loadPixels();
+  const out = createImage(sw, sh);
+  out.loadPixels();
+  for (let py = 0; py < sh; py++) {
+    for (let px = 0; px < sw; px++) {
+      const srcI = ((sy + py) * srcW + (sx + px)) * 4;
+      const dstI = (py * sw + px) * 4;
+      out.pixels[dstI] = img.pixels[srcI];
+      out.pixels[dstI + 1] = img.pixels[srcI + 1];
+      out.pixels[dstI + 2] = img.pixels[srcI + 2];
+      out.pixels[dstI + 3] = 255;
+    }
+  }
+  out.updatePixels();
+  return out;
+};
+
+/** Flip horizontally by reading each row right-to-left. No scale()/translate(). */
+const applyHorizontalFlip = (img) => {
+  const { width: w, height: h } = img;
+  img.loadPixels();
+  const out = createImage(w, h);
+  out.loadPixels();
+  for (let py = 0; py < h; py++) {
+    for (let px = 0; px < w; px++) {
+      const srcI = (py * w + (w - 1 - px)) * 4;
+      const dstI = (py * w + px) * 4;
+      out.pixels[dstI] = img.pixels[srcI];
+      out.pixels[dstI + 1] = img.pixels[srcI + 1];
+      out.pixels[dstI + 2] = img.pixels[srcI + 2];
+      out.pixels[dstI + 3] = 255;
+    }
+  }
+  out.updatePixels();
+  return out;
+};
+
+/**
+ * Pixelation: grayscale the face, split into 5x5 blocks,
+ * average each block's intensity, draw a circle at the centre.
+ */
+const applyPixelation = (img) => {
+  const { width: w, height: h } = img;
+  const gray = toGrayscale(img);
+  gray.loadPixels();
+  const blk = PIXELATE_BLOCK;
+  const pg = createGraphics(w, h);
+  pg.pixelDensity(1);
+  pg.background(0);
+  pg.noStroke();
+
+  for (let by = 0; by < h; by += blk) {
+    for (let bx = 0; bx < w; bx += blk) {
+      let sum = 0;
+      let count = 0;
+      for (let dy = 0; dy < blk && by + dy < h; dy++) {
+        for (let dx = 0; dx < blk && bx + dx < w; dx++) {
+          sum += gray.pixels[((by + dy) * w + (bx + dx)) * 4];
+          count++;
+        }
+      }
+      const avg = count > 0 ? sum / count : 0;
+      pg.fill(avg);
+      pg.circle(bx + blk / 2, by + blk / 2, blk);
+    }
+  }
+
+  const result = pg.get();
+  pg.remove();
+  return result;
+};
+
+/**
+ * Get the processed face region, or null if no face found.
+ * Returns { img, x, y, w, h } so the caller knows where to draw it.
+ */
+const getProcessedFace = (source, detectedFaces, filter) => {
+  if (detectedFaces.length === 0) return null;
+
+  const { box: bbox } = detectedFaces[0];
+  if (!bbox) return null;
+
+  // Clamp bounding box so it doesn't go outside the source image
+  const bx = Math.max(0, Math.floor(bbox.xMin));
+  const by = Math.max(0, Math.floor(bbox.yMin));
+  const bw = Math.min(source.width - bx, Math.ceil(bbox.width));
+  const bh = Math.min(source.height - by, Math.ceil(bbox.height));
+  if (bw <= 0 || bh <= 0) return null;
+
+  let faceImg = extractRegion(source, bx, by, bw, bh);
+  if (!faceImg) return null;
+
+  if (filter === FILTER_GRAY) {
+    faceImg = toGrayscale(faceImg);
+  } else if (filter === FILTER_FLIP) {
+    faceImg = applyHorizontalFlip(faceImg);
+  } else if (filter === FILTER_PIXEL) {
+    faceImg = applyPixelation(faceImg);
+  }
+
+  return { img: faceImg, x: bx, y: by, w: bw, h: bh };
+};
+
+export { extractRegion, applyHorizontalFlip, applyPixelation, getProcessedFace };
+
+ -------------------- main.js ------------------------ 
+
+/**
+ * CM2030 – Graphics Programming – Image Processing Assignment
+ * Full implementation using p5.js (v2.2.1) and ml5.js only.
+ * All processing via pixel arrays; no filter(), scale(), or translate() shortcuts.
+ */
+
+/*
+ * ============================================================================
+ * COMMENTARY
+ * ============================================================================
+ *
+ * This is a real-time image processing app built for the CM2030 Graphics
+ * Programming module. It uses p5.js for rendering and ml5.js for face
+ * detection. All image transformations are done manually through pixel-array
+ * loops — no filter(), scale(), or translate() shortcuts.
+ *
+ * APPLICATION WALKTHROUGH
+ *
+ * When the app starts it opens the webcam and shows a six-row grid of 160x120
+ * cells. The first row has the live feed next to a grayscale version with
+ * brightness reduced by 20%. Both the grayscale conversion (using the
+ * luminosity formula 0.299R + 0.587G + 0.114B) and the brightness reduction
+ * happen in the same loop, so each pixel is only visited once.
+ *
+ * Row two splits the image into its red, green, and blue channels. Row three
+ * applies binary thresholding to each channel, controlled by sliders that
+ * update in real time. Row four shows the original alongside HSV and YCbCr
+ * colour-space conversions, both computed with manual formulas.
+ *
+ * Row five handles face detection using ml5 FaceMesh. It shows the detected
+ * face region, and pressing 1, 2, or 3 swaps the face with a grayscale,
+ * flipped, or pixelated version. Pressing S takes a snapshot that replaces
+ * the live feed as the source for all processing rows.
+ *
+ * PROBLEMS AND SOLUTIONS
+ *
+ * The trickiest issue early on was pixel-density scaling. On Retina screens
+ * p5.js doubles the pixel-array dimensions, which broke all my manual loops.
+ * Calling pixelDensity(1) in setup fixed it straight away.
+ *
+ * For face detection I needed the ml5 v1 API, which gives a bounding box
+ * object rather than the older scaledMesh array. Getting the face overlay to
+ * line up correctly meant clamping the bounding box to the source dimensions
+ * and scaling it to cell space.
+ *
+ * Horizontal flipping reads each row from right to left in a nested loop,
+ * which avoids the prohibited scale and translate calls. Pixelation first
+ * converts the face to grayscale, splits it into 5x5 blocks, averages the
+ * intensity of each block, and draws a filled circle at the block centre.
+ * The HSV conversion uses the hexcone model and YCbCr follows the ITU-R
+ * BT.601 standard.
+ *
+ * PROJECT GOALS
+ *
+ * All the required features are working. The code is split into modules with
+ * separate files for math utilities, pixel processing, face handling, and UI
+ * rendering. Shared helpers for HSV and YCbCr avoid duplicated logic.
+ *
+ * EXTENSION — SOBEL EDGE DETECTION
+ *
+ * For the extension I added real-time Sobel edge detection in row six. It
+ * works by running two 3x3 kernels over the grayscale image to estimate
+ * horizontal and vertical gradients, then combining them as
+ * sqrt(Gx^2 + Gy^2). The output highlights edges — basically the outlines
+ * of objects in the scene. I chose this because kernel convolution is a core
+ * technique in computer vision, used in things like feature extraction and
+ * object recognition.
+ *
+ * ============================================================================
+ */
+
+import { init, render, handleKeyPress } from './App.js';
+
+window.setup = async function () {
+  await init();
+};
+
+window.draw = function () {
+  render();
+};
+
+window.keyPressed = function () {
+  return handleKeyPress(key);
+};
+
+ -------------------- math.js ------------------------ 
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+const clamp255 = (v) => clamp(v, 0, 255);
+
+const SOBEL_X = [-1, 0, 1, -2, 0, 2, -1, 0, 1];
+const SOBEL_Y = [-1, -2, -1, 0, 0, 0, 1, 2, 1];
+
+/** RGB (0-255) to HSV. Returns { h: 0-360, s: 0-1, v: 0-1 }. */
+const computeHSV = (r, g, b) => {
+  const rn = r / 255;
+  const gn = g / 255;
+  const bn = b / 255;
+  const cMax = Math.max(rn, gn, bn);
+  const cMin = Math.min(rn, gn, bn);
+  const delta = cMax - cMin;
+  const s = cMax === 0 ? 0 : delta / cMax;
+  const v = cMax;
+
+  let h = 0;
+  if (delta !== 0) {
+    if (cMax === rn) h = ((gn - bn) / delta) % 6;
+    else if (cMax === gn) h = (bn - rn) / delta + 2;
+    else h = (rn - gn) / delta + 4;
+    if (h < 0) h += 6;
+    h *= 60;
+  }
+
+  return { h, s, v };
+};
+
+/** RGB (0-255) to YCbCr using ITU-R BT.601. Returns { y, cb, cr }. */
+const computeYCbCr = (r, g, b) => {
+  const y = 16 + (65.481 * r + 128.553 * g + 24.966 * b) / 255;
+  const cb = 128 + (-37.797 * r - 74.203 * g + 112.0 * b) / 255;
+  const cr = 128 + (112.0 * r - 93.786 * g - 18.214 * b) / 255;
+  return { y, cb, cr };
+};
+
+export { clamp, clamp255, computeHSV, computeYCbCr, SOBEL_X, SOBEL_Y };
+
+ -------------------- processing.js ------------------------ 
+
+import { clamp255, computeHSV, computeYCbCr, SOBEL_X, SOBEL_Y } from './math.js';
+import { BRIGHTNESS_FACTOR } from './config.js';
+
+/** Loop over every pixel, run fn(i, srcPixels, dstPixels), return a new image. */
+const processPixels = (img, fn) => {
+  const { width: w, height: h } = img;
+  img.loadPixels();
+  const out = createImage(w, h);
+  out.loadPixels();
+  for (let py = 0; py < h; py++) {
+    for (let px = 0; px < w; px++) {
+      const i = (py * w + px) * 4;
+      fn(i, img.pixels, out.pixels);
+    }
+  }
+  out.updatePixels();
+  return out;
+};
+
+const setGray = (pixels, i, v) => {
+  pixels[i] = v;
+  pixels[i + 1] = v;
+  pixels[i + 2] = v;
+  pixels[i + 3] = 255;
+};
+
+/** Grayscale only (no brightness change). Used by Sobel and face filters. */
+const toGrayscale = (img) =>
+  processPixels(img, (i, src, dst) => {
+    const gray = 0.299 * src[i] + 0.587 * src[i + 1] + 0.114 * src[i + 2];
+    setGray(dst, i, gray);
+  });
+
+/**
+ * Grayscale + 20% brightness reduction in the SAME loop.
+ * Assignment requires both operations in one pass.
+ */
+const applyGrayscaleBrightness = (img) =>
+  processPixels(img, (i, src, dst) => {
+    const gray = (0.299 * src[i] + 0.587 * src[i + 1] + 0.114 * src[i + 2]) * BRIGHTNESS_FACTOR;
+    setGray(dst, i, clamp255(gray));
+  });
+
+/** Extract one RGB channel as grayscale. ch: 0=R, 1=G, 2=B. */
+const extractChannel = (img, ch) =>
+  processPixels(img, (i, src, dst) => {
+    setGray(dst, i, src[i + ch]);
+  });
+
+/** Binary threshold: >= thresh becomes white, otherwise black. */
+const applyThreshold = (img, thresh) =>
+  processPixels(img, (i, src, dst) => {
+    setGray(dst, i, src[i] >= thresh ? 255 : 0);
+  });
+
+/** HSV visualisation: H->R, S->G, V->B (all scaled to 0-255). */
+const convertToHSVImage = (img) =>
+  processPixels(img, (i, src, dst) => {
+    const { h, s, v } = computeHSV(src[i], src[i + 1], src[i + 2]);
+    dst[i] = (h / 360) * 255;
+    dst[i + 1] = s * 255;
+    dst[i + 2] = v * 255;
+    dst[i + 3] = 255;
+  });
+
+/** YCbCr visualisation: Y->R, Cb->G, Cr->B. */
+const convertToYCbCrImage = (img) =>
+  processPixels(img, (i, src, dst) => {
+    const { y, cb, cr } = computeYCbCr(src[i], src[i + 1], src[i + 2]);
+    dst[i] = clamp255(y);
+    dst[i + 1] = clamp255(cb);
+    dst[i + 2] = clamp255(cr);
+    dst[i + 3] = 255;
+  });
+
+const extractHSV_V = (img) =>
+  processPixels(img, (i, src, dst) => {
+    const { v } = computeHSV(src[i], src[i + 1], src[i + 2]);
+    setGray(dst, i, clamp255(v * 255));
+  });
+
+const extractYCbCr_Y = (img) =>
+  processPixels(img, (i, src, dst) => {
+    const { y } = computeYCbCr(src[i], src[i + 1], src[i + 2]);
+    setGray(dst, i, clamp255(y));
+  });
+
+/**
+ * Sobel edge detection (extension).
+ * Convolves grayscale with Gx/Gy kernels, magnitude = sqrt(Gx^2 + Gy^2).
+ * Out-of-bounds pixels treated as 0 (zero-padding).
+ */
+const applySobelEdgeDetection = (img) => {
+  const { width: w, height: h } = img;
+  const gray = toGrayscale(img);
+  gray.loadPixels();
+  const out = createImage(w, h);
+  out.loadPixels();
+
+  for (let py = 0; py < h; py++) {
+    for (let px = 0; px < w; px++) {
+      let gx = 0;
+      let gy = 0;
+      for (let ky = -1; ky <= 1; ky++) {
+        for (let kx = -1; kx <= 1; kx++) {
+          const nx = px + kx;
+          const ny = py + ky;
+          const nv = nx >= 0 && nx < w && ny >= 0 && ny < h ? gray.pixels[(ny * w + nx) * 4] : 0;
+          const ki = (ky + 1) * 3 + (kx + 1);
+          gx += nv * SOBEL_X[ki];
+          gy += nv * SOBEL_Y[ki];
+        }
+      }
+      const mag = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+      const i = (py * w + px) * 4;
+      setGray(out.pixels, i, mag);
+    }
+  }
+
+  out.updatePixels();
+  return out;
+};
+
+export {
+  processPixels,
+  toGrayscale,
+  applyGrayscaleBrightness,
+  extractChannel,
+  applyThreshold,
+  convertToHSVImage,
+  convertToYCbCrImage,
+  extractHSV_V,
+  extractYCbCr_Y,
+  applySobelEdgeDetection
+};
+
+ -------------------- ui.js ------------------------ 
+
+import {
+  CELL_WIDTH,
+  CELL_HEIGHT,
+  PADDING,
+  LABEL_HEIGHT,
+  START_X,
+  START_Y,
+  CANVAS_W
+} from './config.js';
+import {
+  applyGrayscaleBrightness,
+  extractChannel,
+  applyThreshold,
+  convertToHSVImage,
+  convertToYCbCrImage,
+  extractHSV_V,
+  extractYCbCr_Y,
+  applySobelEdgeDetection
+} from './processing.js';
+import { getProcessedFace } from './FaceProcessor.js';
+
+const GRID_CONFIG = [
+  [
+    { label: 'Original', fn: (src) => src },
+    { label: 'Grayscale -20%', fn: applyGrayscaleBrightness }
+  ],
+  [
+    { label: 'Red Channel', fn: (src) => extractChannel(src, 0) },
+    { label: 'Green Channel', fn: (src) => extractChannel(src, 1) },
+    { label: 'Blue Channel', fn: (src) => extractChannel(src, 2) }
+  ],
+  [
+    {
+      label: (ctx) => `Thresh R=${ctx.tR}`,
+      fn: (src, ctx) => applyThreshold(extractChannel(src, 0), ctx.tR)
+    },
+    {
+      label: (ctx) => `Thresh G=${ctx.tG}`,
+      fn: (src, ctx) => applyThreshold(extractChannel(src, 1), ctx.tG)
+    },
+    {
+      label: (ctx) => `Thresh B=${ctx.tB}`,
+      fn: (src, ctx) => applyThreshold(extractChannel(src, 2), ctx.tB)
+    }
+  ],
+  [
+    { label: 'Original (repeat)', fn: (src) => src },
+    { label: 'HSV', fn: convertToHSVImage },
+    { label: 'YCbCr', fn: convertToYCbCrImage }
+  ],
+  [
+    { type: 'face' },
+    {
+      label: (ctx) => `Thresh HSV V=${ctx.tV}`,
+      fn: (src, ctx) => applyThreshold(extractHSV_V(src), ctx.tV)
+    },
+    {
+      label: (ctx) => `Thresh YCbCr Y=${ctx.tY}`,
+      fn: (src, ctx) => applyThreshold(extractYCbCr_Y(src), ctx.tY)
+    }
+  ],
+  [{ label: 'Sobel Edges', fn: applySobelEdgeDetection }]
+];
+
+const labelledSlider = (parent, label) => {
+  const row = createDiv('');
+  row.parent(parent);
+  row.style('display', 'flex');
+  row.style('align-items', 'center');
+  row.style('gap', '8px');
+  row.style('margin', '4px 0');
+
+  const span = createSpan(label);
+  span.parent(row);
+  span.style('min-width', '55px');
+  span.style('text-align', 'right');
+
+  const s = createSlider(0, 255, 128);
+  s.parent(row);
+  s.style('width', '120px');
+
+  return s;
+};
+
+/** Build the threshold sliders and controls legend next to the grid. */
+const buildSliders = () => {
+  const sx = CANVAS_W + 30;
+  const sy = START_Y + 10;
+
+  const container = createDiv('');
+  container.position(sx, sy);
+  container.style('color', '#ccc');
+  container.style('font-family', 'Arial, sans-serif');
+  container.style('font-size', '11px');
+  container.style('line-height', '1.6');
+
+  const title1 = createDiv('RGB Thresholds');
+  title1.parent(container);
+  title1.style('color', '#fff');
+  title1.style('font-weight', 'bold');
+  title1.style('margin-bottom', '6px');
+
+  const R = labelledSlider(container, 'Red');
+  const G = labelledSlider(container, 'Green');
+  const B = labelledSlider(container, 'Blue');
+
+  const spacer1 = createDiv('');
+  spacer1.parent(container);
+  spacer1.style('height', '16px');
+
+  const title2 = createDiv('Colour Space Thresholds');
+  title2.parent(container);
+  title2.style('color', '#fff');
+  title2.style('font-weight', 'bold');
+  title2.style('margin-bottom', '6px');
+
+  const V = labelledSlider(container, 'HSV V');
+  const Y = labelledSlider(container, 'YCbCr Y');
+
+  const spacer2 = createDiv('');
+  spacer2.parent(container);
+  spacer2.style('height', '16px');
+
+  const legend = createDiv(
+    `<strong style="color:#fff">Controls</strong><br>
+     S — Take snapshot<br>
+     1 — Grayscale face<br>
+     2 — Flip face<br>
+     3 — Pixelate face<br>
+     0 — Reset to live`
+  );
+  legend.parent(container);
+  legend.style('margin-top', '4px');
+  legend.style('line-height', '1.8');
+
+  return { R, G, B, V, Y };
+};
+
+const drawCell = (img, row, col, label) => {
+  const x = START_X + col * (CELL_WIDTH + PADDING);
+  const y = START_Y + row * (CELL_HEIGHT + PADDING + LABEL_HEIGHT);
+
+  fill(210);
+  noStroke();
+  textSize(10);
+  textAlign(LEFT, BOTTOM);
+  text(label, x, y + LABEL_HEIGHT - 2);
+
+  stroke(55);
+  strokeWeight(1);
+  noFill();
+  rect(x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+
+  if (img) {
+    noStroke();
+    image(img, x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+  }
+};
+
+/** Draw the face cell: full frame as background, then overlay the processed face. */
+const drawFaceCell = (source, row, col, ctx) => {
+  const filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated'];
+  const label = `Face — ${filterNames[ctx.faceFilter]}`;
+
+  const x = START_X + col * (CELL_WIDTH + PADDING);
+  const y = START_Y + row * (CELL_HEIGHT + PADDING + LABEL_HEIGHT);
+
+  fill(210);
+  noStroke();
+  textSize(10);
+  textAlign(LEFT, BOTTOM);
+  text(label, x, y + LABEL_HEIGHT - 2);
+
+  stroke(55);
+  strokeWeight(1);
+  noFill();
+  rect(x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+
+  noStroke();
+  image(source, x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+
+  const result = getProcessedFace(source, ctx.detectedFaces, ctx.faceFilter);
+  if (!result) return;
+
+  // Scale bounding box from source space to cell space
+  const scaleX = CELL_WIDTH / source.width;
+  const scaleY = CELL_HEIGHT / source.height;
+  const dx = x + result.x * scaleX;
+  const dy = y + LABEL_HEIGHT + result.y * scaleY;
+  const dw = result.w * scaleX;
+  const dh = result.h * scaleY;
+
+  noStroke();
+  image(result.img, dx, dy, dw, dh);
+};
+
+const renderGrid = (source, ctx) => {
+  GRID_CONFIG.forEach((row, rowIdx) => {
+    row.forEach((cell, colIdx) => {
+      if (cell.type === 'face') {
+        drawFaceCell(ctx.video, rowIdx, colIdx, ctx);
+      } else {
+        const label = typeof cell.label === 'function' ? cell.label(ctx) : cell.label;
+        const img = cell.fn(source, ctx);
+        drawCell(img, rowIdx, colIdx, label);
+      }
+    });
+  });
+};
+
+export { GRID_CONFIG, buildSliders, labelledSlider, drawCell, renderGrid };

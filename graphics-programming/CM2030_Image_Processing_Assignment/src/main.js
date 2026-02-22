@@ -69,7 +69,7 @@
  * ============================================================================
  */
 
-import { init, render, handleKeyPress } from './app/App.js';
+import { init, render, handleKeyPress } from './App.js';
 
 window.setup = async function () {
   await init();

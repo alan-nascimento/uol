@@ -1,5 +1,5 @@
-import { PIXELATE_BLOCK, FILTER_GRAY, FILTER_FLIP, FILTER_PIXEL } from '../config.js';
-import { toGrayscale } from '../processing/index.js';
+import { PIXELATE_BLOCK, FILTER_GRAY, FILTER_FLIP, FILTER_PIXEL } from './config.js';
+import { toGrayscale } from './processing.js';
 
 /** Copy a rectangular region out of an image via pixel arrays. */
 const extractRegion = (img, sx, sy, sw, sh) => {
