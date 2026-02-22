@@ -121,7 +121,8 @@ function buildSliders() {
      S — Take snapshot<br>
      1 — Grayscale face<br>
      2 — Flip face<br>
-     3 — Pixelate face`
+     3 — Pixelate face<br>
+     0 — Reset to live`
   );
   legend.parent(container);
   legend.style('margin-top', '4px');
@@ -262,7 +263,10 @@ const drawCell = (img, row, col, label) => {
   }
 };
 
-/** Render the face detection cell at Row 4, Col 0. Resized to CELL_WIDTH x CELL_HEIGHT. */
+/**
+ * Render the face detection cell at Row 4, Col 0.
+ * Shows the full webcam frame with the face region replaced by the active filter.
+ */
 const drawFaceCell = (source) => {
   const filterNames = ['Original', 'Grayscale', 'Flipped', 'Pixelated'];
   const label = `Face — ${filterNames[faceFilter]}`;
@@ -283,34 +287,24 @@ const drawFaceCell = (source) => {
   noFill();
   rect(x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
 
-  if (detectedFaces.length === 0) {
-    fill(50);
-    noStroke();
-    rect(x + 1, y + LABEL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
-    fill(140);
-    textSize(10);
-    textAlign(CENTER, CENTER);
-    text(
-      'No face detected',
-      x + CELL_WIDTH / 2,
-      y + LABEL_HEIGHT + CELL_HEIGHT / 2
-    );
-    textAlign(LEFT, BASELINE);
-    return;
-  }
+  // Draw the full webcam frame as background
+  noStroke();
+  image(source, x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+
+  if (detectedFaces.length === 0) return;
 
   const { box: bbox } = detectedFaces[0];
   if (!bbox) return;
 
-  // Clamp bounding box to image bounds
-  const sx = Math.max(0, Math.floor(bbox.xMin));
-  const sy = Math.max(0, Math.floor(bbox.yMin));
-  const sw = Math.min(source.width - sx, Math.ceil(bbox.width));
-  const sh = Math.min(source.height - sy, Math.ceil(bbox.height));
-  if (sw <= 0 || sh <= 0) return;
+  // Clamp bounding box to source image bounds
+  const bx = Math.max(0, Math.floor(bbox.xMin));
+  const by = Math.max(0, Math.floor(bbox.yMin));
+  const bw = Math.min(source.width - bx, Math.ceil(bbox.width));
+  const bh = Math.min(source.height - by, Math.ceil(bbox.height));
+  if (bw <= 0 || bh <= 0) return;
 
   // Extract face region manually using pixel arrays
-  let faceImg = extractRegion(source, sx, sy, sw, sh);
+  let faceImg = extractRegion(source, bx, by, bw, bh);
   if (!faceImg) return;
 
   // Apply selected face filter
@@ -322,9 +316,17 @@ const drawFaceCell = (source) => {
     faceImg = applyPixelation(faceImg);
   }
 
-  // Draw resized to match grid cell dimensions
+  // Scale bounding box coordinates from source space to cell space
+  const scaleX = CELL_WIDTH / source.width;
+  const scaleY = CELL_HEIGHT / source.height;
+  const dx = x + bx * scaleX;
+  const dy = y + LABEL_HEIGHT + by * scaleY;
+  const dw = bw * scaleX;
+  const dh = bh * scaleY;
+
+  // Overlay the filtered face on top of the full frame
   noStroke();
-  image(faceImg, x, y + LABEL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+  image(faceImg, dx, dy, dw, dh);
 };
 
 // ============ PIXEL PROCESSING ============
@@ -614,6 +616,10 @@ function keyPressed() {
   if (key === '1') faceFilter = FILTER_GRAY;
   if (key === '2') faceFilter = FILTER_FLIP;
   if (key === '3') faceFilter = FILTER_PIXEL;
+  if (key === '0') {
+    faceFilter = FILTER_NONE;
+    snapshot = null;
+  }
   return false;
 }
 
