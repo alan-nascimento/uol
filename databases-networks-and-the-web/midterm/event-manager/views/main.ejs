@@ -1,0 +1,19 @@
+<%- include('partials/head', { title: 'Home - ' + site.site_name }) %>
+
+<section class="hero">
+    <h1><%= site.site_name %></h1>
+    <p class="lead"><%= site.site_description %></p>
+</section>
+
+<section class="choice-cards">
+    <a class="card choice-card" href="/organiser">
+        <h2>Organiser</h2>
+        <p>Create, edit and publish events, and track your ticket sales.</p>
+    </a>
+    <a class="card choice-card" href="/attendee">
+        <h2>Attendee</h2>
+        <p>Browse upcoming events and book your tickets.</p>
+    </a>
+</section>
+
+<%- include('partials/footer') %>

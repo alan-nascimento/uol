@@ -1,62 +1,65 @@
-##  Coursework Template ##
-### CM2040 Database Networks and the Web ###
+# Event Manager
 
-#### Installation requirements ####
+A deployable event manager built with Express.js, SQLite and EJS. It has two
+distinct areas: an **Organiser** area for creating, editing, publishing and
+deleting events, and an **Attendee** area for browsing published events and
+booking tickets.
 
-* NodeJS 
-    - follow the install instructions at https://nodejs.org/en/
-    - we recommend using the latest LTS version
-* Sqlite3 
-    - follow the instructions at https://www.tutorialspoint.com/sqlite/sqlite_installation.htm 
-    - Note that the latest versions of the Mac OS and Linux come with SQLite pre-installed
+## Requirements
 
-#### Using this template ####
+- Node.js >= 16 (developed on Node 24)
+- npm >= 8
+- SQLite 3
 
-This template sets you off in the right direction for your coursework. To get started:
+## Setup
 
-* Run ```npm install``` from the project directory to install all the node packages.
+From the project directory:
 
-* Run ```npm run build-db``` to create the database on Mac or Linux 
-or run ```npm run build-db-win``` to create the database on Windows
+```
+npm install
+npm run build-db      # on Windows: npm run build-db-win
+npm run start
+```
 
-* Run ```npm run start``` to start serving the web app (Access via http://localhost:3000)
+Then open http://localhost:3000
 
-Test the app by browsing to the following routes:
+- Main home page: http://localhost:3000/
+- Organiser area: http://localhost:3000/organiser
+- Attendee area: http://localhost:3000/attendee
 
-* http://localhost:3000
-* http://localhost:3000/users/list-users
-* http://localhost:3000/users/add-user
+To rebuild the database from scratch:
 
-You can also run: 
-```npm run clean-db``` to delete the database on Mac or Linux before rebuilding it for a fresh start
-```npm run clean-db-win``` to delete the database on Windows before rebuilding it for a fresh start
+```
+npm run clean-db      # on Windows: npm run clean-db-win
+npm run build-db
+```
 
-Please also read the document ```Working with this Template.pdf``` for further guidance.
+## Organiser login (extension feature)
 
-##### Creating database tables #####
+The organiser area is protected by authentication. A default account is created
+by the database build script:
 
-* All database tables should created by modifying the db_schema.sql 
-* This allows us to review and recreate your database simply by running ```npm run build-db```
-* Do NOT create or alter database tables through other means
+- **Username:** `organiser`
+- **Password:** `password123`
 
+## Additional libraries
 
-#### Preparing for submission ####
+- **express-session** — keeps the organiser logged in across requests (used by the authentication extension).
+- **bcryptjs** — hashes and verifies the organiser password. Pure JavaScript, so it installs without native build tools.
+- **express-validator** — server-side validation middleware for the forms.
+- **date-fns** — formats stored ISO datetimes into readable text.
+- **prettier** (dev only) — code formatting; not required to run the app.
 
-Make a copy of your project folder.
-In your copy, delete the following files and folders:
-* node_modules
-* .git (the hidden folder with your git repository)
-* database.db (your database)
+## Project structure
 
-Make sure that your ``package.json`` file includes all of the dependencies for your project. NB. you need to use the ```--save``` tag each time you use npm to install a dependency
-
-Edit this README.md to explain any specific instructions for setting up or using your application that you want to bring to our attention:
-
-* remove the existing contents that we have provided
-* include any settings that should be adjusted in configuration files
-* include a list of the additional libraries you are using
-* anything else we need to know in order to successfully run your app
-
-
-NB. we will ONLY run ```npm install```, ```npm run build-db```, and ```npm run start``` . We will NOT install additional packages to run your code and will NOT run additional build scripts. Be careful with any additional node dependencies that you use.
-
+```
+index.js              App entry point: Express, sessions, DB, routes
+helpers.js            View helpers (date and price formatting)
+db_schema.sql         Database schema and seed data
+routes/
+  auth.js             Organiser login/logout + requireAuth middleware (extension)
+  organiser.js        Organiser pages + sales dashboard (extension)
+  attendee.js         Attendee pages + booking
+views/                EJS templates (with shared partials/)
+public/main.css       Styles
+```

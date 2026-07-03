@@ -1,0 +1,88 @@
+<%- include('partials/head', { title: 'Organiser Home - ' + site.site_name }) %>
+
+<section class="page-header">
+    <h1>Organiser Home Page</h1>
+    <p class="lead"><strong><%= site.site_name %></strong> — <%= site.site_description %></p>
+    <div class="header-actions">
+        <a class="button" href="/organiser/settings">Site Settings</a>
+        <a class="button" href="/organiser/dashboard">Sales Dashboard</a>
+        <form action="/organiser/events" method="post" class="inline-form">
+            <button type="submit" class="button button-primary">Create New Event</button>
+        </form>
+    </div>
+</section>
+
+<%
+// Reusable markup for the ticket summary of an event
+function ticketSummary(event) {
+    return event.ticketTypes
+        .map(function (t) {
+            return t.name + ': ' + t.quantity + ' @ ' + '£' + Number(t.price).toFixed(2);
+        })
+        .join(' | ');
+}
+%>
+
+<section>
+    <h2>Published Events</h2>
+    <% if (publishedEvents.length === 0) { %>
+        <p class="muted">No published events yet.</p>
+    <% } else { %>
+        <ul class="event-list">
+            <% publishedEvents.forEach(function (event) { %>
+                <li class="card event-card">
+                    <h3><%= event.title %></h3>
+                    <dl class="event-meta">
+                        <dt>Event date</dt><dd><%= formatEventDate(event.event_date) %></dd>
+                        <dt>Created</dt><dd><%= formatDateTime(event.created_at) %></dd>
+                        <dt>Published</dt><dd><%= formatDateTime(event.published_at) %></dd>
+                        <dt>Tickets</dt><dd><%= ticketSummary(event) %></dd>
+                    </dl>
+                    <p class="share">
+                        Sharing link:
+                        <a href="/attendee/event/<%= event.event_id %>">
+                            http://localhost:3000/attendee/event/<%= event.event_id %>
+                        </a>
+                    </p>
+                    <div class="card-actions">
+                        <form action="/organiser/event/<%= event.event_id %>/delete" method="post" class="inline-form">
+                            <button type="submit" class="button button-danger">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    <% } %>
+</section>
+
+<section>
+    <h2>Draft Events</h2>
+    <% if (draftEvents.length === 0) { %>
+        <p class="muted">No draft events.</p>
+    <% } else { %>
+        <ul class="event-list">
+            <% draftEvents.forEach(function (event) { %>
+                <li class="card event-card">
+                    <h3><%= event.title %></h3>
+                    <dl class="event-meta">
+                        <dt>Event date</dt><dd><%= formatEventDate(event.event_date) %></dd>
+                        <dt>Created</dt><dd><%= formatDateTime(event.created_at) %></dd>
+                        <dt>Published</dt><dd>Not published</dd>
+                        <dt>Tickets</dt><dd><%= ticketSummary(event) %></dd>
+                    </dl>
+                    <div class="card-actions">
+                        <a class="button" href="/organiser/event/<%= event.event_id %>/edit">Edit</a>
+                        <form action="/organiser/event/<%= event.event_id %>/publish" method="post" class="inline-form">
+                            <button type="submit" class="button button-primary">Publish</button>
+                        </form>
+                        <form action="/organiser/event/<%= event.event_id %>/delete" method="post" class="inline-form">
+                            <button type="submit" class="button button-danger">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    <% } %>
+</section>
+
+<%- include('partials/footer') %>

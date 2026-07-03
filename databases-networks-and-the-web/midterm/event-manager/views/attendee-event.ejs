@@ -1,0 +1,57 @@
+<%- include('partials/head', { title: event.title }) %>
+
+<section class="page-header">
+    <h1>Attendee Event Page</h1>
+</section>
+
+<% if (message) { %>
+    <div class="alert alert-success"><%= message %></div>
+<% } %>
+<% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<article class="card">
+    <h2><%= event.title %></h2>
+    <p class="muted"><%= formatEventDate(event.event_date) %></p>
+    <p><%= event.description %></p>
+
+    <form action="/attendee/event/<%= event.event_id %>/book" method="post" class="form">
+        <h3>Book tickets</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Ticket type</th>
+                    <th>Price</th>
+                    <th>Available</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% ticketTypes.forEach(function (t) { %>
+                    <tr>
+                        <td><%= t.name %></td>
+                        <td><%= formatPrice(t.price) %></td>
+                        <td><%= t.available %></td>
+                        <td>
+                            <input type="number" name="qty_<%= t.ticket_type_id %>"
+                                min="0" max="<%= t.available %>" value="0"
+                                <%= t.available <= 0 ? 'disabled' : '' %> />
+                            <% if (t.available <= 0) { %><span class="muted">Sold out</span><% } %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <label for="attendee_name">Your name</label>
+        <input id="attendee_name" type="text" name="attendee_name" required />
+
+        <div class="card-actions">
+            <button type="submit" class="button button-primary">Book</button>
+            <a class="button" href="/attendee">Back</a>
+        </div>
+    </form>
+</article>
+
+<%- include('partials/footer') %>

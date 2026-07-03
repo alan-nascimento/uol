@@ -1,0 +1,59 @@
+<%- include('partials/head', { title: 'Edit Event' }) %>
+
+<%
+// datetime-local inputs expect 'YYYY-MM-DDTHH:MM'; convert from the stored value
+var dateValue = event.event_date ? String(event.event_date).replace(' ', 'T') : '';
+%>
+
+<section class="page-header">
+    <h1>Organiser Edit Event Page</h1>
+    <p class="muted">Created: <%= formatDateTime(event.created_at) %></p>
+</section>
+
+<% if (errors && errors.length > 0) { %>
+    <div class="alert alert-error">
+        <ul>
+            <% errors.forEach(function (e) { %><li><%= e.msg %></li><% }); %>
+        </ul>
+    </div>
+<% } %>
+
+<form action="/organiser/event/<%= event.event_id %>/edit" method="post" class="form card">
+    <label for="title">Event title</label>
+    <input id="title" type="text" name="title" value="<%= event.title %>" required />
+
+    <label for="description">Event description</label>
+    <textarea id="description" name="description" rows="4"><%= event.description %></textarea>
+
+    <label for="event_date">Event date and time</label>
+    <input id="event_date" type="datetime-local" name="event_date" value="<%= dateValue %>" />
+
+    <fieldset class="ticket-fieldset">
+        <legend>Full-price tickets</legend>
+        <input type="hidden" name="full_ticket_type_id" value="<%= fullTicket.ticket_type_id %>" />
+        <label for="full_quantity">Number available</label>
+        <input id="full_quantity" type="number" name="full_quantity" min="0"
+            value="<%= fullTicket.quantity !== undefined ? fullTicket.quantity : 0 %>" required />
+        <label for="full_price">Price (£)</label>
+        <input id="full_price" type="number" name="full_price" min="0" step="0.01"
+            value="<%= fullTicket.price !== undefined ? fullTicket.price : 0 %>" required />
+    </fieldset>
+
+    <fieldset class="ticket-fieldset">
+        <legend>Concession-price tickets</legend>
+        <input type="hidden" name="concession_ticket_type_id" value="<%= concessionTicket.ticket_type_id %>" />
+        <label for="concession_quantity">Number available</label>
+        <input id="concession_quantity" type="number" name="concession_quantity" min="0"
+            value="<%= concessionTicket.quantity !== undefined ? concessionTicket.quantity : 0 %>" required />
+        <label for="concession_price">Price (£)</label>
+        <input id="concession_price" type="number" name="concession_price" min="0" step="0.01"
+            value="<%= concessionTicket.price !== undefined ? concessionTicket.price : 0 %>" required />
+    </fieldset>
+
+    <div class="card-actions">
+        <button type="submit" class="button button-primary">Submit changes</button>
+        <a class="button" href="/organiser">Back</a>
+    </div>
+</form>
+
+<%- include('partials/footer') %>

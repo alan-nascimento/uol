@@ -1,0 +1,13 @@
+<nav class="navbar">
+    <a class="navbar-brand" href="/"><%= site.site_name %></a>
+    <div class="navbar-links">
+        <% if (isAuthenticated) { %>
+            <a href="/organiser">Organiser</a>
+            <a href="/organiser/dashboard">Dashboard</a>
+            <a href="/organiser/settings">Settings</a>
+            <form action="/organiser/logout" method="post" class="inline-form">
+                <button type="submit" class="link-button">Log out</button>
+            </form>
+        <% } %>
+    </div>
+</nav>

@@ -1,0 +1,108 @@
+<%- include('partials/head', { title: 'Sales Dashboard' }) %>
+
+<section class="page-header">
+    <h1>Sales Dashboard</h1>
+    <p class="lead">An overview of your ticket sales and remaining capacity.</p>
+    <a class="button" href="/organiser">Back to Organiser Home</a>
+</section>
+
+<section class="stat-grid">
+    <div class="card stat">
+        <span class="stat-value"><%= totals.published_events %></span>
+        <span class="stat-label">Published events</span>
+    </div>
+    <div class="card stat">
+        <span class="stat-value"><%= totals.total_bookings %></span>
+        <span class="stat-label">Bookings</span>
+    </div>
+    <div class="card stat">
+        <span class="stat-value"><%= totals.tickets_sold %></span>
+        <span class="stat-label">Tickets sold</span>
+    </div>
+    <div class="card stat">
+        <span class="stat-value"><%= formatPrice(totals.total_revenue) %></span>
+        <span class="stat-label">Total revenue</span>
+    </div>
+</section>
+
+<section>
+    <h2>Sales by event</h2>
+    <% if (eventStats.length === 0) { %>
+        <p class="muted">No events yet.</p>
+    <% } else { %>
+        <% eventStats.forEach(function (event) { %>
+            <div class="card">
+                <h3><%= event.title %>
+                    <span class="badge badge-<%= event.state %>"><%= event.state %></span>
+                </h3>
+                <p class="muted"><%= formatEventDate(event.event_date) %></p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ticket type</th>
+                            <th>Price</th>
+                            <th>Sold</th>
+                            <th>Capacity</th>
+                            <th>Remaining</th>
+                            <th>Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% event.tickets.forEach(function (t) { %>
+                            <tr>
+                                <td><%= t.ticket_name %></td>
+                                <td><%= formatPrice(t.price) %></td>
+                                <td><%= t.sold %></td>
+                                <td><%= t.capacity %></td>
+                                <td><%= t.remaining %></td>
+                                <td><%= formatPrice(t.revenue) %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total</th>
+                            <td></td>
+                            <td><%= event.sold %></td>
+                            <td><%= event.capacity %></td>
+                            <td><%= event.capacity - event.sold %></td>
+                            <td><%= formatPrice(event.revenue) %></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        <% }); %>
+    <% } %>
+</section>
+
+<section>
+    <h2>Recent bookings</h2>
+    <% if (recentBookings.length === 0) { %>
+        <p class="muted">No bookings yet.</p>
+    <% } else { %>
+        <table class="table card">
+            <thead>
+                <tr>
+                    <th>Attendee</th>
+                    <th>Event</th>
+                    <th>Tickets</th>
+                    <th>Value</th>
+                    <th>When</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% recentBookings.forEach(function (b) { %>
+                    <tr>
+                        <td><%= b.attendee_name %></td>
+                        <td><%= b.event_title %></td>
+                        <td><%= b.tickets %></td>
+                        <td><%= formatPrice(b.value) %></td>
+                        <td><%= formatDateTime(b.created_at) %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } %>
+</section>
+
+<%- include('partials/footer') %>
