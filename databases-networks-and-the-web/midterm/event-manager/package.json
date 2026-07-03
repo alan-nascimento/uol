@@ -1,32 +1,32 @@
 {
-    "name": "event_manager",
-    "version": "1.0.0",
-    "description": "A deployable event manager for organising and booking events",
-    "main": "index.js",
-    "scripts": {
-        "build-db": "cat db_schema.sql | sqlite3 database.db #build a new database from the sql file",
-        "clean-db": "rm database.db #remove the old database",
-        "build-db-win": "sqlite3 database.db < db_schema.sql",
-        "clean-db-win": "del database.db",
-        "start": "node index.js",
-        "format": "prettier --write ."
-    },
-    "author": "Alan Nascimento",
-    "license": "ISC",
-    "dependencies": {
-        "bcryptjs": "^2.4.3",
-        "date-fns": "^3.6.0",
-        "ejs": "^3.1.8",
-        "express": "^4.18.2",
-        "express-session": "^1.18.0",
-        "express-validator": "^7.1.0",
-        "sqlite3": "^6.0.1"
-    },
-    "devDependencies": {
-        "prettier": "^3.3.3"
-    },
-    "engines": {
-        "npm": ">=8.0.0",
-        "node": ">=16.0.0"
-    }
+  "name": "event_manager",
+  "version": "1.0.0",
+  "description": "A deployable event manager for organising and booking events",
+  "main": "index.js",
+  "scripts": {
+    "build-db": "cat db_schema.sql | sqlite3 database.db #build a new database from the sql file",
+    "clean-db": "rm database.db #remove the old database",
+    "build-db-win": "sqlite3 database.db < db_schema.sql",
+    "clean-db-win": "del database.db",
+    "start": "node index.js",
+    "format": "prettier --write ."
+  },
+  "author": "Alan Nascimento",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "date-fns": "^3.6.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.1.0",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=16.0.0"
+  }
 }

@@ -19,11 +19,11 @@ const router = express.Router();
  * Outputs: calls next() when authenticated, otherwise redirects to the login page.
  */
 function requireAuth(req, res, next) {
-    if (req.session && req.session.organiserId) {
-        next();
-    } else {
-        res.redirect('/organiser/login');
-    }
+  if (req.session && req.session.organiserId) {
+    next();
+  } else {
+    res.redirect('/organiser/login');
+  }
 }
 
 /**
@@ -32,11 +32,11 @@ function requireAuth(req, res, next) {
  * @output Renders the login page (with no error initially).
  */
 router.get('/login', function (req, res) {
-    // Already logged in? Skip the form.
-    if (req.session && req.session.organiserId) {
-        return res.redirect('/organiser');
-    }
-    res.render('login', { error: null, username: '' });
+  // Already logged in? Skip the form.
+  if (req.session && req.session.organiserId) {
+    return res.redirect('/organiser');
+  }
+  res.render('login', { error: null, username: '' });
 });
 
 /**
@@ -47,40 +47,40 @@ router.get('/login', function (req, res) {
  *         On failure: re-renders the login form with an error message.
  */
 router.post(
-    '/login',
-    [
-        body('username').trim().notEmpty().withMessage('Username is required'),
-        body('password').notEmpty().withMessage('Password is required'),
-    ],
-    function (req, res, next) {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.render('login', {
-                error: errors.array()[0].msg,
-                username: req.body.username || '',
-            });
-        }
-
-        // Look up the organiser by username
-        const query = 'SELECT organiser_id, password_hash FROM organiser WHERE username = ?';
-        global.db.get(query, [req.body.username], function (err, organiser) {
-            if (err) {
-                return next(err);
-            }
-            // Compare the submitted password with the stored bcrypt hash
-            const passwordOk =
-                organiser && bcrypt.compareSync(req.body.password, organiser.password_hash);
-            if (!passwordOk) {
-                return res.render('login', {
-                    error: 'Invalid username or password',
-                    username: req.body.username || '',
-                });
-            }
-            // Credentials are valid: persist the organiser id in the session
-            req.session.organiserId = organiser.organiser_id;
-            res.redirect('/organiser');
-        });
+  '/login',
+  [
+    body('username').trim().notEmpty().withMessage('Username is required'),
+    body('password').notEmpty().withMessage('Password is required'),
+  ],
+  function (req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.render('login', {
+        error: errors.array()[0].msg,
+        username: req.body.username || '',
+      });
     }
+
+    // Look up the organiser by username
+    const query = 'SELECT organiser_id, password_hash FROM organiser WHERE username = ?';
+    global.db.get(query, [req.body.username], function (err, organiser) {
+      if (err) {
+        return next(err);
+      }
+      // Compare the submitted password with the stored bcrypt hash
+      const passwordOk =
+        organiser && bcrypt.compareSync(req.body.password, organiser.password_hash);
+      if (!passwordOk) {
+        return res.render('login', {
+          error: 'Invalid username or password',
+          username: req.body.username || '',
+        });
+      }
+      // Credentials are valid: persist the organiser id in the session
+      req.session.organiserId = organiser.organiser_id;
+      res.redirect('/organiser');
+    });
+  }
 );
 
 /**
@@ -89,12 +89,12 @@ router.post(
  * @output Redirects to the main home page.
  */
 router.post('/logout', function (req, res, next) {
-    req.session.destroy(function (err) {
-        if (err) {
-            return next(err);
-        }
-        res.redirect('/');
-    });
+  req.session.destroy(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/');
+  });
 });
 
 module.exports = { router, requireAuth };

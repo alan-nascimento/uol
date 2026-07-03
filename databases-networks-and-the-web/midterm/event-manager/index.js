@@ -21,23 +21,23 @@ app.use(express.static(__dirname + '/public'));
 
 // Persist the organiser's logged-in state across requests (extension feature)
 app.use(
-    session({
-        secret: 'event-manager-secret-key',
-        resave: false,
-        saveUninitialized: false,
-    })
+  session({
+    secret: 'event-manager-secret-key',
+    resave: false,
+    saveUninitialized: false,
+  })
 );
 
 // Set up SQLite. Items in the global namespace are accessible throughout the app.
 const sqlite3 = require('sqlite3').verbose();
 global.db = new sqlite3.Database('./database.db', function (err) {
-    if (err) {
-        console.error(err);
-        process.exit(1); // bail out, we can't connect to the DB
-    } else {
-        console.log('Database connected');
-        global.db.run('PRAGMA foreign_keys=ON'); // enforce foreign key constraints
-    }
+  if (err) {
+    console.error(err);
+    process.exit(1); // bail out, we can't connect to the DB
+  } else {
+    console.log('Database connected');
+    global.db.run('PRAGMA foreign_keys=ON'); // enforce foreign key constraints
+  }
 });
 
 /**
@@ -48,19 +48,19 @@ global.db = new sqlite3.Database('./database.db', function (err) {
  * Outputs: res.locals.site, res.locals.isAuthenticated; calls next().
  */
 app.use(function (req, res, next) {
-    res.locals.isAuthenticated = !!(req.session && req.session.organiserId);
-    // Expose formatting helpers to every template
-    res.locals.formatDateTime = helpers.formatDateTime;
-    res.locals.formatEventDate = helpers.formatEventDate;
-    res.locals.formatPrice = helpers.formatPrice;
-    const query = 'SELECT site_name, site_description FROM settings WHERE setting_id = 1';
-    global.db.get(query, function (err, row) {
-        if (err) {
-            return next(err);
-        }
-        res.locals.site = row || { site_name: 'Event Manager', site_description: '' };
-        next();
-    });
+  res.locals.isAuthenticated = !!(req.session && req.session.organiserId);
+  // Expose formatting helpers to every template
+  res.locals.formatDateTime = helpers.formatDateTime;
+  res.locals.formatEventDate = helpers.formatEventDate;
+  res.locals.formatPrice = helpers.formatPrice;
+  const query = 'SELECT site_name, site_description FROM settings WHERE setting_id = 1';
+  global.db.get(query, function (err, row) {
+    if (err) {
+      return next(err);
+    }
+    res.locals.site = row || { site_name: 'Event Manager', site_description: '' };
+    next();
+  });
 });
 
 /**
@@ -69,7 +69,7 @@ app.use(function (req, res, next) {
  * @output Renders the main landing page.
  */
 app.get('/', function (req, res) {
-    res.render('main');
+  res.render('main');
 });
 
 // Mount the route handlers.
@@ -90,11 +90,11 @@ app.use('/attendee', attendeeRoutes);
  * Outputs: renders the error view with HTTP 500.
  */
 app.use(function (err, req, res, next) {
-    console.error(err);
-    res.status(500).render('error', { message: err.message });
+  console.error(err);
+  res.status(500).render('error', { message: err.message });
 });
 
 // Make the web application listen for HTTP requests
 app.listen(port, function () {
-    console.log(`Event Manager listening on port ${port}`);
+  console.log(`Event Manager listening on port ${port}`);
 });
