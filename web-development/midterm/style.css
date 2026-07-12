@@ -1,0 +1,196 @@
+/* ==========================================================================
+   Base / typography
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f4f6f8;
+  color: #1f2933;
+}
+
+header {
+  padding: 1.5rem 2rem;
+  background-color: #1f2933;
+  color: #ffffff;
+}
+
+header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem;
+}
+
+header p {
+  margin: 0 0 1rem;
+  color: #cbd2d9;
+}
+
+footer {
+  padding: 1rem 2rem;
+  font-size: 0.85rem;
+  color: #616e7c;
+  text-align: center;
+}
+
+footer a {
+  color: #4f8cff;
+}
+
+/* ==========================================================================
+   Experiment controls (not part of the two graded topics themselves,
+   just the switches used to demonstrate the comparisons live)
+   ========================================================================== */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.controls fieldset {
+  border: 1px solid #3e4c59;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+.controls legend {
+  font-size: 0.85rem;
+  color: #cbd2d9;
+}
+
+.controls label {
+  display: block;
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.controls input[type='radio'] {
+  cursor: pointer;
+}
+
+.controls code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0 0.25rem;
+  border-radius: 4px;
+}
+
+#reload-btn {
+  align-self: center;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #4f8cff;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#reload-btn:hover {
+  background-color: #3a75e0;
+}
+
+#status {
+  align-self: center;
+  font-size: 0.85rem;
+  color: #cbd2d9;
+  margin: 0;
+}
+
+/* ==========================================================================
+   TOPIC 3 — Layout for Different Devices
+   Strategy A (default, demo state "grid-autofit"):
+   Native CSS Grid with repeat(auto-fit, minmax()). This is the technique
+   highlighted in the coursework brief — one line of CSS automatically
+   adapts from a single column on mobile to several columns on desktop,
+   because auto-fit lets the grid decide how many tracks fit, and minmax()
+   guarantees each card never shrinks below a usable width.
+   ========================================================================== */
+
+#catalog-container {
+  padding: 1.5rem 2rem;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* ==========================================================================
+   TOPIC 3 — Strategy B (Experiment 1 comparison):
+   The "old way" of responsive layout — a fixed column count controlled
+   by hand-written media-query breakpoints. Applied only when the demo
+   toggle is set to "media-query", so both approaches can be compared
+   live against the same data and the same card markup.
+   ========================================================================== */
+
+#catalog-container.media-query {
+  grid-template-columns: 1fr; /* mobile-first: 1 column by default */
+}
+
+@media (min-width: 600px) {
+  #catalog-container.media-query {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  #catalog-container.media-query {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  #catalog-container.media-query {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==========================================================================
+   Card component
+   Visual style shared by both layout strategies, so the only variable
+   being tested in Experiment 1 is the grid behaviour, not the card design.
+   ========================================================================== */
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: #1f2933;
+}
+
+.card p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #52606d;
+}
+
+.card .card-meta {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: #9aa5b1;
+}
+
+.card.error {
+  border: 1px solid #e12d39;
+  color: #e12d39;
+}

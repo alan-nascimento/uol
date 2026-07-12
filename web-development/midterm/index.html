@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data-to-Device Catalog | CM1040 Midterm Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!--
+    Semantic structure:
+    <header> for page identity, <main> for the primary content region.
+    #catalog-container is the CSS Grid target (Topic 3) and the JS mount
+    point for data fetched from the REST API (Topic 5).
+  -->
+    <header>
+      <h1>Data-to-Device Catalog</h1>
+      <p>
+        A live demo connecting
+        <strong>Topic 3: Layout for Different Devices</strong> and
+        <strong>Topic 5: Working with Data Sources and Data Security</strong>.
+      </p>
+
+      <!--
+      Experiment controls. These do not change the story, they only let us
+      demonstrate two ways of solving the same problem, side by side, live,
+      during the presentation/video.
+    -->
+      <div class="controls" role="group" aria-label="Experiment controls">
+        <fieldset>
+          <legend>Experiment 1 — Layout strategy (Topic 3)</legend>
+          <label>
+            <input type="radio" name="layout" value="grid-autofit" checked />
+            CSS Grid: <code>repeat(auto-fit, minmax(250px, 1fr))</code>
+          </label>
+          <label>
+            <input type="radio" name="layout" value="media-query" />
+            Manual media-query breakpoints
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Experiment 2 — Fetch strategy (Topic 5)</legend>
+          <label>
+            <input type="radio" name="fetch-strategy" value="fetch" checked />
+            <code>fetch()</code> + async/await
+          </label>
+          <label>
+            <input type="radio" name="fetch-strategy" value="xhr" />
+            <code>XMLHttpRequest</code>
+          </label>
+        </fieldset>
+
+        <button id="reload-btn" type="button">Reload data</button>
+        <p id="status" role="status" aria-live="polite"></p>
+      </div>
+    </header>
+
+    <!-- Main catalog: populated dynamically by script.js -->
+    <main id="catalog-container" aria-label="User catalog">
+      <!-- Cards are injected here at runtime -->
+    </main>
+
+    <footer>
+      <p>
+        Data source:
+        <a
+          href="https://jsonplaceholder.typicode.com/users"
+          target="_blank"
+          rel="noopener noreferrer"
+          >JSONPlaceholder REST API</a
+        >
+        (served over HTTPS, no API key required).
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
