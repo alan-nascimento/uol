@@ -1,0 +1,13 @@
+{
+  "name": "postfix-plus-plus",
+  "version": "1.0.0",
+  "description": "Postfix++ interpreter for the CM2035 ADS2 mid-term coursework. Evaluates postfix arithmetic with A-Z variables backed by a hash-table symbol table (multiplicative hash + linear probing).",
+  "main": "src/postfix.js",
+  "scripts": {
+    "start": "node src/postfix.js",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.0.3"
+  }
+}
