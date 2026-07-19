@@ -19,6 +19,7 @@ var dateValue = event.event_date ? String(event.event_date).replace(' ', 'T') : 
 <% } %>
 
 <form action="/organiser/event/<%= event.event_id %>/edit" method="post" class="form card">
+    <input type="hidden" name="created_at" value="<%= event.created_at %>" />
     <label for="title">Event title</label>
     <input id="title" type="text" name="title" value="<%= event.title %>" required />
 
