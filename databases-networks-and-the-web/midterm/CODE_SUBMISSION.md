@@ -11,6 +11,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## package.json
 
 ```
+// START (written by me)
    1  {
    2    "name": "event_manager",
    3    "version": "1.0.0",
@@ -43,6 +44,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   30      "node": ">=16.0.0"
   31    }
   32  }
+// END (written by me)
 ```
 
 ---
@@ -50,34 +52,39 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## db_schema.sql
 
 ```
-   1  
+   1
    2  -- This makes sure that foreign_key constraints are observed and that errors will be thrown for violations
    3  PRAGMA foreign_keys=ON;
-   4  
+   4
    5  BEGIN TRANSACTION;
-   6  
+   6
    7  -- ============================================================
    8  -- SCHEMA
    9  -- ============================================================
-  10  
+  10
   11  -- Global site settings. A single row (setting_id = 1) holds the event
   12  -- manager's name and description, editable from the Site Settings page.
+  // START (written by me)
   13  CREATE TABLE IF NOT EXISTS settings (
   14      setting_id INTEGER PRIMARY KEY AUTOINCREMENT,
   15      site_name TEXT NOT NULL,
   16      site_description TEXT NOT NULL
   17  );
-  18  
+  // END (written by me)
+  18
   19  -- Organiser account for the extension's authentication feature.
   20  -- The password is stored only as a bcrypt hash, never in plain text.
+  // START (written by me)
   21  CREATE TABLE IF NOT EXISTS organiser (
   22      organiser_id INTEGER PRIMARY KEY AUTOINCREMENT,
   23      username TEXT NOT NULL UNIQUE,
   24      password_hash TEXT NOT NULL
   25  );
-  26  
+  // END (written by me)
+  26
   27  -- Events created by the organiser. An event is either a 'draft' (not yet
   28  -- visible to attendees) or 'published' (bookable on the attendee pages).
+  // START (written by me)
   29  CREATE TABLE IF NOT EXISTS events (
   30      event_id INTEGER PRIMARY KEY AUTOINCREMENT,
   31      title TEXT NOT NULL,
@@ -88,9 +95,11 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   36      published_at TEXT, -- set when the event is published, NULL while a draft
   37      last_modified TEXT NOT NULL DEFAULT (datetime('now'))
   38  );
-  39  
+  // END (written by me)
+  39
   40  -- Ticket types belonging to an event (normalised: one event has many types).
   41  -- The base spec requires exactly two per event: full-price and concession.
+  // START (written by me)
   42  CREATE TABLE IF NOT EXISTS ticket_types (
   43      ticket_type_id INTEGER PRIMARY KEY AUTOINCREMENT,
   44      event_id INTEGER NOT NULL,
@@ -99,7 +108,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   47      quantity INTEGER NOT NULL DEFAULT 0 CHECK (quantity >= 0),
   48      FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE
   49  );
-  50  
+  // END (written by me)
+  50
   51  -- A booking made by an attendee for a single event. One booking groups one
   52  -- or more booking_items (the different ticket types chosen in one purchase).
   53  CREATE TABLE IF NOT EXISTS bookings (
@@ -109,7 +119,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   57      created_at TEXT NOT NULL DEFAULT (datetime('now')),
   58      FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE
   59  );
-  60  
+  60
   61  -- The individual line items of a booking: how many of each ticket type.
   62  CREATE TABLE IF NOT EXISTS booking_items (
   63      booking_item_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -119,21 +129,26 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   67      FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE,
   68      FOREIGN KEY (ticket_type_id) REFERENCES ticket_types(ticket_type_id) ON DELETE CASCADE
   69  );
-  70  
+  70
   71  -- ============================================================
   72  -- SEED DATA
   73  -- ============================================================
-  74  
+  74
   75  -- Default site settings (single row).
+  // START (written by me)
   76  INSERT INTO settings (setting_id, site_name, site_description)
   77  VALUES (1, 'Stretch Yoga', 'Yoga classes for all ages and abilities');
-  78  
+  // END (written by me)
+  78
   79  -- Default organiser account.
   80  -- Username: organiser  |  Password: password123
   81  -- The hash below is a bcrypt hash of 'password123' (generated with bcryptjs).
+  // START (written by me)
   82  INSERT INTO organiser (username, password_hash)
   83  VALUES ('organiser', '$2a$10$5Ff8Or.pW0hEUt5gIC2eRO8jtut9.E7nxsBqz2KV05GadP1QWbz9.');
-  84  
+  // END (written by me)
+  84
+  // START (written by me)
   85  -- Two published events and one draft event.
   86  INSERT INTO events (event_id, title, description, event_date, state, created_at, published_at, last_modified)
   87  VALUES
@@ -146,7 +161,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   94      (3, 'Advanced Ashtanga Workshop',
   95          'A challenging workshop for experienced practitioners.',
   96          '2026-10-10 14:00', 'draft', '2026-07-04 16:45', NULL, '2026-07-04 16:45');
-  97  
+  97
   98  -- Ticket types for each event (full-price and concession).
   99  INSERT INTO ticket_types (ticket_type_id, event_id, name, price, quantity)
  100  VALUES
@@ -156,21 +171,24 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  104      (4, 2, 'Concession', 8.00, 15),
  105      (5, 3, 'Full price', 40.00, 12),
  106      (6, 3, 'Concession', 30.00, 8);
- 107  
+  // END (written by me)
+  107
+  // START (written by me)
  108  -- Sample bookings so the sales dashboard shows meaningful figures.
  109  INSERT INTO bookings (booking_id, event_id, attendee_name, created_at)
  110  VALUES
  111      (1, 1, 'Alice Johnson', '2026-07-05 12:00'),
  112      (2, 1, 'Bob Smith', '2026-07-06 14:30'),
  113      (3, 2, 'Carla Nunes', '2026-07-06 18:05');
- 114  
+ 114
  115  INSERT INTO booking_items (booking_id, ticket_type_id, quantity)
  116  VALUES
  117      (1, 1, 2), -- Alice: 2 full-price for event 1
  118      (2, 1, 1), -- Bob: 1 full-price for event 1
  119      (2, 2, 3), -- Bob: 3 concession for event 1
  120      (3, 3, 2); -- Carla: 2 full-price for event 2
- 121  
+  // END (written by me)
+ 121
  122  COMMIT;
 ```
 
@@ -185,21 +203,22 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
    4   * Sets up Express, sessions, the EJS view engine, static files and the
    5   * SQLite database connection, then mounts the route handlers.
    6   */
-   7  
+   7
    8  // Set up Express, session handling and EJS
+   // START (written by me)
    9  const express = require('express');
   10  const session = require('express-session');
   11  const helpers = require('./helpers');
   12  const app = express();
   13  const port = 3000;
-  14  
+  14
   15  // Parse URL-encoded form bodies (req.body) submitted by our forms
   16  app.use(express.urlencoded({ extended: true }));
-  17  
+  17
   18  // Use EJS for server-side rendering and serve static assets from /public
   19  app.set('view engine', 'ejs');
   20  app.use(express.static(__dirname + '/public'));
-  21  
+  21
   22  // Persist the organiser's logged-in state across requests (extension feature)
   23  app.use(
   24    session({
@@ -208,7 +227,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   27      saveUninitialized: false,
   28    })
   29  );
-  30  
+  30
   31  // Set up SQLite. Items in the global namespace are accessible throughout the app.
   32  const sqlite3 = require('sqlite3').verbose();
   33  global.db = new sqlite3.Database('./database.db', function (err) {
@@ -220,7 +239,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   39      global.db.run('PRAGMA foreign_keys=ON'); // enforce foreign key constraints
   40    }
   41  });
-  42  
+  // END (written by me)
+  42
   43  /**
   44   * Global view data middleware.
   45   * Purpose: make the current site settings and the organiser's auth state
@@ -228,6 +248,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   47   * Inputs:  req.session (for auth state).
   48   * Outputs: res.locals.site, res.locals.isAuthenticated; calls next().
   49   */
+  // START (written by me)
   50  app.use(function (req, res, next) {
   51    res.locals.isAuthenticated = !!(req.session && req.session.organiserId);
   52    // Expose formatting helpers to every template
@@ -243,7 +264,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   62      next();
   63    });
   64  });
-  65  
+  // END (written by me)
+  65
   66  /**
   67   * @route GET /
   68   * @desc  Main home page: entry point linking to the Organiser and Attendee areas.
@@ -252,18 +274,19 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   71  app.get('/', function (req, res) {
   72    res.render('main');
   73  });
-  74  
+  74
   75  // Mount the route handlers.
   76  // Auth routes (login/logout) are public and must be registered before the
   77  // protected organiser routes so they are not blocked by the auth guard.
+  // START (written by me)
   78  const { router: authRouter } = require('./routes/auth');
   79  const organiserRoutes = require('./routes/organiser');
   80  const attendeeRoutes = require('./routes/attendee');
-  81  
+  81
   82  app.use('/organiser', authRouter);
   83  app.use('/organiser', organiserRoutes);
   84  app.use('/attendee', attendeeRoutes);
-  85  
+  85
   86  /**
   87   * Central error handler.
   88   * Purpose: render a friendly error page for any error passed to next(err).
@@ -274,11 +297,12 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   93    console.error(err);
   94    res.status(500).render('error', { message: err.message });
   95  });
-  96  
+  96
   97  // Make the web application listen for HTTP requests
   98  app.listen(port, function () {
   99    console.log(`Event Manager listening on port ${port}`);
  100  });
+  // END (written by me)
 ```
 
 ---
@@ -291,9 +315,10 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
    3   * Small view helpers shared across templates. Uses date-fns to turn the ISO
    4   * datetime strings stored in SQLite into human-readable text.
    5   */
-   6  
+   6
+   // START (written by me)
    7  const { format } = require('date-fns');
-   8  
+   8
    9  /**
   10   * Convert a stored datetime string into a JS Date.
   11   * SQLite stores datetimes as 'YYYY-MM-DD HH:MM'; we normalise the space to 'T'.
@@ -305,26 +330,27 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   17    const date = new Date(String(value).replace(' ', 'T'));
   18    return isNaN(date.getTime()) ? null : date;
   19  }
-  20  
+  20
   21  // Format as e.g. "15 Aug 2026, 09:00"; returns a dash when no date is set.
   22  function formatDateTime(value) {
   23    const date = toDate(value);
   24    return date ? format(date, 'dd MMM yyyy, HH:mm') : '—';
   25  }
-  26  
+  26
   27  // Format as e.g. "Sat 15 Aug 2026, 09:00" for attendee-facing listings.
   28  function formatEventDate(value) {
   29    const date = toDate(value);
   30    return date ? format(date, 'EEE dd MMM yyyy, HH:mm') : 'Date to be confirmed';
   31  }
-  32  
+  32
   33  // Format money as e.g. "£12.50".
   34  function formatPrice(value) {
   35    const number = Number(value) || 0;
   36    return '£' + number.toFixed(2);
   37  }
-  38  
+  38
   39  module.exports = { formatDateTime, formatEventDate, formatPrice };
+  // END (written by me)
 ```
 
 ---
@@ -340,12 +366,13 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
    6   *
    7   * NB. it's better NOT to use arrow functions for callbacks with the SQLite library.
    8   */
-   9  
+   9
+  // START (written by me)
   10  const express = require('express');
   11  const bcrypt = require('bcryptjs');
   12  const { body, validationResult } = require('express-validator');
   13  const router = express.Router();
-  14  
+  14
   15  /**
   16   * requireAuth middleware
   17   * Purpose: block access to organiser-only pages unless logged in.
@@ -359,7 +386,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   25      res.redirect('/organiser/login');
   26    }
   27  }
-  28  
+  28
   29  /**
   30   * @route GET /organiser/login
   31   * @desc  Display the organiser login form.
@@ -372,7 +399,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   38    }
   39    res.render('login', { error: null, username: '' });
   40  });
-  41  
+  // END (written by me)
+  41
   42  /**
   43   * @route POST /organiser/login
   44   * @desc  Authenticate the organiser against the hashed password in the database.
@@ -394,7 +422,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   60          username: req.body.username || '',
   61        });
   62      }
-  63  
+  63
   64      // Look up the organiser by username
   65      const query = 'SELECT organiser_id, password_hash FROM organiser WHERE username = ?';
   66      global.db.get(query, [req.body.username], function (err, organiser) {
@@ -416,12 +444,13 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   82      });
   83    }
   84  );
-  85  
+  85
   86  /**
   87   * @route POST /organiser/logout
   88   * @desc  Destroy the organiser's session and return to the main home page.
   89   * @output Redirects to the main home page.
   90   */
+  // START (written by me)
   91  router.post('/logout', function (req, res, next) {
   92    req.session.destroy(function (err) {
   93      if (err) {
@@ -430,7 +459,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   96      res.redirect('/');
   97    });
   98  });
-  99  
+  // END (written by me)
  100  module.exports = { router, requireAuth };
 ```
 
@@ -447,15 +476,16 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
    6   *
    7   * NB. it's better NOT to use arrow functions for callbacks with the SQLite library.
    8   */
-   9  
+   9
+  // START (written by me)
   10  const express = require('express');
   11  const { body, validationResult } = require('express-validator');
   12  const { requireAuth } = require('./auth');
   13  const router = express.Router();
-  14  
+  14
   15  // Protect all organiser routes: only a logged-in organiser may access them.
   16  router.use(requireAuth);
-  17  
+  17
   18  /**
   19   * Normalise a datetime-local form value ('YYYY-MM-DDTHH:MM') to the
   20   * 'YYYY-MM-DD HH:MM' format used consistently in the database.
@@ -466,7 +496,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   25    }
   26    return String(value).replace('T', ' ');
   27  }
-  28  
+  // END (written by me)
+  28
   29  /**
   30   * @route GET /organiser
   31   * @desc  Organiser Home Page. Lists published and draft events, each with its
@@ -509,13 +540,14 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   68      });
   69    });
   70  });
-  71  
+  71
   72  /**
   73   * @route GET /organiser/settings
   74   * @desc  Site Settings Page. Shows a form pre-populated with the current name
   75   *        and description.
   76   * @output Renders settings with the current settings and no errors.
   77   */
+  // START (written by me)
   78  router.get('/settings', function (req, res, next) {
   79    const query = 'SELECT site_name, site_description FROM settings WHERE setting_id = 1';
   80    global.db.get(query, function (err, settings) {
@@ -525,7 +557,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   84      res.render('settings', { settings, errors: [] });
   85    });
   86  });
-  87  
+  87
   88  /**
   89   * @route POST /organiser/settings
   90   * @desc  Update the site name and description, then return to the home page.
@@ -562,13 +594,15 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  121      );
  122    }
  123  );
- 124  
+
+ 124
  125  /**
  126   * @route POST /organiser/events
  127   * @desc  Create a new draft event with two default ticket types (full-price and
  128   *        concession), then redirect to its edit page.
  129   * @output Redirects to /organiser/event/:id/edit for the new draft.
  130   */
+ // START (written by me)
  131  router.post('/events', function (req, res, next) {
  132    const insertEvent =
  133      "INSERT INTO events (title, description, state) VALUES ('Untitled event', '', 'draft')";
@@ -592,7 +626,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  151      );
  152    });
  153  });
- 154  
+  // END (written by me)
+ 154
  155  /**
  156   * @route GET /organiser/event/:id/edit
  157   * @desc  Organiser Edit Event Page. Shows a form populated with the event's
@@ -600,6 +635,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  159   * @input req.params.id (event id)
  160   * @output Renders edit-event, or forwards a 404-style error if not found.
  161   */
+  // START (written by me)
  162  router.get('/event/:id/edit', function (req, res, next) {
  163    const eventQuery = 'SELECT * FROM events WHERE event_id = ?';
  164    global.db.get(eventQuery, [req.params.id], function (err, event) {
@@ -621,7 +657,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  180      });
  181    });
  182  });
- 183  
+  // END (written by me)
+ 183
  184  /**
  185   * @route POST /organiser/event/:id/edit
  186   * @desc  Save changes to an event and its two ticket types, updating the
@@ -670,7 +707,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  229          errors: errors.array(),
  230        });
  231      }
- 232  
+ 232
  233      // Update the event itself and bump the last-modified timestamp
  234      const updateEvent =
  235        "UPDATE events SET title = ?, description = ?, event_date = ?, last_modified = datetime('now') WHERE event_id = ?";
@@ -714,13 +751,14 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  273      });
  274    }
  275  );
- 276  
+ 276
  277  /**
  278   * @route POST /organiser/event/:id/publish
  279   * @desc  Publish a draft event: set its state and stamp the publication date.
  280   * @input req.params.id
  281   * @output Redirects to /organiser.
  282   */
+  // START (written by me)
  283  router.post('/event/:id/publish', function (req, res, next) {
  284    const query =
  285      "UPDATE events SET state = 'published', published_at = datetime('now'), last_modified = datetime('now') WHERE event_id = ? AND state = 'draft'";
@@ -731,7 +769,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  290      res.redirect('/organiser');
  291    });
  292  });
- 293  
+ 293
  294  /**
  295   * @route POST /organiser/event/:id/delete
  296   * @desc  Delete an event. Related ticket types, bookings and booking items are
@@ -748,7 +786,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  307      res.redirect('/organiser');
  308    });
  309  });
- 310  
+  // END (written by me)
+ 310
  311  /**
  312   * @route GET /organiser/dashboard
  313   * @desc  Sales dashboard (extension). Aggregates bookings to show global totals,
@@ -766,12 +805,12 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  325              COALESCE(SUM(bi.quantity * tt.price), 0) AS total_revenue
  326          FROM booking_items bi
  327          JOIN ticket_types tt ON tt.ticket_type_id = bi.ticket_type_id`;
- 328  
+ 328
  329    global.db.get(totalsQuery, function (err, totals) {
  330      if (err) {
  331        return next(err);
  332      }
- 333  
+ 333
  334      // Per ticket-type breakdown: capacity, sold, remaining and revenue,
  335      // grouped so we can nest ticket rows under their event.
  336      const breakdownQuery = `
@@ -792,7 +831,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  351              LEFT JOIN booking_items bi ON bi.ticket_type_id = tt.ticket_type_id
  352              GROUP BY tt.ticket_type_id
  353              ORDER BY e.event_date, tt.ticket_type_id`;
- 354  
+ 354
  355      global.db.all(breakdownQuery, function (err, rows) {
  356        if (err) {
  357          return next(err);
@@ -820,7 +859,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  379          event.sold += row.sold;
  380          event.revenue += row.revenue;
  381        });
- 382  
+ 382
  383        // Most recent bookings with a summary of tickets and value
  384        const recentQuery = `
  385                  SELECT
@@ -837,7 +876,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  396                  GROUP BY b.booking_id
  397                  ORDER BY b.created_at DESC
  398                  LIMIT 10`;
- 399  
+ 399
  400        global.db.all(recentQuery, function (err, recentBookings) {
  401          if (err) {
  402            return next(err);
@@ -847,7 +886,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  406      });
  407    });
  408  });
- 409  
+ 409
  410  module.exports = router;
 ```
 
@@ -864,11 +903,12 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
    6   *
    7   * NB. it's better NOT to use arrow functions for callbacks with the SQLite library.
    8   */
-   9  
+   9
+  // START (written by me)
   10  const express = require('express');
   11  const { body, validationResult } = require('express-validator');
   12  const router = express.Router();
-  13  
+  13
   14  /**
   15   * @route GET /attendee
   16   * @desc  Attendee Home Page. Lists published events ordered by event date so
@@ -884,7 +924,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   26      res.render('attendee-home', { events });
   27    });
   28  });
-  29  
+  29
   30  /**
   31   * @route GET /attendee/event/:id
   32   * @desc  Attendee Event Page. Shows a single published event with its ticket
@@ -928,7 +968,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   70      });
   71    });
   72  });
-  73  
+  // END (written by me)
+  73
   74  /**
   75   * @route POST /attendee/event/:id/book
   76   * @desc  Book tickets for an event. Validates the attendee name and that the
@@ -943,12 +984,12 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   85    function (req, res, next) {
   86      const eventId = req.params.id;
   87      const backUrl = '/attendee/event/' + eventId;
-  88  
+  88
   89      const errors = validationResult(req);
   90      if (!errors.isEmpty()) {
   91        return res.redirect(backUrl + '?error=' + encodeURIComponent(errors.array()[0].msg));
   92      }
-  93  
+  93
   94      // Load current availability for this event's ticket types
   95      const ticketsQuery = `
   96              SELECT
@@ -964,7 +1005,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  106        if (err) {
  107          return next(err);
  108        }
- 109  
+ 109
  110        // Read the requested quantity for each ticket type and validate it
  111        const requestedItems = [];
  112        let totalRequested = 0;
@@ -991,13 +1032,13 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  133            totalRequested += quantity;
  134          }
  135        }
- 136  
+ 136
  137        if (totalRequested === 0) {
  138          return res.redirect(
  139            backUrl + '?error=' + encodeURIComponent('Please select at least one ticket to book')
  140          );
  141        }
- 142  
+ 142
  143        // Write the booking and its items atomically
  144        global.db.serialize(function () {
  145          global.db.run('BEGIN TRANSACTION');
@@ -1042,7 +1083,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  184      });
  185    }
  186  );
- 187  
+ 187
  188  module.exports = router;
 ```
 
@@ -1051,6 +1092,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/partials/head.ejs
 
 ```
+  // START (written by me)
    1  <!DOCTYPE html>
    2  <html lang="en">
    3  <head>
@@ -1062,6 +1104,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
    9  <body>
   10      <%- include('nav') %>
   11      <main class="container">
+  // END (written by me)
 ```
 
 ---
@@ -1069,6 +1112,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/partials/nav.ejs
 
 ```
+  // START (written by me)
    1  <nav class="navbar">
    2      <a class="navbar-brand" href="/"><%= site.site_name %></a>
    3      <div class="navbar-links">
@@ -1082,6 +1126,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   11          <% } %>
   12      </div>
   13  </nav>
+  // END (written by me)
 ```
 
 ---
@@ -1089,12 +1134,14 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/partials/footer.ejs
 
 ```
+  // START (written by me)
    1      </main>
    2      <footer class="site-footer">
    3          <p><%= site.site_name %> &middot; Event Manager</p>
    4      </footer>
    5  </body>
    6  </html>
+  // END (written by me)
 ```
 
 ---
@@ -1102,13 +1149,14 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/main.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: 'Home - ' + site.site_name }) %>
-   2  
+   2
    3  <section class="hero">
    4      <h1><%= site.site_name %></h1>
    5      <p class="lead"><%= site.site_description %></p>
    6  </section>
-   7  
+   7
    8  <section class="choice-cards">
    9      <a class="card choice-card" href="/organiser">
   10          <h2>Organiser</h2>
@@ -1119,8 +1167,9 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   15          <p>Browse upcoming events and book your tickets.</p>
   16      </a>
   17  </section>
-  18  
+  18
   19  <%- include('partials/footer') %>
+  // END (written by me)
 ```
 
 ---
@@ -1128,30 +1177,32 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/login.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: 'Organiser Login' }) %>
-   2  
+   2
    3  <section class="page-header">
    4      <h1>Organiser Login</h1>
    5      <p class="lead">Sign in to manage your events.</p>
    6  </section>
-   7  
+   7
    8  <% if (error) { %>
    9      <div class="alert alert-error"><%= error %></div>
   10  <% } %>
-  11  
+  11
   12  <form action="/organiser/login" method="post" class="form card">
   13      <label for="username">Username</label>
   14      <input id="username" type="text" name="username" value="<%= username %>" required />
-  15  
+  15
   16      <label for="password">Password</label>
   17      <input id="password" type="password" name="password" required />
-  18  
+  18
   19      <button type="submit" class="button">Log in</button>
   20  </form>
-  21  
+  21
   22  <p><a href="/">Back to home</a></p>
-  23  
+  23
   24  <%- include('partials/footer') %>
+  // END (written by me)
 ```
 
 ---
@@ -1159,16 +1210,18 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/error.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: 'Something went wrong' }) %>
-   2  
+   2
    3  <section class="page-header">
    4      <h1>Something went wrong</h1>
    5  </section>
-   6  
+   6
    7  <div class="alert alert-error"><%= message %></div>
    8  <p><a class="button" href="/">Back to home</a></p>
-   9  
+   9
   10  <%- include('partials/footer') %>
+  // END (written by me)
 ```
 
 ---
@@ -1176,8 +1229,9 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/organiser-home.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: 'Organiser Home - ' + site.site_name }) %>
-   2  
+   2
    3  <section class="page-header">
    4      <h1>Organiser Home Page</h1>
    5      <p class="lead"><strong><%= site.site_name %></strong> — <%= site.site_description %></p>
@@ -1189,7 +1243,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   11          </form>
   12      </div>
   13  </section>
-  14  
+  // END (written by me)
+  14
   15  <%
   16  // Reusable markup for the ticket summary of an event
   17  function ticketSummary(event) {
@@ -1200,7 +1255,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   22          .join(' | ');
   23  }
   24  %>
-  25  
+  25
   26  <section>
   27      <h2>Published Events</h2>
   28      <% if (publishedEvents.length === 0) { %>
@@ -1232,7 +1287,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   54          </ul>
   55      <% } %>
   56  </section>
-  57  
+  57
   58  <section>
   59      <h2>Draft Events</h2>
   60      <% if (draftEvents.length === 0) { %>
@@ -1262,7 +1317,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   84          </ul>
   85      <% } %>
   86  </section>
-  87  
+  87
   88  <%- include('partials/footer') %>
 ```
 
@@ -1271,13 +1326,14 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/settings.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: 'Site Settings' }) %>
-   2  
+   2
    3  <section class="page-header">
    4      <h1>Site Settings Page</h1>
    5      <p class="lead">Update the name and description shown to your attendees.</p>
    6  </section>
-   7  
+   7
    8  <% if (errors && errors.length > 0) { %>
    9      <div class="alert alert-error">
   10          <ul>
@@ -1285,22 +1341,23 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   12          </ul>
   13      </div>
   14  <% } %>
-  15  
+  15
   16  <form action="/organiser/settings" method="post" class="form card">
   17      <label for="site_name">Name</label>
   18      <input id="site_name" type="text" name="site_name"
   19          value="<%= settings.site_name %>" required />
-  20  
+  20
   21      <label for="site_description">Description</label>
   22      <textarea id="site_description" name="site_description" rows="3" required><%= settings.site_description %></textarea>
-  23  
+  23
   24      <div class="card-actions">
   25          <button type="submit" class="button button-primary">Save changes</button>
   26          <a class="button" href="/organiser">Back</a>
   27      </div>
   28  </form>
-  29  
+  29
   30  <%- include('partials/footer') %>
+  // END (written by me)
 ```
 
 ---
@@ -1309,17 +1366,17 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 
 ```
    1  <%- include('partials/head', { title: 'Edit Event' }) %>
-   2  
+   2
    3  <%
    4  // datetime-local inputs expect 'YYYY-MM-DDTHH:MM'; convert from the stored value
    5  var dateValue = event.event_date ? String(event.event_date).replace(' ', 'T') : '';
    6  %>
-   7  
+   7
    8  <section class="page-header">
    9      <h1>Organiser Edit Event Page</h1>
   10      <p class="muted">Created: <%= formatDateTime(event.created_at) %></p>
   11  </section>
-  12  
+  12
   13  <% if (errors && errors.length > 0) { %>
   14      <div class="alert alert-error">
   15          <ul>
@@ -1327,18 +1384,18 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   17          </ul>
   18      </div>
   19  <% } %>
-  20  
+  20
   21  <form action="/organiser/event/<%= event.event_id %>/edit" method="post" class="form card">
   22      <input type="hidden" name="created_at" value="<%= event.created_at %>" />
   23      <label for="title">Event title</label>
   24      <input id="title" type="text" name="title" value="<%= event.title %>" required />
-  25  
+  25
   26      <label for="description">Event description</label>
   27      <textarea id="description" name="description" rows="4"><%= event.description %></textarea>
-  28  
+  28
   29      <label for="event_date">Event date and time</label>
   30      <input id="event_date" type="datetime-local" name="event_date" value="<%= dateValue %>" />
-  31  
+  31
   32      <fieldset class="ticket-fieldset">
   33          <legend>Full-price tickets</legend>
   34          <input type="hidden" name="full_ticket_type_id" value="<%= fullTicket.ticket_type_id %>" />
@@ -1349,7 +1406,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   39          <input id="full_price" type="number" name="full_price" min="0" step="0.01"
   40              value="<%= fullTicket.price !== undefined ? fullTicket.price : 0 %>" required />
   41      </fieldset>
-  42  
+  42
   43      <fieldset class="ticket-fieldset">
   44          <legend>Concession-price tickets</legend>
   45          <input type="hidden" name="concession_ticket_type_id" value="<%= concessionTicket.ticket_type_id %>" />
@@ -1360,13 +1417,13 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   50          <input id="concession_price" type="number" name="concession_price" min="0" step="0.01"
   51              value="<%= concessionTicket.price !== undefined ? concessionTicket.price : 0 %>" required />
   52      </fieldset>
-  53  
+  53
   54      <div class="card-actions">
   55          <button type="submit" class="button button-primary">Submit changes</button>
   56          <a class="button" href="/organiser">Back</a>
   57      </div>
   58  </form>
-  59  
+  59
   60  <%- include('partials/footer') %>
 ```
 
@@ -1375,14 +1432,15 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/dashboard.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: 'Sales Dashboard' }) %>
-   2  
+   2
    3  <section class="page-header">
    4      <h1>Sales Dashboard</h1>
    5      <p class="lead">An overview of your ticket sales and remaining capacity.</p>
    6      <a class="button" href="/organiser">Back to Organiser Home</a>
    7  </section>
-   8  
+   8
    9  <section class="stat-grid">
   10      <div class="card stat">
   11          <span class="stat-value"><%= totals.published_events %></span>
@@ -1401,7 +1459,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   24          <span class="stat-label">Total revenue</span>
   25      </div>
   26  </section>
-  27  
+  // END (written by me)
+  27
   28  <section>
   29      <h2>Sales by event</h2>
   30      <% if (eventStats.length === 0) { %>
@@ -1451,7 +1510,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   74          <% }); %>
   75      <% } %>
   76  </section>
-  77  
+  77
+  // START (written by me)
   78  <section>
   79      <h2>Recent bookings</h2>
   80      <% if (recentBookings.length === 0) { %>
@@ -1481,7 +1541,8 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  104          </table>
  105      <% } %>
  106  </section>
- 107  
+  // END (written by me)
+ 107
  108  <%- include('partials/footer') %>
 ```
 
@@ -1490,13 +1551,14 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/attendee-home.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: site.site_name }) %>
-   2  
+   2
    3  <section class="page-header">
    4      <h1>Attendee Home Page</h1>
    5      <p class="lead"><strong><%= site.site_name %></strong> — <%= site.site_description %></p>
    6  </section>
-   7  
+   7
    8  <section>
    9      <h2>Upcoming events</h2>
   10      <% if (events.length === 0) { %>
@@ -1514,8 +1576,9 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   22          </ul>
   23      <% } %>
   24  </section>
-  25  
+  25
   26  <%- include('partials/footer') %>
+  // END (written by me)
 ```
 
 ---
@@ -1523,24 +1586,26 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## views/attendee-event.ejs
 
 ```
+  // START (written by me)
    1  <%- include('partials/head', { title: event.title }) %>
-   2  
+   2
    3  <section class="page-header">
    4      <h1>Attendee Event Page</h1>
    5  </section>
-   6  
+   6
    7  <% if (message) { %>
    8      <div class="alert alert-success"><%= message %></div>
    9  <% } %>
   10  <% if (error) { %>
   11      <div class="alert alert-error"><%= error %></div>
   12  <% } %>
-  13  
+  // END (written by me)
+  13
   14  <article class="card">
   15      <h2><%= event.title %></h2>
   16      <p class="muted"><%= formatEventDate(event.event_date) %></p>
   17      <p><%= event.description %></p>
-  18  
+  18
   19      <form action="/attendee/event/<%= event.event_id %>/book" method="post" class="form">
   20          <h3>Book tickets</h3>
   21          <table class="table">
@@ -1568,17 +1633,17 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   43                  <% }); %>
   44              </tbody>
   45          </table>
-  46  
+  46
   47          <label for="attendee_name">Your name</label>
   48          <input id="attendee_name" type="text" name="attendee_name" required />
-  49  
+  49
   50          <div class="card-actions">
   51              <button type="submit" class="button button-primary">Book</button>
   52              <a class="button" href="/attendee">Back</a>
   53          </div>
   54      </form>
   55  </article>
-  56  
+  56
   57  <%- include('partials/footer') %>
 ```
 
@@ -1587,6 +1652,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
 ## public/main.css
 
 ```
+  // START (written by me)
    1  :root {
    2    --bg: #f4f5f7;
    3    --surface: #ffffff;
@@ -1603,11 +1669,11 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   14    --radius: 10px;
   15    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   16  }
-  17  
+  17
   18  * {
   19    box-sizing: border-box;
   20  }
-  21  
+  21
   22  body {
   23    margin: 0;
   24    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -1615,14 +1681,14 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   26    background: var(--bg);
   27    line-height: 1.5;
   28  }
-  29  
+  29
   30  /* Layout */
   31  .container {
   32    max-width: 900px;
   33    margin: 0 auto;
   34    padding: 1.5rem 1rem 3rem;
   35  }
-  36  
+  36
   37  .navbar {
   38    display: flex;
   39    align-items: center;
@@ -1631,64 +1697,65 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
   42    background: var(--surface);
   43    border-bottom: 1px solid var(--border);
   44  }
-  45  
+  45
   46  .navbar-brand {
   47    font-weight: 700;
   48    font-size: 1.15rem;
   49    color: var(--text);
   50    text-decoration: none;
   51  }
-  52  
+  52
   53  .navbar-links {
   54    display: flex;
   55    align-items: center;
   56    gap: 1rem;
   57  }
-  58  
+  58
   59  .navbar-links a {
   60    color: var(--primary);
   61    text-decoration: none;
   62    font-weight: 500;
   63  }
-  64  
+  64
   65  .site-footer {
   66    text-align: center;
   67    color: var(--muted);
   68    padding: 2rem 1rem;
   69    font-size: 0.85rem;
   70  }
-  71  
+  // END (written by me)
+  71
   72  /* Typography */
   73  h1 {
   74    margin: 0 0 0.25rem;
   75    font-size: 1.8rem;
   76  }
-  77  
+  77
   78  h2 {
   79    margin-top: 2rem;
   80    font-size: 1.35rem;
   81  }
-  82  
+  82
   83  .lead {
   84    color: var(--muted);
   85    font-size: 1.05rem;
   86  }
-  87  
+  87
   88  .muted {
   89    color: var(--muted);
   90  }
-  91  
+  91
   92  .page-header {
   93    margin-bottom: 1.5rem;
   94  }
-  95  
+  95
   96  .header-actions {
   97    display: flex;
   98    flex-wrap: wrap;
   99    gap: 0.5rem;
  100    margin-top: 1rem;
  101  }
- 102  
+ 102
  103  /* Cards */
  104  .card {
  105    background: var(--surface);
@@ -1698,19 +1765,19 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  109    padding: 1.25rem;
  110    margin-bottom: 1rem;
  111  }
- 112  
+ 112
  113  /* Hero + choice cards (main page) */
  114  .hero {
  115    text-align: center;
  116    padding: 2rem 0 1rem;
  117  }
- 118  
+ 118
  119  .choice-cards {
  120    display: grid;
  121    grid-template-columns: 1fr 1fr;
  122    gap: 1rem;
  123  }
- 124  
+ 124
  125  .choice-card {
  126    text-decoration: none;
  127    color: var(--text);
@@ -1718,12 +1785,13 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  129      transform 0.08s ease,
  130      box-shadow 0.08s ease;
  131  }
- 132  
+ 132
  133  .choice-card:hover {
  134    transform: translateY(-2px);
  135    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
  136  }
- 137  
+ 137
+  // START (written by me)
  138  /* Buttons */
  139  .button,
  140  .link-button {
@@ -1738,35 +1806,35 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  149    text-decoration: none;
  150    cursor: pointer;
  151  }
- 152  
+ 152
  153  .button:hover {
  154    border-color: var(--primary);
  155    color: var(--primary);
  156  }
- 157  
+ 157
  158  .button-primary {
  159    background: var(--primary);
  160    border-color: var(--primary);
  161    color: #fff;
  162  }
- 163  
+ 163
  164  .button-primary:hover {
  165    background: var(--primary-dark);
  166    border-color: var(--primary-dark);
  167    color: #fff;
  168  }
- 169  
+ 169
  170  .button-danger {
  171    background: #fff;
  172    border-color: var(--danger);
  173    color: var(--danger);
  174  }
- 175  
+ 175
  176  .button-danger:hover {
  177    background: var(--danger);
  178    color: #fff;
  179  }
- 180  
+ 180
  181  .link-button {
  182    border: none;
  183    background: none;
@@ -1774,12 +1842,13 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  185    padding: 0;
  186    font-weight: 500;
  187  }
- 188  
+  // END (written by me)
+ 188
  189  .inline-form {
  190    display: inline;
  191    margin: 0;
  192  }
- 193  
+ 193
  194  /* Forms */
  195  .form label {
  196    display: block;
@@ -1787,7 +1856,7 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  198    font-weight: 600;
  199    font-size: 0.9rem;
  200  }
- 201  
+ 201
  202  .form input[type='text'],
  203  .form input[type='password'],
  204  .form input[type='number'],
@@ -1800,40 +1869,41 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  211    border-radius: 8px;
  212    font: inherit;
  213  }
- 214  
+ 214
  215  .form input:focus,
  216  .form textarea:focus {
  217    outline: none;
  218    border-color: var(--primary);
  219    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
  220  }
- 221  
+ 221
  222  .ticket-fieldset {
  223    margin-top: 1.25rem;
  224    border: 1px solid var(--border);
  225    border-radius: 8px;
  226    padding: 0.5rem 1rem 1rem;
  227  }
- 228  
+ 228
  229  .ticket-fieldset legend {
  230    font-weight: 600;
  231    padding: 0 0.4rem;
  232  }
- 233  
+ 233
  234  .card-actions {
  235    display: flex;
  236    flex-wrap: wrap;
  237    gap: 0.5rem;
  238    margin-top: 1.25rem;
  239  }
- 240  
+ 240
+  // START (written by me)
  241  /* Event lists */
  242  .event-list {
  243    list-style: none;
  244    padding: 0;
  245    margin: 0;
  246  }
- 247  
+ 247
  248  .event-meta {
  249    display: grid;
  250    grid-template-columns: max-content 1fr;
@@ -1841,53 +1911,55 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  252    margin: 0.75rem 0;
  253    font-size: 0.92rem;
  254  }
- 255  
+ 255
  256  .event-meta dt {
  257    font-weight: 600;
  258    color: var(--muted);
  259  }
- 260  
+ 260
  261  .event-meta dd {
  262    margin: 0;
  263  }
- 264  
+ 264
  265  .event-link {
  266    text-decoration: none;
  267    color: var(--text);
  268    display: block;
  269  }
- 270  
+ 270
  271  .event-link:hover h3 {
  272    color: var(--primary);
  273  }
- 274  
+  // END (written by me)
+ 274
  275  .share {
  276    font-size: 0.85rem;
  277    word-break: break-all;
  278  }
- 279  
+ 279
  280  /* Alerts */
  281  .alert {
  282    padding: 0.75rem 1rem;
  283    border-radius: 8px;
  284    margin-bottom: 1rem;
  285  }
- 286  
+ 286
  287  .alert ul {
  288    margin: 0;
  289    padding-left: 1.2rem;
  290  }
- 291  
+ 291
  292  .alert-success {
  293    background: var(--success-bg);
  294    color: var(--success-text);
  295  }
- 296  
+ 296
  297  .alert-error {
  298    background: var(--error-bg);
  299    color: var(--error-text);
  300  }
- 301  
+ 301
+  // START (written by me)
  302  /* Tables */
  303  .table {
  304    width: 100%;
@@ -1895,50 +1967,51 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  306    margin-top: 0.75rem;
  307    font-size: 0.92rem;
  308  }
- 309  
+ 309
  310  .table th,
  311  .table td {
  312    text-align: left;
  313    padding: 0.5rem 0.6rem;
  314    border-bottom: 1px solid var(--border);
  315  }
- 316  
+ 316
  317  .table thead th {
  318    color: var(--muted);
  319    font-size: 0.8rem;
  320    text-transform: uppercase;
  321    letter-spacing: 0.03em;
  322  }
- 323  
+ 323
  324  .table tfoot th,
  325  .table tfoot td {
  326    font-weight: 700;
  327    border-top: 2px solid var(--border);
  328  }
- 329  
+ 329
+  // END (written by me)
  330  /* Dashboard stats */
  331  .stat-grid {
  332    display: grid;
  333    grid-template-columns: repeat(4, 1fr);
  334    gap: 1rem;
  335  }
- 336  
+ 336
  337  .stat {
  338    text-align: center;
  339  }
- 340  
+ 340
  341  .stat-value {
  342    display: block;
  343    font-size: 1.6rem;
  344    font-weight: 700;
  345    color: var(--primary);
  346  }
- 347  
+ 347
  348  .stat-label {
  349    color: var(--muted);
  350    font-size: 0.85rem;
  351  }
- 352  
+ 352
  353  /* Badges */
  354  .badge {
  355    display: inline-block;
@@ -1950,17 +2023,18 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  361    vertical-align: middle;
  362    margin-left: 0.4rem;
  363  }
- 364  
+ 364
  365  .badge-published {
  366    background: var(--success-bg);
  367    color: var(--success-text);
  368  }
- 369  
+ 369
  370  .badge-draft {
  371    background: #fef3c7;
  372    color: #92400e;
  373  }
- 374  
+ 374
+  // START (written by me)
  375  /* Responsive */
  376  @media (max-width: 640px) {
  377    .choice-cards,
@@ -1968,4 +2042,5 @@ _Generated 2026-07-19. Convert this file to PDF for the code submission._
  379      grid-template-columns: 1fr;
  380    }
  381  }
+  // END (written by me)
 ```
