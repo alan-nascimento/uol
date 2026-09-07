@@ -2,3 +2,8 @@
 .vscode
 build
 node_modules
+
+# Assessment briefs and other course material belong to the university, not in
+# a public repository. Kept locally, never published.
+*CW*.pdf
+
