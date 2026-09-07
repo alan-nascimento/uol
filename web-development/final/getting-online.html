@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Online | The Internet in Brazil, 1995-2026</title>
+    <meta
+      name="description"
+      content="Who in Brazil actually had internet access, from dial-up and lan houses to the mobile-first majority, and why the official statistics disagree with each other."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body data-page="getting-online">
+    <header class="site-header">
+      <div class="container">
+        <p class="site-title"><a href="index.html">The Internet in Brazil</a></p>
+        <nav class="site-nav" aria-label="Main">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="timeline.html">Timeline</a></li>
+            <li>
+              <a href="getting-online.html" aria-current="page">Getting Online</a>
+            </li>
+            <li><a href="made-in-brazil.html">Made in Brazil</a></li>
+            <li><a href="memories.html">Memories</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="page-intro">
+          <h1>Getting Online</h1>
+          <p class="lede">
+            Brazil's connection curve is one of the steepest in the world, but
+            it starts later than the timeline suggests and it is measured in a
+            way that changed twice along the way. This page shows the figures
+            and the caveats together.
+          </p>
+        </div>
+
+        <p class="data-source" id="data-source"></p>
+
+        <!-- Rendered from data/access.json via templates/access.html -->
+        <div id="access"></div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <h2>About this site</h2>
+        <p>
+          Every claim on this site carries the source it came from. Where
+          sources disagree, or where a widely repeated figure could not be
+          traced to anyone who measured it, the site says so rather than
+          picking the more quotable number.
+        </p>
+        <ul>
+          <li>Comitê Gestor da Internet no Brasil (CGI.br) and CETIC.br</li>
+          <li>Instituto Brasileiro de Geografia e Estatística (IBGE)</li>
+          <li>Agência Nacional de Telecomunicações (Anatel)</li>
+          <li>Banco Central do Brasil</li>
+          <li>Planalto (Brazilian federal legislation)</li>
+        </ul>
+        <p>
+          Built for CM1040 Web Development, University of London. Written in
+          HTML, CSS and JavaScript with no frameworks.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/template-engine.js"></script>
+    <script src="js/validate.js"></script>
+    <script src="js/data-source.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

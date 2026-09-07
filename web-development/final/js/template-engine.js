@@ -40,6 +40,13 @@
    Known limitation, left in deliberately: this is still a string-rewriting
    engine, not a parser. It does not support helpers, partials or expressions
    inside tags. That is appropriate for the scope of this project.
+
+   One consequence of that is worth knowing before editing a template. The
+   engine scans the file as text and has no idea what an HTML comment is, so a
+   tag written inside a comment is counted along with the real ones. Quoting
+   this syntax in a comment above a loop is enough to unbalance it. The
+   templates therefore describe what they do in words, and the syntax is
+   documented here instead.
    =========================================================================== */
 
 class SimpleTemplateEngine {

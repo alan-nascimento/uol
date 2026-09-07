@@ -270,8 +270,11 @@ section {
 
 /* --- Timeline ------------------------------------------------------------- */
 
+/* An ordered list, because a chronology is one. The markers are removed but
+   the semantics are kept, so the sequence survives for a screen reader. */
 .timeline {
   position: relative;
+  list-style: none;
   padding-left: 1.75rem;
   margin: 0;
 }
@@ -306,9 +309,21 @@ section {
   background: var(--accent);
 }
 
+.timeline-event figure {
+  margin: 0.9rem 0 0.5rem;
+}
+
+/* Bounded by height rather than width, and never cropped. A 960x1280 portrait
+   left at its natural size makes its entry half again as tall as the rest of
+   the timeline and reads as a hero image in what is meant to be a list. Cover
+   would fix the height but cut the picture, and one of these images is a price
+   board whose whole value is that the prices can be read. */
 .timeline-event img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 18rem;
   border-radius: var(--radius);
-  margin: 0.75rem 0 0.5rem;
 }
 
 .era-filter ul {
@@ -320,15 +335,24 @@ section {
   margin: 0 0 1.5rem;
 }
 
-.era-filter a {
-  display: inline-block;
+/* Buttons rather than links, because these change the current view instead of
+   navigating anywhere. They are inserted by script, so a visitor without
+   JavaScript gets the whole timeline rather than controls that do nothing. */
+.era-filter button {
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   padding: 0.4rem 0.8rem;
   background: var(--paper-raised);
-  text-decoration: none;
   color: var(--ink);
+  font: inherit;
   font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.era-filter button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 
 /* --- Chart ---------------------------------------------------------------
@@ -381,6 +405,16 @@ section {
   font-size: 0.7rem;
   color: var(--ink-soft);
   margin-top: 0.3rem;
+}
+
+/* Carries the caveats about how the series was measured. Sits with the chart
+   rather than in a footnote, because the reader needs it to read the bars. */
+.chart-note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--accent-warm);
+  padding-left: 0.75rem;
+  margin: 0.75rem 0 0;
 }
 
 .chart-table {
@@ -450,6 +484,20 @@ section {
   letter-spacing: 0.06em;
   color: var(--ink-soft);
   margin: 0 0 0.4em;
+}
+
+.pull-quote {
+  border-left: 3px solid var(--accent);
+  margin: 1.25rem 0 0;
+  padding-left: 0.9rem;
+  font-style: italic;
+}
+
+.pull-quote footer {
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-top: 0.4rem;
 }
 
 /* --- Data source indicator -----------------------------------------------
@@ -553,9 +601,20 @@ button[disabled],
   font-size: 0.88rem;
 }
 
+/* Shown while a fetch is in flight, and replaced the moment it resolves. */
 .loading {
   color: var(--ink-soft);
   font-style: italic;
+}
+
+/* Distinct from .loading on purpose. An empty wall is a finished state, not a
+   pending one, and the two should not be told apart only by their wording. */
+.empty-state {
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  color: var(--ink-soft);
+  text-align: center;
 }
 
 /* --- Memory wall ---------------------------------------------------------- */
@@ -611,8 +670,11 @@ button[disabled],
     padding: 2.25rem;
   }
 
+  /* 300px rather than 240px: at 240 the six cards fall into four columns on a
+     laptop, leaving a ragged row of two and squeezing the summaries into a
+     column too narrow to read comfortably. */
   .card-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 
   .fact-list {

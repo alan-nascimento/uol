@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memories | The Internet in Brazil, 1995-2026</title>
+    <meta
+      name="description"
+      content="First times online in Brazil, contributed by visitors. Add your own memory of the year you first connected."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body data-page="memories">
+    <header class="site-header">
+      <div class="container">
+        <p class="site-title"><a href="index.html">The Internet in Brazil</a></p>
+        <nav class="site-nav" aria-label="Main">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="timeline.html">Timeline</a></li>
+            <li><a href="getting-online.html">Getting Online</a></li>
+            <li><a href="made-in-brazil.html">Made in Brazil</a></li>
+            <li><a href="memories.html" aria-current="page">Memories</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="page-intro">
+          <h1>Memories</h1>
+          <p class="lede">
+            Statistics say how many people got online. They do not say what it
+            was like. This page collects first times: the year, the place, and
+            what you did with it.
+          </p>
+        </div>
+
+        <p class="data-source" id="data-source"></p>
+
+        <section>
+          <h2>Share a memory</h2>
+          <form class="memory-form" id="memory-form" novalidate>
+            <div class="field">
+              <label for="name">Your name or nickname</label>
+              <input type="text" id="name" name="name" maxlength="40" required />
+            </div>
+
+            <div class="field">
+              <label for="year">Year you first went online</label>
+              <input
+                type="number"
+                id="year"
+                name="year"
+                min="1995"
+                max="2026"
+                required
+              />
+              <p class="field-hint">Any year between 1995 and 2026.</p>
+            </div>
+
+            <div class="field">
+              <label for="text">What do you remember?</label>
+              <textarea
+                id="text"
+                name="text"
+                maxlength="500"
+                required
+              ></textarea>
+              <p class="field-hint">
+                Between 10 and 500 characters. Checked here and again on the
+                server before it is stored.
+              </p>
+            </div>
+
+            <button class="button" type="submit">Add my memory</button>
+            <p class="field-hint" id="form-status"></p>
+          </form>
+        </section>
+
+        <section>
+          <h2>The wall</h2>
+          <!-- Rendered from data/memories.json via templates/memories.html -->
+          <div id="memory-wall"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <h2>About this site</h2>
+        <p>
+          Every claim on this site carries the source it came from. Where
+          sources disagree, or where a widely repeated figure could not be
+          traced to anyone who measured it, the site says so rather than
+          picking the more quotable number.
+        </p>
+        <ul>
+          <li>Comitê Gestor da Internet no Brasil (CGI.br) and CETIC.br</li>
+          <li>Instituto Brasileiro de Geografia e Estatística (IBGE)</li>
+          <li>Agência Nacional de Telecomunicações (Anatel)</li>
+          <li>Banco Central do Brasil</li>
+          <li>Planalto (Brazilian federal legislation)</li>
+        </ul>
+        <p>
+          Built for CM1040 Web Development, University of London. Written in
+          HTML, CSS and JavaScript with no frameworks.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/template-engine.js"></script>
+    <script src="js/validate.js"></script>
+    <script src="js/data-source.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

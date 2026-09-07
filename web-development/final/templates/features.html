@@ -1,0 +1,45 @@
+<!--
+  Made in Brazil page.
+
+  Two independent optional blocks inside one loop: an image and an attributed
+  pull-quote. Both are governed by the validator's requiredWith rule, so an
+  image cannot appear without alt text and a credit, and a quote cannot appear
+  without its author, publication and URL.
+-->
+{{#each features}}
+<article class="feature">
+  <div class="feature-body">
+    <p class="feature-years">{{yearsLabel}}</p>
+    <h3>{{name}}</h3>
+    <p>{{description}}</p>
+
+    <div class="significance">
+      <h4>Why it mattered beyond Brazil</h4>
+      <p>{{globalSignificance}}</p>
+    </div>
+
+    <p class="source">
+      Source: <a href="{{sourceUrl}}" rel="noopener noreferrer">{{source}}</a>
+    </p>
+  </div>
+
+  <div class="feature-aside">
+    {{#if imageUrl}}
+    <figure>
+      <img src="{{imageUrl}}" alt="{{imageAlt}}" loading="lazy" />
+      <figcaption class="credit">{{imageCredit}}</figcaption>
+    </figure>
+    {{/if}}
+
+    {{#if quote}}
+    <blockquote class="pull-quote">
+      <p>{{quote}}</p>
+      <footer>
+        <cite>{{quoteAuthor}}</cite>,
+        <a href="{{quoteUrl}}" rel="noopener noreferrer">{{quoteSource}}</a>
+      </footer>
+    </blockquote>
+    {{/if}}
+  </div>
+</article>
+{{/each}}

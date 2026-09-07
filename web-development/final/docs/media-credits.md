@@ -121,6 +121,29 @@ connection in 1991. **That claim was not verified against a primary source**,
 so any caption must describe him more cautiously, as a founding figure and a
 long-standing member of CGI.br, unless the 1991 claim is checked first.
 
+## What was actually used
+
+Five of the shortlisted files were downloaded and are in `images/`. Each was
+fetched through `Special:FilePath` at a 900px width, so the site ships a
+thumbnail rather than the multi-megabyte original.
+
+| Local file | Commons original | Licence | Where it appears |
+| --- | --- | --- | --- |
+| `orkut-buyukkokten-2007.png` | Orkut Büyükkökten, 2007 | CC BY-SA 2.0 | Made in Brazil, Orkut |
+| `marco-civil-netmundial-2014.jpg` | Marco Civil da Internet debate | CC BY-SA 3.0 | Made in Brazil, Marco Civil |
+| `pix-market-stall-itajuba-2021.jpg` | Feira em Itajubá aceita Pix | CC BY-SA 4.0 | Made in Brazil, Pix |
+| `dial-up-modem-33k.jpg` | External 33.6k serial dial-up modem | CC0 | Timeline, 1995 |
+| `lan-house-price-board-2010.jpg` | Acesso sem fio na Lan House | CC BY-SA 2.0 | Timeline, 2008 |
+
+Two captions do more than credit the photographer, because the honest thing to
+say about them is awkward:
+
+- The **Orkut** caption states that no freely licensed screenshot of the Orkut
+  interface exists, so the reader is not left wondering why a portrait of the
+  founder stands in for the product.
+- The **dial-up modem** caption states that it is generic hardware of the
+  period and not a Brazilian scene, for the reason given under "Do not use".
+
 ## Attribution on the page
 
 Every CC BY and CC BY-SA image requires visible attribution. The credit string

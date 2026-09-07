@@ -1,0 +1,26 @@
+<!--
+  Memories page: the visitor-contributed wall.
+
+  This is the template that made escaping necessary. Everything rendered here
+  was typed by a member of the public, and the engine writes its output to
+  .innerHTML. Nothing in this file uses the engine's raw, unescaped output
+  form: every value takes the escaping path, so a submission containing markup
+  is displayed as text rather than executed.
+
+  The conditional treats an empty array as false, matching Handlebars, so an
+  empty wall shows the invitation rather than a heading above nothing.
+-->
+{{#if memories}}
+<div class="memory-wall">
+  {{#each memories}}
+  <article class="memory">
+    <p class="memory-meta">{{year}}, shared by {{name}}</p>
+    <p>{{text}}</p>
+  </article>
+  {{/each}}
+</div>
+{{else}}
+<p class="empty-state">
+  No memories have been shared yet. Yours would be the first.
+</p>
+{{/if}}

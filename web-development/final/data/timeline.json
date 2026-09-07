@@ -5,6 +5,9 @@
       "era": "1995-1999",
       "title": "Brazil opens the internet to commercial providers with Norma 004/95",
       "description": "On 31 May 1995 the Ministério das Comunicações issued Portaria nº 148, approving Norma 004/95, on the use of the public telecommunications network for internet access. It defined the Serviço de Conexão à Internet (internet connection service) as a Serviço de Valor Adicionado (value-added service) rather than a telecommunications service, and required the state telecom carriers to provide network capacity to any private provider that asked, without exclusivity. This legal separation is what allowed commercial ISPs to exist in Brazil.",
+      "imageUrl": "images/dial-up-modem-33k.jpg",
+      "imageAlt": "An external 33.6k dial-up modem: a small beige box with a row of indicator lights along the front and a serial cable at the back.",
+      "imageCredit": "An external 33.6k serial dial-up modem, generic hardware of the period rather than a Brazilian scene. No photograph of the Brazilian internet in the 1990s could be found under a free licence. Public domain (CC0), via Wikimedia Commons.",
       "source": "Anatel, Ministério das Comunicações legislation archive",
       "sourceUrl": "https://informacoes.anatel.gov.br/legislacao/normas-do-mc/78-portaria-148"
     },
@@ -77,6 +80,9 @@
       "era": "2000-2009",
       "title": "Lan houses become the main way Brazilians get online",
       "description": "Between 2005 and 2008, before computers and broadband became affordable at home, lan houses (paid public internet shops) overtook the household as the most common place Brazilians used the internet. The TIC Domicílios survey run by CETIC.br for CGI.br found lan houses cited by 48% of internet users in 2008 against 42% for households. Home access moved back ahead from 2010 onwards as domestic broadband spread.",
+      "imageUrl": "images/lan-house-price-board-2010.jpg",
+      "imageAlt": "A handwritten price board outside a São Paulo lan house listing hourly rates for internet access, printing and wireless use.",
+      "imageCredit": "Price board at a lan house in Santa Cecília, São Paulo, 2010, showing the hourly rates for access, printing and wireless use. Photograph by Wagner Tamanaha, via Wikimedia Commons, CC BY-SA 2.0.",
       "source": "NIC.br",
       "sourceUrl": "https://nic.br/noticia/na-midia/o-que-aconteceu-com-as-lan-houses-no-brasil/"
     },

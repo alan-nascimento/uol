@@ -1,0 +1,22 @@
+<!--
+  Home page: key milestones. One loop over a flat collection. Every card
+  carries its source, which the validator guarantees is present.
+
+  Template comments never quote the engine's own tag syntax. The engine scans
+  the raw file and does not understand HTML comments, so a brace pair written
+  here as an example would be counted as a real tag and would unbalance the
+  surrounding block. The engine's syntax is documented in js/template-engine.js
+  instead, where it cannot be mistaken for markup.
+-->
+<div class="card-grid">
+  {{#each milestones}}
+  <article class="card">
+    <span class="card-year">{{year}}</span>
+    <h3>{{title}}</h3>
+    <p>{{summary}}</p>
+    <p class="source">
+      Source: <a href="{{sourceUrl}}" rel="noopener noreferrer">{{source}}</a>
+    </p>
+  </article>
+  {{/each}}
+</div>

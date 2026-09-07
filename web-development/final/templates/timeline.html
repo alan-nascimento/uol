@@ -1,0 +1,31 @@
+<!--
+  Timeline page: events of 1995-2026.
+
+  A loop with a conditional inside it, for the optional image. In the engine as
+  taught in the module this did not work: a loop substituted only plain
+  variables inside its fragment, so a conditional written within the loop was
+  evaluated against the top-level data rather than against the current event.
+-->
+<ol class="timeline">
+  {{#each events}}
+  <!--
+    Carries its era as a data attribute rather than an id. Several years hold
+    two events, so an id built from the year would not be unique and would fail
+    HTML validation. The era filter reads this attribute instead.
+  -->
+  <li class="timeline-event" data-era="{{era}}">
+    <p class="card-year">{{year}}</p>
+    <h3>{{title}}</h3>
+    {{#if imageUrl}}
+    <figure>
+      <img src="{{imageUrl}}" alt="{{imageAlt}}" loading="lazy" />
+      <figcaption class="credit">{{imageCredit}}</figcaption>
+    </figure>
+    {{/if}}
+    <p>{{description}}</p>
+    <p class="source">
+      Source: <a href="{{sourceUrl}}" rel="noopener noreferrer">{{source}}</a>
+    </p>
+  </li>
+  {{/each}}
+</ol>

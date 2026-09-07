@@ -6,6 +6,9 @@
       "yearsLabel": "2004-2014",
       "description": "Orkut launched in January 2004, built by Orkut Büyükkökten, a Turkish engineer at Google, as a side project. It never caught on in the United States but became the defining platform of the Brazilian web. Comscore recorded 21 million Brazilian unique visitors in September 2008, and Brazil remained its largest market until Facebook overtook it in December 2011, with 36.1 million visitors against Orkut's 34.4 million. On 7 August 2008 Google announced it was moving worldwide management of Orkut from California to its engineering office in Belo Horizonte, citing the size of the Brazilian user base and mounting local legal demands. Google announced the shutdown on 30 June 2014 and closed the service that September.",
       "globalSignificance": "Orkut is the clearest early case of a global platform whose centre of gravity moved to the Global South: Google relocated the product's worldwide management to Belo Horizonte because its users were mostly Brazilian. It also made Brazil an early test case for how far a United States platform must bend to another country's courts.",
+      "imageUrl": "images/orkut-buyukkokten-2007.png",
+      "imageAlt": "Orkut Büyükkökten photographed in 2007, wearing a dark shirt against a plain background.",
+      "imageCredit": "Orkut Büyükkökten, 2007. Photograph by Wagner Tamanaha, via Wikimedia Commons, CC BY-SA 2.0. No freely licensed screenshot of the Orkut interface exists, because the interface is Google's copyright.",
       "source": "Comscore",
       "sourceUrl": "https://www.comscore.com/Insights/Press-Releases/2008/11/Social-Networking-in-Brazil"
     },
@@ -19,6 +22,9 @@
       "quoteAuthor": "World Wide Web Foundation",
       "quoteSource": "Statement of support from Sir Tim Berners-Lee, 24 March 2014",
       "quoteUrl": "https://webfoundation.org/2014/03/marco-civil-statement-of-support-from-sir-tim-berners-lee/",
+      "imageUrl": "images/marco-civil-netmundial-2014.jpg",
+      "imageAlt": "A panel discussion on the Marco Civil da Internet at the Arena NETmundial in São Paulo, with speakers seated on a stage in front of an audience.",
+      "imageCredit": "Marco Civil da Internet debate at the Arena NETmundial, São Paulo, 22 April 2014, the day before the law was signed. Photograph by Ocastro, via Wikimedia Commons, CC BY-SA 3.0.",
       "source": "Presidência da República, Planalto",
       "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm"
     },
@@ -28,6 +34,9 @@
       "yearsLabel": "2020 to the present",
       "description": "Pix is Brazil's instant payment system, created, owned and operated by the Banco Central do Brasil, which runs both the settlement infrastructure and the rulebook that governs it. It entered full public operation on 16 November 2020 after a phased rollout, with participation mandatory for large financial institutions and transfers free of charge for individuals. Adoption was immediate: the central bank reported 12.2 million transactions worth R$ 9.3 billion in the first seven days. By May 2023 the International Monetary Fund found more than 140 million individuals, around 80% of Brazilian adults, and 13 million firms using it.",
       "globalSignificance": "The Bank for International Settlements and the IMF both study Pix closely, and the IMF reports Brazil as having the fastest adoption rate worldwide measured in transactions per capita gained since launch. It has become a standard reference case for central-bank-run public payment infrastructure, cited alongside India's UPI and the United States' FedNow.",
+      "imageUrl": "images/pix-market-stall-itajuba-2021.jpg",
+      "imageAlt": "A street market stall in Itajubá displaying a handwritten sign announcing that it accepts Pix, with produce laid out on the table in front.",
+      "imageCredit": "A market stall in Itajubá, Minas Gerais, accepting Pix, February 2021. Photograph by Mateus S. Figueiredo, via Wikimedia Commons, CC BY-SA 4.0.",
       "source": "Banco Central do Brasil",
       "sourceUrl": "https://www.bcb.gov.br/estabilidadefinanceira/pix"
     }

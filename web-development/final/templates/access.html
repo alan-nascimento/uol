@@ -1,0 +1,113 @@
+<!--
+  Getting Online page.
+
+  The most demanding template in the project. It reads nested objects through
+  dotted paths, iterates each era's key figures inside the loop over the eras
+  themselves, and renders the chart entirely from data. The module's original
+  engine could do none of the three: its non-greedy loop pattern stopped at the
+  first closing tag it met, so loops could not nest.
+
+  The bar chart is built from ordinary elements with an inline height, and is
+  followed by the same figures as a table. The table is not a fallback but the
+  authoritative version: it carries the methodology behind each year, which a
+  bar cannot show, and this series changes methodology twice.
+-->
+<section class="chart" aria-labelledby="chart-heading">
+  <h3 id="chart-heading">{{chart.title}}</h3>
+  <p class="source">Measured in {{chart.unit}}</p>
+
+  <div class="chart-plot">
+    {{#each chart.points}}
+    <div class="chart-bar">
+      <span class="bar-value">{{value}}</span>
+      <span class="bar" style="height: {{value}}%"></span>
+      <span class="bar-label">{{year}}</span>
+    </div>
+    {{/each}}
+  </div>
+
+  <p class="chart-note">{{chart.note}}</p>
+
+  <table class="chart-table">
+    <caption>
+      The same figures, with the methodology that produced each one
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Year</th>
+        <th scope="col">Households with access</th>
+        <th scope="col">Methodology</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each chart.points}}
+      <tr>
+        <td>{{year}}</td>
+        <td>{{value}}%</td>
+        <td>{{regime}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <p class="source">
+    Source: <a href="{{chart.sourceUrl}}" rel="noopener noreferrer">{{chart.source}}</a>
+  </p>
+</section>
+
+<section class="chart" aria-labelledby="comparison-heading">
+  <h3 id="comparison-heading">{{comparison.title}}</h3>
+  <p class="chart-note">{{comparison.note}}</p>
+
+  <table class="chart-table">
+    <thead>
+      <tr>
+        <th scope="col">Year</th>
+        <th scope="col">CETIC.br</th>
+        <th scope="col">IBGE</th>
+        <th scope="col">Difference</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each comparison.rows}}
+      <tr>
+        <td>{{year}}</td>
+        <td>{{cetic}}%</td>
+        <td>{{ibge}}%</td>
+        <td>{{gap}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <p class="source">
+    Source:
+    <a href="{{comparison.sourceUrl}}" rel="noopener noreferrer">{{comparison.source}}</a>
+  </p>
+</section>
+
+<section>
+  <h3>Four ways Brazilians got online</h3>
+  {{#each eras}}
+  <article class="era">
+    <div class="era-body">
+      <p class="era-years">{{yearsLabel}}</p>
+      <h4>{{name}}</h4>
+      <p>{{description}}</p>
+      <p class="source">
+        Source: <a href="{{sourceUrl}}" rel="noopener noreferrer">{{source}}</a>
+      </p>
+    </div>
+    <div class="era-aside">
+      <ul class="fact-list">
+        {{#each facts}}
+        <li>
+          <span class="fact-label">{{label}}</span>
+          <span class="fact-value">{{value}}</span>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  </article>
+  {{/each}}
+</section>

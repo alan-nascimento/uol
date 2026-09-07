@@ -183,6 +183,10 @@ const SCHEMAS = {
        because validation performed only in the browser can be bypassed by
        posting to the API directly. */
     collection: 'memories',
+    /* The only collection that may legitimately be empty. Nobody has
+       contributed yet is a state the wall is designed to show, not a fault in
+       the data, so it must not be reported as one. */
+    allowEmpty: true,
     fields: {
       id: { type: 'string', required: true },
       name: { type: 'string', required: true, minLength: 1, maxLength: 40 },
@@ -323,7 +327,10 @@ function validateDataset(schemaName, data) {
       }
     }
 
-    if (list.length === 0) {
+    /* An empty editorial dataset means something went wrong upstream, so it is
+       an error. An empty visitor dataset just means nobody has written in yet,
+       which the template handles with its else branch. */
+    if (list.length === 0 && !schema.allowEmpty) {
       return {
         valid: false,
         errors: [`"${schema.collection}" is empty, so there is nothing to show`],
