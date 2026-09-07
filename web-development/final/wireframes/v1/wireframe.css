@@ -1,0 +1,359 @@
+/* ===========================================================================
+   Wireframe stylesheet - CM1040 final coursework, Phase 2, version 1.
+
+   Greyscale and deliberately unstyled. Wireframes communicate layout,
+   hierarchy and reading order only; colour, typography and imagery are
+   decisions for the build stage, and showing them here invites reviewers to
+   comment on aesthetics instead of structure.
+
+   Mobile-first: the base rules describe the phone layout and the single
+   min-width breakpoint describes the desktop layout. Reviewers can therefore
+   open these files on their own device and see the real responsive
+   behaviour rather than a static picture of it.
+   =========================================================================== */
+
+:root {
+  --wf-paper: #ffffff;
+  --wf-fill: #f2f2f2;
+  --wf-fill-strong: #e0e0e0;
+  --wf-rule: #b5b5b5;
+  --wf-ink: #333333;
+  --wf-ink-soft: #6b6b6b;
+  --wf-gap: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: var(--wf-gap);
+  background: var(--wf-paper);
+  color: var(--wf-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* --- Annotation ----------------------------------------------------------
+   Explains to the reviewer what they are looking at. Not part of the design.
+   ------------------------------------------------------------------------- */
+
+.wf-annotation {
+  border-left: 4px solid var(--wf-rule);
+  background: var(--wf-fill);
+  padding: 0.75rem 1rem;
+  margin-bottom: var(--wf-gap);
+  font-size: 0.85rem;
+  color: var(--wf-ink-soft);
+}
+
+.wf-annotation strong {
+  color: var(--wf-ink);
+}
+
+/* --- Generic block -------------------------------------------------------
+   Every wireframe region is a labelled box. The label names the region so
+   feedback can refer to it precisely ("the milestone grid", not "that bit").
+   ------------------------------------------------------------------------- */
+
+.wf-block {
+  border: 1px solid var(--wf-rule);
+  background: var(--wf-fill);
+  padding: var(--wf-gap);
+  margin-bottom: var(--wf-gap);
+}
+
+.wf-label {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--wf-ink-soft);
+  margin-bottom: 0.5rem;
+}
+
+/* --- Placeholder text ----------------------------------------------------
+   Grey bars stand in for copy. Using real sentences here would pull the
+   reviewer into proof-reading the content instead of judging the layout.
+   ------------------------------------------------------------------------- */
+
+.wf-lines {
+  display: block;
+}
+
+.wf-lines span {
+  display: block;
+  height: 0.6rem;
+  background: var(--wf-fill-strong);
+  margin-bottom: 0.4rem;
+}
+
+.wf-lines span:last-child {
+  width: 62%;
+  margin-bottom: 0;
+}
+
+.wf-heading {
+  height: 1.5rem;
+  background: var(--wf-fill-strong);
+  width: 70%;
+  margin-bottom: 0.75rem;
+}
+
+.wf-heading.is-small {
+  height: 1rem;
+  width: 55%;
+}
+
+/* --- Image placeholder ---------------------------------------------------- */
+
+.wf-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  background: var(--wf-fill-strong);
+  border: 1px dashed var(--wf-rule);
+  color: var(--wf-ink-soft);
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.wf-image.is-tall {
+  min-height: 200px;
+}
+
+/* --- Site chrome ---------------------------------------------------------- */
+
+.wf-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.wf-header {
+  border: 1px solid var(--wf-rule);
+  padding: var(--wf-gap);
+  margin-bottom: var(--wf-gap);
+}
+
+.wf-brand {
+  height: 1.4rem;
+  width: 55%;
+  background: var(--wf-fill-strong);
+  margin-bottom: 0.75rem;
+}
+
+/* Phone navigation collapses to a menu button. The expanded desktop list is
+   hidden rather than removed so the markup and reading order stay identical
+   across breakpoints. */
+.wf-nav-toggle {
+  border: 1px solid var(--wf-rule);
+  background: var(--wf-fill);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  display: block;
+}
+
+.wf-nav ul {
+  display: none;
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.wf-nav li {
+  border: 1px solid var(--wf-rule);
+  background: var(--wf-fill);
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.wf-footer {
+  border: 1px solid var(--wf-rule);
+  padding: var(--wf-gap);
+  margin-top: var(--wf-gap);
+  font-size: 0.8rem;
+  color: var(--wf-ink-soft);
+}
+
+/* --- Layout helpers ------------------------------------------------------- */
+
+.wf-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wf-gap);
+}
+
+.wf-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--wf-gap);
+}
+
+/* --- Timeline ------------------------------------------------------------
+   On the phone the timeline is a single column with a left rail. On desktop
+   it alternates either side of a centre rail. Whether that alternation is
+   worth the complexity is one of the questions put to reviewers.
+   ------------------------------------------------------------------------- */
+
+.wf-timeline {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+.wf-timeline::before {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--wf-rule);
+}
+
+.wf-event {
+  position: relative;
+  border: 1px solid var(--wf-rule);
+  background: var(--wf-fill);
+  padding: var(--wf-gap);
+  margin-bottom: var(--wf-gap);
+}
+
+.wf-event::before {
+  content: "";
+  position: absolute;
+  left: -1.5rem;
+  top: 1.25rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--wf-ink-soft);
+}
+
+.wf-year {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Form ----------------------------------------------------------------- */
+
+.wf-field {
+  margin-bottom: 0.75rem;
+}
+
+.wf-field-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--wf-ink-soft);
+  margin-bottom: 0.25rem;
+}
+
+.wf-input {
+  border: 1px solid var(--wf-rule);
+  background: var(--wf-paper);
+  height: 2.25rem;
+}
+
+.wf-input.is-area {
+  height: 5rem;
+}
+
+.wf-button {
+  border: 1px solid var(--wf-ink-soft);
+  background: var(--wf-fill-strong);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+/* --- Data source indicator ------------------------------------------------
+   Present in the wireframe because it is a visible interface element, not an
+   implementation detail: it tells the visitor where the data came from.
+   ------------------------------------------------------------------------- */
+
+.wf-datasource {
+  border: 1px dashed var(--wf-rule);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--wf-ink-soft);
+  margin-bottom: var(--wf-gap);
+}
+
+/* ===========================================================================
+   Desktop breakpoint
+   =========================================================================== */
+
+@media (min-width: 768px) {
+  body {
+    padding: 1.5rem;
+  }
+
+  .wf-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .wf-brand {
+    width: 220px;
+    margin-bottom: 0;
+  }
+
+  .wf-nav-toggle {
+    display: none;
+  }
+
+  .wf-nav ul {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+  }
+
+  .wf-nav li {
+    margin-bottom: 0;
+  }
+
+  .wf-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .wf-split {
+    grid-template-columns: 3fr 2fr;
+    align-items: start;
+  }
+
+  /* Centre rail with alternating entries. */
+  .wf-timeline {
+    padding-left: 0;
+  }
+
+  .wf-timeline::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .wf-event {
+    width: calc(50% - 2rem);
+  }
+
+  .wf-event:nth-child(odd) {
+    margin-left: 0;
+  }
+
+  .wf-event:nth-child(even) {
+    margin-left: calc(50% + 2rem);
+  }
+
+  .wf-event:nth-child(odd)::before {
+    left: auto;
+    right: -2.35rem;
+  }
+
+  .wf-event:nth-child(even)::before {
+    left: -2.35rem;
+  }
+}

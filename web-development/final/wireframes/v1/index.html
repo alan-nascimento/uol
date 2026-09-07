@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wireframes v1 - The Internet in Brazil, 1995-2026</title>
+    <style>
+      /* Board chrome only. This page frames the wireframes for review; it is
+         not part of the website and none of its styling carries into the
+         build. Each frame is a live iframe rather than a screenshot, so the
+         wireframes stay in sync with their source files. */
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 1.5rem;
+        background: #fafafa;
+        color: #222;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial,
+          sans-serif;
+        line-height: 1.55;
+      }
+
+      .board {
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 1.55rem;
+        margin: 0 0 0.4rem;
+      }
+
+      .lede {
+        color: #555;
+        margin: 0 0 1.25rem;
+        max-width: 62ch;
+      }
+
+      .callout {
+        border: 1px solid #c9c9c9;
+        background: #fff;
+        padding: 1rem 1.15rem;
+        margin-bottom: 2rem;
+        border-radius: 4px;
+      }
+
+      .callout h2 {
+        font-size: 1rem;
+        margin: 0 0 0.5rem;
+      }
+
+      .callout ol {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+
+      .callout li {
+        margin-bottom: 0.35rem;
+      }
+
+      .page-set {
+        margin-bottom: 2.75rem;
+      }
+
+      .page-set h2 {
+        font-size: 1.15rem;
+        margin: 0 0 0.15rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid #ddd;
+      }
+
+      .page-set .purpose {
+        color: #555;
+        font-size: 0.9rem;
+        margin: 0.5rem 0 1rem;
+      }
+
+      .frames {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+
+      .frame figcaption {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #666;
+        margin-bottom: 0.4rem;
+      }
+
+      .frame {
+        margin: 0;
+      }
+
+      /* The iframe renders at a real viewport width and is then scaled down to
+         fit the board. Scaling rather than resizing means the wireframe inside
+         genuinely lays itself out at 1280px or 390px, so the responsive
+         behaviour on show is the real one. */
+      .viewport {
+        overflow: hidden;
+        border: 1px solid #bbb;
+        background: #fff;
+      }
+
+      .viewport iframe {
+        border: 0;
+        display: block;
+        transform-origin: top left;
+      }
+
+      .viewport.desktop {
+        width: 640px;
+        height: 600px;
+      }
+
+      .viewport.desktop iframe {
+        width: 1280px;
+        height: 1200px;
+        transform: scale(0.5);
+      }
+
+      .viewport.mobile {
+        width: 273px;
+        height: 600px;
+      }
+
+      .viewport.mobile iframe {
+        width: 390px;
+        height: 857px;
+        transform: scale(0.7);
+      }
+
+      .open-links {
+        margin-top: 0.6rem;
+        font-size: 0.85rem;
+      }
+
+      .open-links a {
+        color: #1a4f8a;
+      }
+
+      @media (max-width: 700px) {
+        .viewport.desktop {
+          width: 100%;
+          max-width: 320px;
+          height: 300px;
+        }
+
+        .viewport.desktop iframe {
+          transform: scale(0.25);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board">
+      <h1>Wireframes v1 - The Internet in Brazil, 1995-2026</h1>
+      <p class="lede">
+        Five pages, each shown at desktop and phone width. These are structural
+        wireframes: greyscale, no real copy, no imagery. Grey bars stand in for
+        text so that the layout, not the wording, is what gets judged.
+      </p>
+
+      <div class="callout">
+        <h2>If you are reviewing these, please do this</h2>
+        <ol>
+          <li>
+            Open a page on your own phone using the "phone" link under each
+            frame. That is the only way to judge the mobile layout honestly.
+          </li>
+          <li>
+            Answer the questionnaire. It takes about five minutes and there are
+            eight questions.
+          </li>
+          <li>
+            Tell me what is confusing or missing. I am looking for problems, not
+            compliments - "it looks nice" is genuinely no use to me.
+          </li>
+        </ol>
+      </div>
+
+      <section class="page-set">
+        <h2>1. Home</h2>
+        <p class="purpose">
+          Establishes what the site is about and offers a grid of key
+          milestones as a way in.
+        </p>
+        <div class="frames">
+          <figure class="frame">
+            <figcaption>Desktop - 1280px</figcaption>
+            <div class="viewport desktop">
+              <iframe src="home.html" title="Home wireframe at desktop width"></iframe>
+            </div>
+          </figure>
+          <figure class="frame">
+            <figcaption>Phone - 390px</figcaption>
+            <div class="viewport mobile">
+              <iframe src="home.html" title="Home wireframe at phone width"></iframe>
+            </div>
+          </figure>
+        </div>
+        <p class="open-links">
+          Open full size: <a href="home.html">home</a>
+        </p>
+      </section>
+
+      <section class="page-set">
+        <h2>2. Timeline</h2>
+        <p class="purpose">
+          The events of 1995-2026 in order, with an era filter for jumping
+          around.
+        </p>
+        <div class="frames">
+          <figure class="frame">
+            <figcaption>Desktop - 1280px</figcaption>
+            <div class="viewport desktop">
+              <iframe
+                src="timeline.html"
+                title="Timeline wireframe at desktop width"
+              ></iframe>
+            </div>
+          </figure>
+          <figure class="frame">
+            <figcaption>Phone - 390px</figcaption>
+            <div class="viewport mobile">
+              <iframe
+                src="timeline.html"
+                title="Timeline wireframe at phone width"
+              ></iframe>
+            </div>
+          </figure>
+        </div>
+        <p class="open-links">
+          Open full size: <a href="timeline.html">timeline</a>
+        </p>
+      </section>
+
+      <section class="page-set">
+        <h2>3. Getting Online</h2>
+        <p class="purpose">
+          How people actually reached the internet - dial-up, lan houses,
+          broadband, mobile - with a chart of household access over time.
+        </p>
+        <div class="frames">
+          <figure class="frame">
+            <figcaption>Desktop - 1280px</figcaption>
+            <div class="viewport desktop">
+              <iframe
+                src="getting-online.html"
+                title="Getting Online wireframe at desktop width"
+              ></iframe>
+            </div>
+          </figure>
+          <figure class="frame">
+            <figcaption>Phone - 390px</figcaption>
+            <div class="viewport mobile">
+              <iframe
+                src="getting-online.html"
+                title="Getting Online wireframe at phone width"
+              ></iframe>
+            </div>
+          </figure>
+        </div>
+        <p class="open-links">
+          Open full size: <a href="getting-online.html">getting online</a>
+        </p>
+      </section>
+
+      <section class="page-set">
+        <h2>4. Made in Brazil</h2>
+        <p class="purpose">
+          Three deep dives on what Brazil contributed rather than adopted.
+        </p>
+        <div class="frames">
+          <figure class="frame">
+            <figcaption>Desktop - 1280px</figcaption>
+            <div class="viewport desktop">
+              <iframe
+                src="made-in-brazil.html"
+                title="Made in Brazil wireframe at desktop width"
+              ></iframe>
+            </div>
+          </figure>
+          <figure class="frame">
+            <figcaption>Phone - 390px</figcaption>
+            <div class="viewport mobile">
+              <iframe
+                src="made-in-brazil.html"
+                title="Made in Brazil wireframe at phone width"
+              ></iframe>
+            </div>
+          </figure>
+        </div>
+        <p class="open-links">
+          Open full size: <a href="made-in-brazil.html">made in brazil</a>
+        </p>
+      </section>
+
+      <section class="page-set">
+        <h2>5. Memories</h2>
+        <p class="purpose">
+          Visitors add their own first memory of getting online, and the wall
+          shows what others submitted.
+        </p>
+        <div class="frames">
+          <figure class="frame">
+            <figcaption>Desktop - 1280px</figcaption>
+            <div class="viewport desktop">
+              <iframe
+                src="memories.html"
+                title="Memories wireframe at desktop width"
+              ></iframe>
+            </div>
+          </figure>
+          <figure class="frame">
+            <figcaption>Phone - 390px</figcaption>
+            <div class="viewport mobile">
+              <iframe
+                src="memories.html"
+                title="Memories wireframe at phone width"
+              ></iframe>
+            </div>
+          </figure>
+        </div>
+        <p class="open-links">
+          Open full size: <a href="memories.html">memories</a>
+        </p>
+      </section>
+    </div>
+  </body>
+</html>

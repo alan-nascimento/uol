@@ -1,0 +1,104 @@
+{
+  "chart": {
+    "title": "Brazilian households with internet access, 2005 to 2025",
+    "unit": "% of households",
+    "note": "No household figure exists for Brazil before 2005, so the chart starts there rather than in 1995. The survey changed twice: 2005 to 2007 covered urban areas only, and 2008 to 2013 counted only access by desktop or laptop, excluding mobile phones. The jump from 43% in 2013 to 50% in 2014 therefore mixes real growth with a change of definition. The 2020 figure was collected by telephone during the pandemic and CETIC.br advises caution comparing it. The dips in 2021, 2022 and 2024 are within the margin of error and have not been smoothed.",
+    "source": "CETIC.br / CGI.br, TIC Domicílios, indicator A4",
+    "sourceUrl": "https://cetic.br/pt/tics/domicilios/2025/domicilios/A4/",
+    "points": [
+      { "year": 2005, "value": 12.93, "regime": "Urban areas only" },
+      { "year": 2006, "value": 14.49, "regime": "Urban areas only" },
+      { "year": 2007, "value": 17, "regime": "Urban areas only" },
+      { "year": 2008, "value": 18, "regime": "Excludes mobile access" },
+      { "year": 2009, "value": 24, "regime": "Excludes mobile access" },
+      { "year": 2010, "value": 27, "regime": "Excludes mobile access" },
+      { "year": 2011, "value": 36, "regime": "Excludes mobile access" },
+      { "year": 2012, "value": 40, "regime": "Excludes mobile access" },
+      { "year": 2013, "value": 43, "regime": "Excludes mobile access" },
+      { "year": 2014, "value": 50, "regime": "All devices" },
+      { "year": 2015, "value": 51, "regime": "All devices" },
+      { "year": 2016, "value": 54, "regime": "All devices" },
+      { "year": 2017, "value": 61, "regime": "All devices" },
+      { "year": 2018, "value": 67, "regime": "All devices" },
+      { "year": 2019, "value": 71, "regime": "All devices" },
+      { "year": 2020, "value": 83, "regime": "Pandemic-adapted collection" },
+      { "year": 2021, "value": 82, "regime": "All devices" },
+      { "year": 2022, "value": 80, "regime": "All devices" },
+      { "year": 2023, "value": 84, "regime": "All devices" },
+      { "year": 2024, "value": 83, "regime": "All devices" },
+      { "year": 2025, "value": 86, "regime": "All devices" }
+    ]
+  },
+
+  "comparison": {
+    "title": "Two official surveys, one question, different answers",
+    "note": "CETIC.br asks whether the household has internet access. IBGE asks whether the internet was used in the household, which counts a resident using their own mobile phone indoors. In a country where 65% of internet users reach the network only by phone, that difference of wording moves the number by about ten percentage points. The 2022 Census, a third measurement again, landed between the two at 86.4%. Three public bodies, three definitions, three answers, none of them wrong.",
+    "source": "CETIC.br, TIC Domicílios, indicator A4; IBGE, PNAD Contínua ICT module, SIDRA table 7307",
+    "sourceUrl": "https://sidra.ibge.gov.br/tabela/7307",
+    "rows": [
+      { "year": 2016, "cetic": 54, "ibge": 70.8, "gap": "16.8 points" },
+      { "year": 2022, "cetic": 80, "ibge": 91.6, "gap": "11.6 points" },
+      { "year": 2024, "cetic": 83, "ibge": 93.7, "gap": "10.7 points" },
+      { "year": 2025, "cetic": 86, "ibge": 95.0, "gap": "9.0 points" }
+    ]
+  },
+
+  "eras": [
+    {
+      "id": "dial-up",
+      "name": "Dial-up",
+      "yearsLabel": "1995-2005",
+      "description": "Brazil's commercial internet began in 1995, when the Ministry of Communications approved Norma 004/95 and opened the provision of access to private ISPs, and the two ministries created the Comitê Gestor da Internet no Brasil, the multistakeholder body that still governs the Brazilian internet. Households connected over the ordinary telephone line with a modem discado (dial-up modem), paying for the ISP and for the metered local call at the same time. Because a household needed both a telephone line and a computer, penetration stayed in the low double digits for a decade. Dial-up then faded abruptly rather than gradually: it was still the connection in 39% of connected Brazilian homes in 2005, and 0.3% by 2024.",
+      "facts": [
+        { "label": "Private ISP market opened", "value": "31 May 1995, Norma 004/95" },
+        { "label": "Households with a connected computer, 2003", "value": "11.4%, IBGE PNAD" },
+        { "label": "Dial-up share of connected homes, 2005", "value": "39%" },
+        { "label": "Dial-up share of connected homes, 2024", "value": "0.3%" }
+      ],
+      "source": "CETIC.br / CGI.br and IBGE PNAD",
+      "sourceUrl": "https://cetic.br/pt/tics/domicilios/2005/domicilios/C4/"
+    },
+    {
+      "id": "lan-houses",
+      "name": "Lan houses",
+      "yearsLabel": "2005-2015",
+      "description": "Lan houses, small commercial shops renting time on networked PCs and called centros públicos de acesso pago in the official statistics, were how a large share of Brazilians first got online. They mattered most exactly where home access did not exist: in 2008 they were the access point for 79% of internet users in social classes D and E and 68% in the Nordeste, against 8% in class A. That year they briefly overtook the household as the most common place Brazilians used the internet, 48% against 42%. CGI.br's TIC Lan Houses survey found a mostly informal trade, 80% family-run and 97% with three employees or fewer. Falling computer prices and cheap home broadband then collapsed the model within about five years.",
+      "facts": [
+        { "label": "Users accessing from a lan house, peak", "value": "48% in 2008" },
+        { "label": "Same figure, social classes D and E", "value": "79% in 2008" },
+        { "label": "The decline", "value": "45% (2009), 35% (2010), 19% (2012), 12% (2015)" },
+        { "label": "Number of establishments", "value": "No official count; industry estimates of 100,000 to 130,000 around 2010, roughly 85% informal" }
+      ],
+      "source": "CETIC.br / CGI.br, TIC Domicílios, indicator C4",
+      "sourceUrl": "https://cetic.br/pt/tics/domicilios/2008/individuos/C4/"
+    },
+    {
+      "id": "fixed-broadband",
+      "name": "Fixed broadband",
+      "yearsLabel": "2006-2026",
+      "description": "Banda larga fixa displaced dial-up far faster than it displaced the lan house. Among connected urban households broadband already led dial-up by 50% to 42% in 2007, and nationally by 58% to 31% in 2008. The early phase was ADSL and cable; the current one is dominated by fibre, much of it built by thousands of small regional providers known as pequenos provedores rather than by the four national carriers. Fibre or cable now reaches 73% of connected households. Speed, though, remains stratified by income: only 38% of connected households reported 51 Mbps or more in 2025, and just 21% in classes D and E.",
+      "facts": [
+        { "label": "Broadband overtakes dial-up", "value": "2007, 50% against 42%, urban households" },
+        { "label": "Fixed broadband accesses, Q2 2026", "value": "55.4 million, Anatel" },
+        { "label": "Of which fibre", "value": "44.7 million, over 80% of the base" },
+        { "label": "Households reporting 51 Mbps or more, 2025", "value": "38%, falling to 21% in classes D and E" }
+      ],
+      "source": "Anatel and CETIC.br, TIC Domicílios 2025",
+      "sourceUrl": "https://cetic.br/pt/tics/domicilios/2007/domicilios/A5/"
+    },
+    {
+      "id": "mobile-first",
+      "name": "Mobile and phone-only access",
+      "yearsLabel": "2014-2026",
+      "description": "Brazil did not so much migrate from the computer to the smartphone as skip the computer. TIC Domicílios only began counting mobile access as household internet access in 2014, and by 2025 the phone was used by 99% of internet users while 65% used nothing else. That pattern tracks income, geography and race closely: phone-only access reaches 87% in classes D and E, 83% in rural areas and 73% among people who identify as preta. A computer was present in only 32% of households in 2025. CETIC.br argues this is a question of quality rather than preference, since 52% of phone owners are on capped planos pré-pagos and 39% had run out of data in the previous three months.",
+      "facts": [
+        { "label": "Internet users on mobile only, 2025", "value": "65%, rising to 87% in classes D and E" },
+        { "label": "Internet users who used a phone at all, 2025", "value": "99%" },
+        { "label": "Households with internet but no computer, 2025", "value": "43.4 million" },
+        { "label": "Ran out of mobile data in the last three months", "value": "39% of phone owners" }
+      ],
+      "source": "CETIC.br / CGI.br, TIC Domicílios 2025",
+      "sourceUrl": "https://cetic.br/pt/tics/domicilios/2025/domicilios/A4/"
+    }
+  ]
+}

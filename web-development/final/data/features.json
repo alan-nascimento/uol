@@ -1,0 +1,35 @@
+{
+  "features": [
+    {
+      "id": "orkut",
+      "name": "Orkut",
+      "yearsLabel": "2004-2014",
+      "description": "Orkut launched in January 2004, built by Orkut Büyükkökten, a Turkish engineer at Google, as a side project. It never caught on in the United States but became the defining platform of the Brazilian web. Comscore recorded 21 million Brazilian unique visitors in September 2008, and Brazil remained its largest market until Facebook overtook it in December 2011, with 36.1 million visitors against Orkut's 34.4 million. On 7 August 2008 Google announced it was moving worldwide management of Orkut from California to its engineering office in Belo Horizonte, citing the size of the Brazilian user base and mounting local legal demands. Google announced the shutdown on 30 June 2014 and closed the service that September.",
+      "globalSignificance": "Orkut is the clearest early case of a global platform whose centre of gravity moved to the Global South: Google relocated the product's worldwide management to Belo Horizonte because its users were mostly Brazilian. It also made Brazil an early test case for how far a United States platform must bend to another country's courts.",
+      "source": "Comscore",
+      "sourceUrl": "https://www.comscore.com/Insights/Press-Releases/2008/11/Social-Networking-in-Brazil"
+    },
+    {
+      "id": "marco-civil",
+      "name": "Marco Civil da Internet",
+      "yearsLabel": "2009-2014, in force since 2014",
+      "description": "Lei nº 12.965, of 23 April 2014, was signed at the opening of the NETmundial governance meeting in São Paulo, a day after the Senate approved it. Article 3 sets out its principles: freedom of expression, protection of privacy and personal data, net neutrality, network stability and security, and the participatory nature of the network. Article 9 requires anyone transmitting, switching or routing traffic to treat all data packets equally, without discriminating by content, origin, destination, service or application. Article 19 made platforms civilly liable for a user's content only once they had ignored a specific court order. Drafted through open public consultation and sent to Congress in 2011, it was accelerated after the 2013 Snowden revelations of surveillance of Brazil.",
+      "globalSignificance": "It gave the world a concrete legislative model for net neutrality and intermediary liability at a moment when both were contested internationally, and it was widely read as a template other countries might copy. In June 2025, however, the Supreme Court held Article 19 partly unconstitutional, so its most-cited clause no longer stands as written.",
+      "quote": "This week, the Brazilian Congress may vote on Marco Civil, which some have called a 'Constitution for the Internet'.",
+      "quoteAuthor": "World Wide Web Foundation",
+      "quoteSource": "Statement of support from Sir Tim Berners-Lee, 24 March 2014",
+      "quoteUrl": "https://webfoundation.org/2014/03/marco-civil-statement-of-support-from-sir-tim-berners-lee/",
+      "source": "Presidência da República, Planalto",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm"
+    },
+    {
+      "id": "pix",
+      "name": "Pix",
+      "yearsLabel": "2020 to the present",
+      "description": "Pix is Brazil's instant payment system, created, owned and operated by the Banco Central do Brasil, which runs both the settlement infrastructure and the rulebook that governs it. It entered full public operation on 16 November 2020 after a phased rollout, with participation mandatory for large financial institutions and transfers free of charge for individuals. Adoption was immediate: the central bank reported 12.2 million transactions worth R$ 9.3 billion in the first seven days. By May 2023 the International Monetary Fund found more than 140 million individuals, around 80% of Brazilian adults, and 13 million firms using it.",
+      "globalSignificance": "The Bank for International Settlements and the IMF both study Pix closely, and the IMF reports Brazil as having the fastest adoption rate worldwide measured in transactions per capita gained since launch. It has become a standard reference case for central-bank-run public payment infrastructure, cited alongside India's UPI and the United States' FedNow.",
+      "source": "Banco Central do Brasil",
+      "sourceUrl": "https://www.bcb.gov.br/estabilidadefinanceira/pix"
+    }
+  ]
+}

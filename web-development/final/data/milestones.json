@@ -1,0 +1,46 @@
+{
+  "milestones": [
+    {
+      "year": 1995,
+      "title": "The internet opens to the private sector",
+      "summary": "Norma 004/95 defined internet access as a value-added service rather than a telecommunications service, and obliged the state carriers to sell capacity to any provider without exclusivity. Commercial ISPs became possible in Brazil.",
+      "source": "Anatel, Ministério das Comunicações legislation archive",
+      "sourceUrl": "https://informacoes.anatel.gov.br/legislacao/normas-do-mc/78-portaria-148"
+    },
+    {
+      "year": 1996,
+      "title": "UOL brings Brazilian content to the Brazilian web",
+      "summary": "Universo Online launched on 28 April 1996 with the daily Folha de S.Paulo, an archive of some 250,000 articles and the Bate-Papo chat rooms. Access and locally made content arrived together rather than separately.",
+      "source": "UOL",
+      "sourceUrl": "https://sobreuol.noticias.uol.com.br/historia"
+    },
+    {
+      "year": 2004,
+      "title": "Orkut becomes a Brazilian institution",
+      "summary": "Google's social network never took hold in the United States but became overwhelmingly Brazilian. By August 2008 Google was moving control of the product from California to its office in Belo Horizonte.",
+      "source": "Folha de S.Paulo",
+      "sourceUrl": "https://www1.folha.uol.com.br/fsp/cotidian/ff0808200827.htm"
+    },
+    {
+      "year": 2008,
+      "title": "Lan houses overtake the home",
+      "summary": "For a period in the 2000s the most common place Brazilians used the internet was not the household but the lan house, the paid public internet shop. In 2008 they were cited by 48% of internet users against 42% for homes.",
+      "source": "NIC.br",
+      "sourceUrl": "https://nic.br/noticia/na-midia/o-que-aconteceu-com-as-lan-houses-no-brasil/"
+    },
+    {
+      "year": 2014,
+      "title": "The Marco Civil sets rights in law",
+      "summary": "Lei nº 12.965 established net neutrality, privacy and freedom of expression online, and defined when platforms answer for what their users post. It was signed at the opening of the NETmundial governance meeting in São Paulo.",
+      "source": "Presidência da República, Planalto",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm"
+    },
+    {
+      "year": 2020,
+      "title": "Pix rebuilds how the country pays",
+      "summary": "The Banco Central do Brasil launched its instant payment system into full operation on 16 November 2020. Transfers between people, businesses and government settle in seconds using a key, a QR code or a pasted code.",
+      "source": "Banco Central do Brasil",
+      "sourceUrl": "https://www.bcb.gov.br/estabilidadefinanceira/pix"
+    }
+  ]
+}

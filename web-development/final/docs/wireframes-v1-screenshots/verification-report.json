@@ -1,0 +1,42 @@
+{
+  "checks": {
+    "1": {
+      "pass": true,
+      "details": "{\"desktopFrames\":5,\"mobileFrames\":5,\"desktopOk\":true,\"mobileOk\":true,\"overflowOk\":true,\"blankOk\":true,\"issues\":[],\"desktopSample\":{\"hasContent\":true,\"hasGreyElements\":true,\"menuVisible\":false,\"navListDisplay\":\"flex\",\"navHorizontal\":true,\"bodyTextLen\":447,\"overflowX\":false,\"viewportClass\":\"desktop\"},\"mobileSample\":{\"hasContent\":true,\"hasGreyElements\":true,\"menuVisible\":true,\"navListDisplay\":\"none\",\"navHorizontal\":false,\"bodyTextLen\":399,\"overflowX\":false,\"viewportClass\":\"mobile\"}}"
+    },
+    "2": {
+      "pass": true,
+      "details": "{\"issues\":[],\"dotRail\":{\"dots\":[{\"idx\":1,\"dotCenterX\":640,\"railX\":640,\"delta\":0,\"side\":\"left\"},{\"idx\":2,\"dotCenterX\":640,\"railX\":640,\"delta\":0,\"side\":\"right\"},{\"idx\":3,\"dotCenterX\":640,\"railX\":640,\"delta\":0,\"side\":\"left\"},{\"idx\":4,\"dotCenterX\":640,\"railX\":640,\"delta\":0,\"side\":\"right\"},{\"idx\":5,\"dotCenterX\":640,\"railX\":640,\"delta\":0,\"side\":\"left\"}],\"railLine\":{\"railX\":640,\"width\":2,\"background\":\"rgb(181, 181, 181)\"},\"oddLeft\":true,\"evenRight\":true,\"alternating\":true,\"pageCenter\":640}}"
+    },
+    "3": {
+      "pass": false,
+      "details": "{\"issues\":[\".wf-event cards should be single column on left on mobile\"],\"dotRail\":{\"dots\":[{\"idx\":1,\"dotCenterX\":25.6,\"railX\":24,\"delta\":1.6000000000000014,\"side\":\"right\"},{\"idx\":2,\"dotCenterX\":25.6,\"railX\":24,\"delta\":1.6000000000000014,\"side\":\"right\"},{\"idx\":3,\"dotCenterX\":25.6,\"railX\":24,\"delta\":1.6000000000000014,\"side\":\"right\"},{\"idx\":4,\"dotCenterX\":25.6,\"railX\":24,\"delta\":1.6000000000000014,\"side\":\"right\"},{\"idx\":5,\"dotCenterX\":25.6,\"railX\":24,\"delta\":1.6000000000000014,\"side\":\"right\"}],\"railLine\":{\"railX\":24,\"width\":2,\"background\":\"rgb(181, 181, 181)\"},\"oddLeft\":false,\"evenRight\":true,\"alternating\":false,\"pageCenter\":195}}"
+    },
+    "4": {
+      "pass": true,
+      "details": "{\"home.html\":{\"pass\":true,\"issues\":[],\"data\":{\"scrollWidth\":390,\"clientWidth\":390,\"hasHScroll\":false,\"navToggle\":true,\"navUlDisplay\":\"none\",\"grids\":[\"324px\"],\"splits\":[\"358px\"]}},\"getting-online.html\":{\"pass\":true,\"issues\":[],\"data\":{\"scrollWidth\":390,\"clientWidth\":390,\"hasHScroll\":false,\"navToggle\":true,\"navUlDisplay\":\"none\",\"grids\":[],\"splits\":[\"358px\",\"358px\",\"358px\",\"358px\"]}},\"made-in-brazil.html\":{\"pass\":true,\"issues\":[],\"data\":{\"scrollWidth\":390,\"clientWidth\":390,\"hasHScroll\":false,\"navToggle\":true,\"navUlDisplay\":\"none\",\"grids\":[],\"splits\":[\"358px\",\"358px\",\"358px\"]}},\"memories.html\":{\"pass\":true,\"issues\":[],\"data\":{\"scrollWidth\":390,\"clientWidth\":390,\"hasHScroll\":false,\"navToggle\":true,\"navUlDisplay\":\"none\",\"grids\":[\"324px\"],\"splits\":[\"358px\"]}}}"
+    },
+    "5": {
+      "pass": true,
+      "details": "No console errors on any page"
+    }
+  },
+  "consoleErrors": {
+    "index.html": [],
+    "timeline.html (desktop)": [],
+    "timeline.html (mobile)": [],
+    "home.html": [],
+    "getting-online.html": [],
+    "made-in-brazil.html": [],
+    "memories.html": []
+  },
+  "screenshots": [
+    "/Users/alannascimento/Workspace/alan-nascimento/uol/web-development/final/wireframes/v1/.verification-screenshots/01-board-index-fullpage.png",
+    "/Users/alannascimento/Workspace/alan-nascimento/uol/web-development/final/wireframes/v1/.verification-screenshots/02-timeline-desktop-1280x900.png",
+    "/Users/alannascimento/Workspace/alan-nascimento/uol/web-development/final/wireframes/v1/.verification-screenshots/03-timeline-mobile-390x844.png",
+    "/Users/alannascimento/Workspace/alan-nascimento/uol/web-development/final/wireframes/v1/.verification-screenshots/04-mobile-home-390x844.png",
+    "/Users/alannascimento/Workspace/alan-nascimento/uol/web-development/final/wireframes/v1/.verification-screenshots/04-mobile-getting-online-390x844.png",
+    "/Users/alannascimento/Workspace/alan-nascimento/uol/web-development/final/wireframes/v1/.verification-screenshots/04-mobile-made-in-brazil-390x844.png",
+    "/Users/alannascimento/Workspace/alan-nascimento/uol/web-development/final/wireframes/v1/.verification-screenshots/04-mobile-memories-390x844.png"
+  ]
+}

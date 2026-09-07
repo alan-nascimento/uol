@@ -1,0 +1,669 @@
+/* ===========================================================================
+   The Internet in Brazil, 1995-2026
+   CM1040 final coursework - main stylesheet
+
+   Written mobile-first: the base rules describe the phone layout, and the
+   min-width media queries add complexity as the viewport grows. Layout is
+   handled with CSS Grid, the technique covered in the module, rather than a
+   framework.
+
+   No CSS framework is used anywhere in this project. Everything here is
+   hand-written so that the responsive behaviour is explicit and explainable.
+   =========================================================================== */
+
+:root {
+  --paper: #fbfaf7;
+  --paper-raised: #ffffff;
+  --ink: #1c2321;
+  --ink-soft: #5a6360;
+  --rule: #d9d6cf;
+  --accent: #0a7d5a;
+  --accent-dark: #075a41;
+  --accent-warm: #e8b21e;
+
+  --measure: 68ch;
+  --container: 1140px;
+  --radius: 6px;
+  --space: 1rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: 1.85rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0 0 1em;
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--accent-dark);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--space);
+}
+
+/* --- Header and navigation ------------------------------------------------
+   The navigation is a plain list of links. On a phone it stacks; from the
+   tablet breakpoint upwards it becomes a row. No JavaScript is involved, so
+   the menu cannot break if a script fails to load.
+   ------------------------------------------------------------------------- */
+
+.site-header {
+  background: var(--paper-raised);
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-header .container {
+  padding-top: var(--space);
+  padding-bottom: var(--space);
+}
+
+.site-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+
+.site-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.site-nav a {
+  display: block;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.site-nav a:hover {
+  border-color: var(--accent);
+}
+
+/* The current page is marked in the markup with aria-current="page" so the
+   styling hook and the accessible information are the same thing. */
+.site-nav a[aria-current="page"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* --- Page furniture ------------------------------------------------------- */
+
+main {
+  padding: 2rem 0 3rem;
+}
+
+.page-intro {
+  margin-bottom: 2rem;
+}
+
+.page-intro .lede {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+}
+
+section {
+  margin-bottom: 2.5rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--rule);
+  background: var(--paper-raised);
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.site-footer h2 {
+  font-size: 1rem;
+}
+
+.site-footer ul {
+  padding-left: 1.1rem;
+  margin: 0 0 1em;
+}
+
+/* --- Hero ----------------------------------------------------------------- */
+
+.hero {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-left: 5px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.hero h1 {
+  margin-bottom: 0.35em;
+}
+
+.hero .standfirst {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+}
+
+.button {
+  display: inline-block;
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.6rem 1.15rem;
+  text-decoration: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--accent-dark);
+}
+
+/* --- Card grid -----------------------------------------------------------
+   repeat(auto-fit, minmax(...)) lets the browser decide the column count from
+   the available width, so the number of columns changes continuously instead
+   of jumping only at hand-written breakpoints.
+   ------------------------------------------------------------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space);
+}
+
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+}
+
+.card h3 {
+  margin-bottom: 0.35em;
+}
+
+.card p {
+  margin-bottom: 0.6em;
+}
+
+.card-year {
+  display: inline-block;
+  background: var(--accent-warm);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Citations -----------------------------------------------------------
+   Every factual record carries its source, and the validator refuses to
+   render a record without one, so this element is always populated.
+   ------------------------------------------------------------------------- */
+
+.source {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.credit {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin: 0.35rem 0 0;
+}
+
+/* --- Timeline ------------------------------------------------------------- */
+
+.timeline {
+  position: relative;
+  padding-left: 1.75rem;
+  margin: 0;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0.4rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background: var(--rule);
+}
+
+.timeline-event {
+  position: relative;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  margin-bottom: var(--space);
+}
+
+.timeline-event::before {
+  content: "";
+  position: absolute;
+  left: -1.5rem;
+  top: 1.4rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.timeline-event img {
+  border-radius: var(--radius);
+  margin: 0.75rem 0 0.5rem;
+}
+
+.era-filter ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+
+.era-filter a {
+  display: inline-block;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.8rem;
+  background: var(--paper-raised);
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+/* --- Chart ---------------------------------------------------------------
+   A bar chart built from ordinary elements rather than a charting library.
+   The figures are also given as a table in the markup, so the information is
+   available to anyone who cannot interpret the bars.
+   ------------------------------------------------------------------------- */
+
+.chart {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.chart-plot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  height: 220px;
+  border-bottom: 2px solid var(--rule);
+  padding-bottom: 2px;
+  margin-bottom: 0.5rem;
+  overflow-x: auto;
+}
+
+.chart-bar {
+  flex: 1 0 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.chart-bar .bar {
+  width: 100%;
+  background: var(--accent);
+  border-radius: 3px 3px 0 0;
+  min-height: 2px;
+}
+
+.chart-bar .bar-value {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.2rem;
+}
+
+.chart-bar .bar-label {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  margin-top: 0.3rem;
+}
+
+.chart-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}
+
+.chart-table th,
+.chart-table td {
+  border: 1px solid var(--rule);
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+}
+
+/* --- Eras and features ---------------------------------------------------- */
+
+.era,
+.feature {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: var(--space);
+}
+
+.era-years,
+.feature-years {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
+}
+
+.fact-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.fact-list li {
+  border-left: 3px solid var(--accent-warm);
+  padding-left: 0.7rem;
+}
+
+.fact-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.fact-value {
+  font-weight: 700;
+}
+
+.significance {
+  border-top: 1px solid var(--rule);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+}
+
+.significance h4 {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin: 0 0 0.4em;
+}
+
+/* --- Data source indicator -----------------------------------------------
+   Tells the visitor where the content came from. Shown rather than logged,
+   because it explains why the contribution form is or is not available.
+   ------------------------------------------------------------------------- */
+
+.data-source {
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+  background: var(--paper-raised);
+}
+
+.data-source strong {
+  color: var(--ink);
+}
+
+/* --- Form ----------------------------------------------------------------- */
+
+.memory-form {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.field textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 0.25rem 0 0;
+}
+
+button[disabled],
+.button[disabled] {
+  background: var(--rule);
+  border-color: var(--rule);
+  color: var(--ink-soft);
+  cursor: not-allowed;
+}
+
+/* --- Status and error messages -------------------------------------------
+   A dataset that fails validation produces a readable message in place of the
+   content, instead of an empty region and a console error nobody sees.
+   ------------------------------------------------------------------------- */
+
+.message {
+  border: 1px solid var(--rule);
+  border-left: 5px solid var(--ink-soft);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  padding: 1rem 1.15rem;
+  margin-bottom: var(--space);
+}
+
+.message.is-error {
+  border-left-color: #a4342c;
+}
+
+.message.is-success {
+  border-left-color: var(--accent);
+}
+
+.message h2 {
+  font-size: 1rem;
+  margin-bottom: 0.4em;
+}
+
+.message ul {
+  margin: 0.5em 0 0;
+  padding-left: 1.15rem;
+  font-size: 0.88rem;
+}
+
+.loading {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* --- Memory wall ---------------------------------------------------------- */
+
+.memory {
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.memory-meta {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
+}
+
+.memory p {
+  margin: 0;
+}
+
+/* ===========================================================================
+   Tablet and above
+   =========================================================================== */
+
+@media (min-width: 700px) {
+  h1 {
+    font-size: 2.3rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  .site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space);
+  }
+
+  .site-title {
+    margin-bottom: 0;
+  }
+
+  .site-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .hero {
+    padding: 2.25rem;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .fact-list {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .memory-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space);
+  }
+
+  .contribute {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: var(--space);
+    align-items: start;
+  }
+}
+
+/* ===========================================================================
+   Desktop
+   =========================================================================== */
+
+@media (min-width: 1000px) {
+  .era,
+  .feature {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .era-body,
+  .feature-body {
+    grid-column: 1;
+  }
+
+  .era-aside,
+  .feature-aside {
+    grid-column: 2;
+  }
+
+  /* Alternate the media side so a run of features does not read as a stack of
+     identical slabs. */
+  .feature:nth-child(even) .feature-body {
+    grid-column: 2;
+  }
+
+  .feature:nth-child(even) .feature-aside {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}

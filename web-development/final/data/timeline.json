@@ -1,0 +1,164 @@
+{
+  "events": [
+    {
+      "year": 1995,
+      "era": "1995-1999",
+      "title": "Brazil opens the internet to commercial providers with Norma 004/95",
+      "description": "On 31 May 1995 the Ministério das Comunicações issued Portaria nº 148, approving Norma 004/95, on the use of the public telecommunications network for internet access. It defined the Serviço de Conexão à Internet (internet connection service) as a Serviço de Valor Adicionado (value-added service) rather than a telecommunications service, and required the state telecom carriers to provide network capacity to any private provider that asked, without exclusivity. This legal separation is what allowed commercial ISPs to exist in Brazil.",
+      "source": "Anatel, Ministério das Comunicações legislation archive",
+      "sourceUrl": "https://informacoes.anatel.gov.br/legislacao/normas-do-mc/78-portaria-148"
+    },
+    {
+      "year": 1995,
+      "era": "1995-1999",
+      "title": "Creation of the Comitê Gestor Internet do Brasil",
+      "description": "Also on 31 May 1995, Portaria Interministerial nº 147, signed jointly by the Ministers of Communications and of Science and Technology, created the Comitê Gestor Internet do Brasil, known today as CGI.br. Its remit included recommending technical standards and a code of ethics for internet services in Brazil, and coordinating the allocation of IP addresses and the registration of domain names. Its members were appointed separately, by Portaria Interministerial nº 183 of 3 July 1995.",
+      "source": "CGI.br",
+      "sourceUrl": "https://cgi.br/portarias/numero/147/"
+    },
+    {
+      "year": 1996,
+      "era": "1995-1999",
+      "title": "UOL launches, Brazil's first large content portal",
+      "description": "Universo Online (UOL) went live on 28 April 1996, created by Grupo Folha. It combined internet access with Brazilian-made content: the daily edition of the Folha de S.Paulo, an archive of roughly 250,000 articles, translated New York Times reporting, classifieds, and the Bate-Papo chat rooms that became one of the defining products of the early Brazilian web. In September 1996 it merged with Editora Abril's rival portal Brasil Online (BOL).",
+      "source": "UOL",
+      "sourceUrl": "https://sobreuol.noticias.uol.com.br/historia"
+    },
+    {
+      "year": 1997,
+      "era": "1995-1999",
+      "title": "The Lei Geral de Telecomunicações creates Anatel",
+      "description": "Lei nº 9.472, of 16 July 1997, reorganised Brazilian telecommunications and created Anatel, the sector's independent regulator. It established that services could be provided under a public regime, a private regime, or both, and set the ground rules for the competition that would govern fixed line, mobile and later broadband provision. It also provided the legal basis for privatising the state-owned Telebrás system.",
+      "source": "Presidência da República, Planalto",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/leis/l9472.htm"
+    },
+    {
+      "year": 1998,
+      "era": "1995-1999",
+      "title": "Privatisation of the Telebrás system",
+      "description": "On 29 July 1998 the federal government sold its controlling stakes in the twelve companies that succeeded Telebrás, in twelve consecutive auctions at the Rio de Janeiro stock exchange. The sale raised R$ 22.058 billion at an average premium of about 63.7%, the largest privatisation in Brazil to that point. Three fixed-line holdings, the long-distance carrier Embratel and eight mobile operators passed into private hands, which drove the rapid expansion of the mobile networks most Brazilians would later use to reach the internet.",
+      "source": "Anatel",
+      "sourceUrl": "https://www.gov.br/anatel/pt-br/assuntos/noticias/20-anos-de-privatizacao-das-telecomunicacoes"
+    },
+    {
+      "year": 2000,
+      "era": "2000-2009",
+      "title": "iG launches free dial-up access and upends the ISP market",
+      "description": "iG began offering free dial-up internet in São Paulo and Rio de Janeiro on 9 January 2000, reaching 14 cities within a week. Users paid only for the telephone pulses, not a subscription, which broke the paid model of UOL, Terra and AOL. Within days the rivals BRfree and Super11 had launched similar services, and by mid-January the competition authority Cade had received 41 complaints from paid providers about free access.",
+      "source": "Folha de S.Paulo",
+      "sourceUrl": "https://www1.folha.uol.com.br/fsp/informat/fr1901200016.htm"
+    },
+    {
+      "year": 2003,
+      "era": "2000-2009",
+      "title": "Decreto 4.829 makes CGI.br a multistakeholder body",
+      "description": "Decreto nº 4.829, of 3 September 2003, restructured the Comitê Gestor da Internet no Brasil around a 21-member multistakeholder composition: government and agency representatives alongside four elected seats for business, four for the third sector and three for the scientific and technological community. It also allowed .br domain registration and IP allocation to be delegated to a non-profit entity. Civil society voting rather than merely being consulted is one of the genuinely distinctive features of Brazil's internet.",
+      "source": "Presidência da República, Planalto",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/decreto/2003/d4829.htm"
+    },
+    {
+      "year": 2004,
+      "era": "2000-2009",
+      "title": "Orkut launches and finds its largest audience in Brazil",
+      "description": "Google launched the social network Orkut in 2004. It never took hold in the United States but became overwhelmingly Brazilian, to the point that in August 2008 Google announced it was moving control of the product from its California team to its office in Belo Horizonte. The move followed a wave of Brazilian court actions against Orkut from 2006, in which Google Brasil had argued it could not hand over data because the servers were held by Google Inc. in the United States.",
+      "source": "Folha de S.Paulo",
+      "sourceUrl": "https://www1.folha.uol.com.br/fsp/cotidian/ff0808200827.htm"
+    },
+    {
+      "year": 2007,
+      "era": "2000-2009",
+      "title": "Anatel auctions 3G spectrum",
+      "description": "Anatel auctioned 36 lots of third-generation mobile spectrum between 18 and 20 December 2007. The sale raised R$ 5.34 billion, 86.67% above the combined reserve price, far exceeding the agency's own forecast, with Claro spending the most at R$ 1.42 billion. The licences carried coverage obligations, and the Minister of Communications stated at the close of the auction that every municipality in the country would have coverage by 2010 as a result.",
+      "source": "Folha de S.Paulo",
+      "sourceUrl": "https://www1.folha.uol.com.br/fsp/dinheiro/fi2112200732.htm"
+    },
+    {
+      "year": 2008,
+      "era": "2000-2009",
+      "title": "Lan houses become the main way Brazilians get online",
+      "description": "Between 2005 and 2008, before computers and broadband became affordable at home, lan houses (paid public internet shops) overtook the household as the most common place Brazilians used the internet. The TIC Domicílios survey run by CETIC.br for CGI.br found lan houses cited by 48% of internet users in 2008 against 42% for households. Home access moved back ahead from 2010 onwards as domestic broadband spread.",
+      "source": "NIC.br",
+      "sourceUrl": "https://nic.br/noticia/na-midia/o-que-aconteceu-com-as-lan-houses-no-brasil/"
+    },
+    {
+      "year": 2012,
+      "era": "2010-2019",
+      "title": "The 4G auction ties urban licences to rural coverage duties",
+      "description": "Anatel auctioned the 2.5 GHz and 450 MHz bands on 12 and 13 June 2012, raising R$ 2.930 billion across 54 lots at an average premium of 31.27%. Claro, Vivo, TIM and Oi each took one of the four national lots. Because no bidder wanted the 450 MHz rural lot on its own, the four national winners were obliged to deliver rural telephony and broadband as a condition of holding their urban 4G licences.",
+      "source": "G1, Globo",
+      "sourceUrl": "https://g1.globo.com/tecnologia/noticia/2012/06/anatel-arrecada-r-29-bilhoes-com-leilao-da-telefonia-movel-4g.html"
+    },
+    {
+      "year": 2014,
+      "era": "2010-2019",
+      "title": "The Marco Civil da Internet is signed into law",
+      "description": "Lei nº 12.965, of 23 April 2014, established principles, guarantees, rights and duties for internet use in Brazil, covering net neutrality, privacy, freedom of expression and the conditions under which platforms can be held liable for content posted by third parties. It applies even to companies based abroad that offer services to the Brazilian public. It was signed at the opening of NETmundial, the global meeting on internet governance that Brazil hosted in São Paulo on 23 and 24 April 2014, in the aftermath of the Snowden revelations.",
+      "source": "Presidência da República, Planalto",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm"
+    },
+    {
+      "year": 2014,
+      "era": "2010-2019",
+      "title": "Google shuts down Orkut",
+      "description": "On 30 June 2014 Google announced that Orkut would close on 30 September 2014, ten years after launch, saying that YouTube, Blogger and Google+ had outgrown it. New accounts were blocked immediately, and users could export profiles, community posts and photos until September 2016. For a generation of Brazilians, Orkut had been their first social network, and its closure marked the definitive handover to Facebook.",
+      "source": "Google, Blog do Google Brasil",
+      "sourceUrl": "https://blog.google/intl/pt-br/novidades/iniciativas/adeus-ao-orkut/"
+    },
+    {
+      "year": 2016,
+      "era": "2010-2019",
+      "title": "Courts repeatedly block WhatsApp nationwide",
+      "description": "Between December 2015 and July 2016 Brazilian judges ordered WhatsApp shut off across the whole country four times, each after Facebook refused to hand over message data for criminal investigations, and the telecom operators carried out the blocks once notified. The last and most disruptive, ordered on 19 July 2016 with no fixed end date, was lifted the same afternoon by the then president of the Supremo Tribunal Federal, who called it disproportionate given how widely the app was used.",
+      "source": "G1, Globo",
+      "sourceUrl": "https://g1.globo.com/tecnologia/noticia/2022/03/18/whatsapp-ja-foi-bloqueado-por-decisao-judicial-em-2015-e-2016-no-brasil.ghtml"
+    },
+    {
+      "year": 2018,
+      "era": "2010-2019",
+      "title": "The LGPD establishes Brazilian data protection law",
+      "description": "Lei nº 13.709, of 14 August 2018, the Lei Geral de Proteção de Dados Pessoais, governs the processing of personal data by natural persons and by public and private legal entities, including but not limited to digital media, with the stated aim of protecting the fundamental rights of freedom and privacy. It formally amended the Marco Civil da Internet. The law was later modified by Lei nº 13.853 of 2019.",
+      "source": "Presidência da República, Planalto",
+      "sourceUrl": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+    },
+    {
+      "year": 2020,
+      "era": "2020-2026",
+      "title": "Pix, the central bank's instant payment system, goes live",
+      "description": "Pix was built and is operated by the Banco Central do Brasil. Its rulebook was published on 12 August 2020; users began registering chaves Pix, the payment keys that can be a phone number, email, CPF, CNPJ or a random string, on 5 October 2020; a restricted phase ran from 3 November; and full operation began on 16 November 2020. From the first day it supported instant transfers and payments between individuals, businesses and government via keys, QR codes or copy-and-paste codes.",
+      "source": "Banco Central do Brasil, Relatório de Gestão do Pix",
+      "sourceUrl": "https://www.bcb.gov.br/estabilidadefinanceira/pix"
+    },
+    {
+      "year": 2021,
+      "era": "2020-2026",
+      "title": "The 5G auction, the largest spectrum sale in Brazilian history",
+      "description": "Anatel auctioned the 700 MHz, 2.3 GHz, 3.5 GHz and 26 GHz bands on 4 and 5 November 2021. The lots totalled R$ 47.2 billion in economic value at an average premium of 211.7%, and the result was ratified on 23 November 2021. Only R$ 4.8 billion went to the Treasury as licence fees; most of the value took the form of build-out commitments, including 5G in all 5,570 municipal seats, fibre infrastructure, highway coverage and school connectivity.",
+      "source": "Anatel",
+      "sourceUrl": "https://www.gov.br/anatel/pt-br/assuntos/noticias/anatel-homologa-resultado-do-leilao-do-5g"
+    },
+    {
+      "year": 2024,
+      "era": "2020-2026",
+      "title": "X is suspended across Brazil for 39 days",
+      "description": "On 30 August 2024 the Supremo Tribunal Federal ordered X, formerly Twitter, suspended throughout Brazil for repeatedly failing to comply with court decisions and for not appointing a legal representative in the country. The company blocked the profiles the Court had identified, named a representative on 27 September, and paid R$ 28.6 million in fines. On 8 October 2024 the suspension was lifted and Anatel was instructed to restore the service.",
+      "source": "Supremo Tribunal Federal",
+      "sourceUrl": "https://noticias.stf.jus.br/postsnoticias/stf-autoriza-o-retorno-imediato-do-x-e-determina-que-anatel-adote-providencias-para-a-retomada-do-servico/"
+    },
+    {
+      "year": 2025,
+      "era": "2020-2026",
+      "title": "The Supreme Court rewrites platform liability under the Marco Civil",
+      "description": "On 26 June 2025 the Supremo Tribunal Federal held, by 8 votes to 3, that Article 19 of the Marco Civil da Internet is partly unconstitutional. That article had made platforms civilly liable for third-party content only after they ignored a specific court order. Under the new rule, until Congress legislates, a platform can be liable if it fails to remove content after an out-of-court notification in cases of crimes and of accounts reported as fake. The Court also required platforms to publish annual transparency reports.",
+      "source": "Supremo Tribunal Federal",
+      "sourceUrl": "https://noticias.stf.jus.br/postsnoticias/stf-define-parametros-para-responsabilizacao-de-plataformas-por-conteudos-de-terceiros/"
+    },
+    {
+      "year": 2025,
+      "era": "2020-2026",
+      "title": "Internet reaches 93.6% of Brazilian households",
+      "description": "The ICT module of the PNAD Contínua, released by IBGE on 24 July 2025, found that in 2024 the internet was used in 93.6% of permanent private households, some 74.9 million homes, up 1.1 percentage points on 2023. The gap between town and countryside narrowed sharply, from more than 40 percentage points in 2016 to 9.9 points in 2024. Among people aged 10 and over, 89.1% had used the internet.",
+      "source": "IBGE",
+      "sourceUrl": "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/44031-internet-chega-a-74-9-milhoes-de-domicilios-do-pais-em-2024"
+    }
+  ]
+}
